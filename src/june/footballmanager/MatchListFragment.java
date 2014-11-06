@@ -29,6 +29,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
@@ -42,7 +44,7 @@ import android.widget.Toast;
  * 
  */
 
-public class MatchListFragment extends Fragment implements OnItemClickListener {
+public class MatchListFragment extends Fragment implements OnItemClickListener, OnScrollListener {
 	ListView list;
 	TextView count;
 	TextView txtSort;		// 정렬기준 text
@@ -103,6 +105,7 @@ public class MatchListFragment extends Fragment implements OnItemClickListener {
 	    list.addFooterView(new View(getActivity()), null, true);
 	    list.setAdapter(mlAdapter);
 	    list.setOnItemClickListener(this);
+	    list.setOnScrollListener(this);
 	}
 	
 	@Override
@@ -111,7 +114,7 @@ public class MatchListFragment extends Fragment implements OnItemClickListener {
 		
 		// load match list
 		GetMatchList gml = new GetMatchList();
-		gml.execute();
+		gml.execute( new Integer[]{0} );
 	}
 	
 	// 매치 아이템 클릭 이벤트
@@ -150,7 +153,7 @@ public class MatchListFragment extends Fragment implements OnItemClickListener {
 		} else if (itemId == R.id.refresh) {
 			// load match list
 		 	GetMatchList gml = new GetMatchList();
-			gml.execute();
+			gml.execute( new Integer[]{0} );
 		}	    
 	    return true;
 	}
@@ -268,7 +271,7 @@ public class MatchListFragment extends Fragment implements OnItemClickListener {
 		}
 	}
 	
-	private class GetMatchList extends AsyncTask<Void, Void, Boolean> {
+	private class GetMatchList extends AsyncTask<Integer, Void, Boolean> {
 		
 		String jsonString = "";
 		
@@ -281,6 +284,8 @@ public class MatchListFragment extends Fragment implements OnItemClickListener {
 		String param = "";
 		
 		ProgressDialog pd;
+		
+		boolean isInitial = false;
 		
 		@Override
 		public void onPreExecute() {
@@ -310,7 +315,7 @@ public class MatchListFragment extends Fragment implements OnItemClickListener {
 		}
 
 		@Override
-		protected Boolean doInBackground(Void... params) {
+		protected Boolean doInBackground(Integer... params) {
 		
 			Boolean isSuccess = false;
 			
@@ -320,6 +325,12 @@ public class MatchListFragment extends Fragment implements OnItemClickListener {
 				conn.setRequestMethod("POST");
 				conn.setDoInput(true);
 				conn.setDoOutput(true);
+				
+				// 가져올 레코드의 시작 인덱스를 파라미터에 추가해준다.
+				param += "&startIdx=" + params[0];
+				
+				// 시작 인덱스가 0 이면 리스트를 최초로 출력하는 것 이므로 isInitial 플래그를 true로 설정해준다.
+				if( params[0] == 0) isInitial = true;
 				
 				// URL에 파리미터 넘겨주기
 				OutputStreamWriter out = new OutputStreamWriter( conn.getOutputStream(), "euc-kr" );
@@ -337,8 +348,6 @@ public class MatchListFragment extends Fragment implements OnItemClickListener {
 				in.close();
 				
 				Log.i("FM", "GetMatchList result : " + jsonString);
-				
-				
 				
 			} catch (ProtocolException e) {
 				Log.e("FM", "GetMatchList : " + e.getMessage());
@@ -358,7 +367,10 @@ public class MatchListFragment extends Fragment implements OnItemClickListener {
 			try {
 
 				jsonObj = new JSONObject(jsonString);
-				matchList.clear();
+				
+				// 리스트가 처음부터 출력되는 경우 기존의 리스트를 clear 한다.
+				if(isInitial)
+					matchList.clear();
 				
 				// check the success of getting information
 				if (jsonObj.getInt("success") == 1) {
@@ -368,13 +380,14 @@ public class MatchListFragment extends Fragment implements OnItemClickListener {
 
 					JSONObject jo;
 					
+					// 추가로 가져온 레코드를 리스트에 추가한다.
 					for (int i = 0; i < jsonArr.length(); i++) {
 						jo = jsonArr.getJSONObject(i);
 						matchList.add(new MatchItem(jo));
 					}
 				} 
 			} catch (JSONException e) {
-				matchList.clear();
+				//matchList.clear();
 			} finally {
 				mlAdapter.notifyDataSetChanged();
 				count.setText("총 " + matchList.size() + "개의 매치");
@@ -382,6 +395,39 @@ public class MatchListFragment extends Fragment implements OnItemClickListener {
 				pd.dismiss();
 			}
 		}		
+	}
+	
+	
+	// 리스트뷰 스크롤 이벤트 관련 콜백 메서드와 플래그
+	boolean isEndOfList = false;
+	int totalCount;
+	
+	// 스크롤이 발생하면 호출된다.
+	@Override
+	public void onScroll(AbsListView view, int firstVisibleItem,
+			int visibleItemCount, int totalItemCount) {
+
+		Log.i("FM", "first : " + firstVisibleItem + " visiCnt : " + visibleItemCount + " totalCnt : " + totalItemCount);
+		
+		// 첫번째 아이템의 인덱스 + 보이는 아이템의 개수가 총 아이템의 개수와 같으면
+		// 마지막 아이템이 보이는 상태
+		if( firstVisibleItem + visibleItemCount == totalItemCount ) {
+			totalCount = totalItemCount;
+			isEndOfList = true;
+		}
+		else
+			isEndOfList = false;
+	}
+	
+	// 스크롤 상태가 변할 때 호출된다.
+	@Override
+	public void onScrollStateChanged(AbsListView view, int scrollState) {
+		// 리스트의 끝에 도달하면
+		if( scrollState == SCROLL_STATE_IDLE && isEndOfList ) {
+			
+			// 서버로부터 다음 리스트를 가져온다.
+			new GetMatchList().execute( new Integer[]{ totalCount -1 } );
+		}
 	}
 }
 
