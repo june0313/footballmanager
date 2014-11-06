@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">우리동네 풋볼 매니저</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_section1">매치</string>
+    <string name="title_section2">선수 모집</string>
+    <string name="title_section3">팀 구함</string>
+    <string name="title_section4">더보기</string>
+    <string name="title_my_match_waiting">대기중인 매치</string>
+    <string name="title_my_match_confirmed">성사된 매치</string>
+    <string name="title_my_application_waiting">대기중인 매치</string>
+    <string name="title_my_application_accepted">수락된 매치</string>
+    <string name="title_my_application_not_accepted">거절된 매치</string>
+    <string name="title_team_info">팀 정보</string>
+    <string name="title_recruiting_info">선수 모집 정보</string>
+    <string name="title_team_activity">활동 정보</string>
+    <string name="hello_world">Hello world!</string>
+
+    <!-- 서버 주소 관련 -->
+    <string name="server">http://june0313.woobi.co.kr/fm/</string>
+    <string name="login">login.php</string>
+    <string name="update_password">update_password.php</string>
+    <string name="regi_team">register_team.php</string>
+    <string name="regi_player">register_player.php</string>
+    <string name="add_match">add_match.php</string>
+    <string name="apply_match">apply_match.php</string>
+    <string name="match_list">get_match_list.php</string>
+    <string name="my_match_list">get_my_match_list.php</string>
+    <string name="applied_team">get_applied_team.php</string>
+    <string name="match_detail">get_match_detail.php</string>
+    <string name="team_info">get_team_info.php</string>
+    <string name="info_player">get_player_info.php</string>
+    <string name="update_team_info">update_team_info.php</string>
+    <string name="update_player_info">update_player_info.php</string>
+    <string name="accept_opposing_team">accept_opposing_team.php</string>
+    <string name="my_match_list_confirmed">get_my_match_list_confirmed.php</string>
+    <string name="my_application_list">get_my_application_list.php</string>
+    <string name="team_list">get_team_list.php</string>
+    <string name="player_list">get_player_list.php</string>
+    <string name="register_gcm_id">register_gcm_id.php</string>
+    <string name="add_find_player">add_find_player.php</string>
+    <string name="add_find_team">add_find_team.php</string>
+    <string name="find_player_list">get_find_player_list.php</string>
+    <string name="find_player_detail">get_find_player_detail.php</string>
+    <string name="find_team_list">get_find_team_list.php</string>
+    <string name="find_team_detail">get_find_team_detail.php</string>
+    <string name="scrapped_match_list">get_scrapped_match_list.php</string>
+    <string name="scrapped_find_player_list">get_scrapped_find_player_list.php</string>
+    <string name="scrapped_find_team_list">get_scrapped_find_team_list.php</string>
+    
+    <!-- 액티비티 타이틀 -->
+    <string name="title_activity_login">로그인</string>
+    <string name="title_activity_player_register">선수 회원 가입</string>
+    <string name="title_activity_team_register">팀 회원 가입</string>
+    <string name="title_activity_account">계정 관리</string>
+    <string name="title_activity_add_match">매치 등록</string>
+    <string name="title_activity_match_detail">매치 정보</string>
+    <string name="title_activity_select_location">지역 설정</string>
+    <string name="title_activity_edit_team_info">정보 수정</string>
+    <string name="title_activity_select_ground">경기장 선택</string>
+    <string name="title_activity_find_password">비밀번호 찾기</string>
+    <string name="title_activity_set_search_condition">검색 조건 설정</string>
+    <string name="title_activity_select_time">SelectTimeActivity</string>
+    <string name="title_activity_location_condition">지역 설정</string>
+    <string name="title_activity_my_match">내가 등록한 매치</string>
+    <string name="title_activity_applied_team">신청한 팀 리스트</string>
+    <string name="title_activity_my_match_activity2">내가 등록한 매치</string>
+    <string name="title_activity_my_application">내가 신청한 매치</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_team_info">TeamInfoActivity</string>
+    <string name="title_activity_add_find_player">선수 모집</string>
+    <string name="title_activity_find_player_detail">선수 모집</string>
+    <string name="title_activity_set_find_player_condition">선수 모집</string>
+    <string name="title_activity_add_find_team">팀 구함</string>
+    <string name="title_activity_set_find_team_condition">팀 구함</string>
+    <string name="title_activity_find_team_detail">팀 구함</string>
+    <string name="title_activity_scrap">스크랩</string>
+
+</resources>

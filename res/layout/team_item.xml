@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="10dp"
+    android:background="@drawable/shadow_selector_box" >
+
+    <TextView
+        android:id="@+id/mi_team_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginBottom="5dp"
+        android:layout_marginRight="5dp"
+        android:text="아스날"
+        android:textColor="@color/team_name"
+        android:textSize="18sp" />
+    
+    <TextView
+        android:id="@+id/recruting"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:text="선수 모집 중"
+        android:textSize="13sp"
+        android:textColor="@android:color/holo_blue_light" />
+
+    <ImageView
+        android:id="@+id/img_location"
+        android:layout_width="20dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/location"
+        android:layout_alignTop="@+id/location"
+        android:layout_below="@id/ages"
+        android:cropToPadding="false"
+        android:padding="0dp"
+        android:src="@drawable/ic_location" />
+    
+    <ImageView
+        android:id="@+id/img_scrap"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:clickable="true"
+        android:src="@drawable/scrap" />
+
+    <TextView
+        android:id="@+id/home"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/location"
+        android:layout_alignBottom="@+id/location"
+        android:layout_toRightOf="@+id/location"
+        android:singleLine="true"
+        android:text="세종대학교 운동장"
+        android:textColor="@color/darkgray" />
+
+    <TextView
+        android:id="@+id/location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ages"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_toRightOf="@+id/img_location"
+        android:text="서울 광진구 군자동"
+        android:textColor="@color/darkgray" />
+    
+    <ImageView
+        android:id="@+id/img_team"
+        android:layout_width="20dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/ages"
+        android:layout_alignTop="@id/ages"
+        android:layout_below="@id/mi_team_name"
+        android:src="@drawable/team" />
+
+    <TextView
+        android:id="@+id/ages"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/mi_team_name"
+        android:layout_marginLeft="5dp"
+        android:layout_toRightOf="@id/img_team"
+        android:text="30대"
+        android:textColor="@color/darkgray" />
+    
+    <TextView
+        android:id="@+id/slash"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/mi_team_name"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_toRightOf="@id/ages"
+        android:text="/" />
+    
+    <TextView
+        android:id="@+id/num_of_players"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/mi_team_name"
+        android:layout_toRightOf="@id/slash"
+        android:text="11명" />
+
+</RelativeLayout>

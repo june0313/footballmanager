@@ -1,0 +1,116 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+	android:background="@color/lightgray"
+	android:orientation="vertical" >
+    
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="@dimen/padding"
+            android:orientation="vertical" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/divider"
+                android:text="활동 지역"
+                android:textColor="@color/darkgray" />
+
+            <TextView
+                android:id="@+id/location"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:background="@drawable/shadow_textview"
+                android:gravity="right"
+                android:textSize="@dimen/major_font"
+                android:textColor="@color/darkgray"
+                android:text="경기 김포시 대곶면" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/divider"
+                android:text="홈구장"
+                android:textColor="@color/darkgray" />
+
+            <TextView
+                android:id="@+id/home"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/divider"
+                android:background="@drawable/shadow_textview"
+                android:gravity="right"
+                android:padding="@dimen/textView_padding"
+                android:textSize="@dimen/major_font"
+                android:textColor="@color/darkgray"
+                android:text="공설운동장" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/divider"
+                android:text="연령대"
+                android:textColor="@color/darkgray" />
+
+            <TextView
+                android:id="@+id/ages"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/divider"
+                android:background="@drawable/shadow_textview"
+                android:gravity="right"
+                android:padding="@dimen/textView_padding"
+                android:textSize="@dimen/major_font"
+                android:textColor="@color/darkgray"
+                android:text="20대" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/divider"
+                android:text="인원수"
+                android:textColor="@color/darkgray" />
+
+            <TextView
+                android:id="@+id/num_of_players"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/divider"
+                android:background="@drawable/shadow_textview"
+                android:gravity="right"
+                android:padding="@dimen/textView_padding"
+                android:textSize="@dimen/major_font"
+                android:textColor="@color/darkgray"
+                android:text="11명" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/divider"
+                android:text="팀 소개"
+                android:textColor="@color/darkgray" />
+
+            <TextView
+                android:id="@+id/introduce"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/divider"
+                android:background="@drawable/shadow_textview"
+                android:padding="@dimen/textView_padding"
+                android:textSize="@dimen/major_font"
+                android:textColor="@color/darkgray"
+                android:hint="팀 소개가 입력되지 않았습니다." />
+        
+        </LinearLayout>
+    
+    </ScrollView>
+
+</LinearLayout>
+

@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="@dimen/padding" >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:text="기본 정보"
+            android:textSize="17sp" />
+
+        <EditText
+            android:id="@+id/t_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/round_edittext"
+            android:hint="이메일"
+            android:inputType="textEmailAddress"
+            android:textSize="17sp" />
+
+        <EditText
+            android:id="@+id/t_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/round_edittext"
+            android:hint="비밀번호"
+            android:inputType="textPassword"
+            android:textSize="17sp" />
+
+        <EditText
+            android:id="@+id/t_password_chk"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="15dp"
+            android:background="@drawable/round_edittext"
+            android:hint="비밀번호 확인"
+            android:inputType="textPassword"
+            android:textSize="17sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:text="팀 정보"
+            android:textSize="17sp" />
+
+        <EditText
+            android:id="@+id/t_team_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/round_edittext"
+            android:hint="팀 이름" />
+
+        <TextView
+            android:id="@+id/t_location"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/round_edittext"
+            android:hint="지역"
+            android:textSize="17sp" />
+
+        <EditText
+            android:id="@+id/t_homeground"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/round_edittext"
+            android:hint="홈 구장"
+            android:textSize="17sp" />
+
+        <EditText
+            android:id="@+id/t_num_of_player"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/round_edittext"
+            android:hint="인원수"
+            android:inputType="number" />
+        
+        <TextView
+            android:id="@+id/t_ages"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/round_edittext"
+            android:hint="연령층"
+            android:textSize="17sp" />
+        
+        <EditText
+            android:id="@+id/t_phone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/round_edittext"
+            android:hint="연락처"
+            android:inputType="number" />
+        
+        <EditText
+            android:id="@+id/t_introduce"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/round_edittext"
+            android:lines="3"
+            android:hint="팀 소개" />
+        
+        <!-- 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="유니폼" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/round_edittext"
+            android:orientation="vertical" >
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="상의" />
+
+                <View
+                    android:id="@+id/t_uniform_top"
+                    android:layout_width="80dp"
+                    android:layout_height="30dp"
+                    android:layout_alignParentRight="true"
+                    android:background="@color/main"
+                    android:padding="5dp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="하의" />
+
+                <View
+                    android:id="@+id/t_uniform_bottom"
+                    android:layout_width="80dp"
+                    android:layout_height="30dp"
+                    android:layout_alignParentRight="true"
+                    android:background="@color/main" />
+            </RelativeLayout>
+
+        </LinearLayout>
+        -->
+
+        <Button
+            android:id="@+id/btn_register"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="40dp"
+            android:background="@drawable/round_button2"
+            android:text="팀 회원 가입"
+            android:textColor="@android:color/white"
+            android:textSize="17sp" />
+        
+    </LinearLayout>
+
+</ScrollView>

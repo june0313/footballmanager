@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="@dimen/padding"
+    android:background="@drawable/shadow_textview" >
+    
+<RelativeLayout 
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/divider" >
+    
+    <TextView
+        android:id="@+id/team_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginBottom="5dp"
+        android:layout_marginRight="5dp"
+        android:text="팀 이름"
+        android:textColor="@color/team_name"
+        android:textSize="18sp" />
+    
+    <ImageView
+        android:id="@+id/img_team"
+        android:layout_width="20dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/ages"
+        android:layout_alignTop="@id/ages"
+        android:layout_below="@id/team_name"
+        android:src="@drawable/team" />
+
+    <TextView
+        android:id="@+id/ages"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/team_name"
+        android:layout_toRightOf="@id/img_team"
+        android:text="20대" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/ages"
+        android:layout_alignBottom="@+id/ages"
+        android:layout_toRightOf="@+id/ages"
+        android:text=" / " />
+
+    <TextView
+        android:id="@+id/num_of_players"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/textView2"
+        android:layout_alignBottom="@+id/textView2"
+        android:layout_toRightOf="@+id/textView2"
+        android:text="11명" />
+
+
+    <ImageView
+        android:id="@+id/img_location"
+        android:layout_width="20dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/location"
+        android:layout_below="@+id/ages"
+        android:cropToPadding="false"
+        android:padding="0dp"
+        android:src="@drawable/ic_location" />
+
+    <TextView
+        android:id="@+id/location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/img_location"
+        android:layout_below="@id/ages"
+        android:text="서울 광진구 군자동"
+        android:textColor="@color/darkgray" />
+    
+    <LinearLayout
+        android:layout_width="80dp"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/team_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/gray_flat_button"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center"
+            android:text="팀 정보"
+            android:textColor="#FFFFFF" />
+
+        <TextView
+            android:id="@+id/accept"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/green_flat_button"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center"
+            android:text="수락"
+            android:textColor="#FFFFFF" />
+    </LinearLayout>
+
+</RelativeLayout>
+
+<View
+    android:layout_width="match_parent"
+    android:layout_height="1dp"
+    android:layout_marginBottom="@dimen/divider"
+    android:background="@color/lightgray" />
+
+<TextView
+            android:id="@+id/apply_msg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="매치를 신청합니다."
+            android:textColor="#888888" />
+
+</LinearLayout>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="main">@android:color/holo_green_light</color>
+    <!-- <color name="main">#b1ce54</color>  -->
+    <color name="title">#404040</color>
+    <color name="titletext">#FFFFFF</color>
+    <color name="information_bar">@color/main</color>
+    <color name="darkgray">#4C4C4C</color>
+    <color name="gray">#b2b2b2</color>
+    <color name="lightgray">#e7e7e7</color>
+    <color name="team_name">@android:color/holo_green_light</color>
+    <!-- <color name="team_name">#8da443</color>  -->
+    
+</resources>

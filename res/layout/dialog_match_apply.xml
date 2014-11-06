@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="@dimen/padding" >
+    
+    <EditText
+        android:id="@+id/apply_msg" 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:lines="3"
+        android:background="@drawable/round_edittext"
+        android:textColor="#000000"
+        android:hint="매치 신청 메시지를 작성해주세요" />
+
+</LinearLayout>

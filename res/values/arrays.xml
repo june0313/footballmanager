@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="search_conditions">
+        <item >지역</item>
+        <item >시작 시간</item>
+        <item >종료 시간</item>
+        <item >요일</item>
+        <item >연령대</item>
+    </string-array>
+    
+    <string-array name="ampm">
+        <item>오전</item>
+        <item>오후</item>
+    </string-array>
+    
+    <string-array name="ages">
+        <item>10대</item>
+        <item>20대</item>
+        <item>30대</item>
+        <item>40대</item>
+        <item>50대</item>
+        <item>60대 이상</item>
+    </string-array>
+    
+    <string-array name="days">
+        <item>월요일</item>
+        <item>화요일</item>
+        <item>수요일</item>
+        <item>목요일</item>
+        <item>금요일</item>
+        <item>토요일</item>
+        <item>일요일</item>
+    </string-array>
+    
+    <string-array name="days_short">
+        <item>월</item>
+        <item>화</item>
+        <item>수</item>
+        <item>목</item>
+        <item>금</item>
+        <item>토</item>
+        <item>일</item>
+    </string-array>
+    
+    <string-array name="time">
+        <item>하루 종일</item>
+        <item>새벽( 00:00 ~ 06:00 )</item>
+        <item>오전( 06:00 ~ 12:00 )</item>
+        <item>오후( 12:00 ~ 18:00 )</item>
+        <item>저녁( 18:00 ~ 24:00 )</item>
+        <item>새벽 ~ 오전</item>
+        <item>새벽 ~ 오후</item>
+        <item>오전 ~ 오후</item>
+        <item>오전 ~ 저녁</item>
+        <item>오후 ~ 저녁</item>
+    </string-array>
+    
+    <string-array name="start_time">
+        <item>00:00</item>
+        <item>00:00</item>
+        <item>06:00</item>
+        <item>12:00</item>
+        <item>18:00</item>
+        <item>00:00</item>
+        <item>00:00</item>
+        <item>06:00</item>
+        <item>06:00</item>
+        <item>12:00</item>
+    </string-array>
+    
+    <string-array name="end_time">
+        <item>24:00</item>
+        <item>06:00</item>
+        <item>12:00</item>
+        <item>18:00</item>
+        <item>24:00</item>
+        <item>12:00</item>
+        <item>18:00</item>
+        <item>18:00</item>
+        <item>24:00</item>
+        <item>24:00</item>
+    </string-array>
+    
+    <string-array name="positions_long">
+        <item >골키퍼(GK)</item>
+        <item >왼쪽 풀백(LB)</item>
+        <item >센터백(CB)</item>
+        <item >오른쪽 풀백(RB)</item>
+        <item >왼쪽 윙백(LWB)</item>
+        <item >오른쪽 윙백(RWB)</item>
+        <item >왼쪽 미드필더(LM)</item>
+        <item >중앙 미드필더(CM)</item>
+        <item >오른쪽 미드필더(RM)</item>
+        <item >공격형 미드필더(AM)</item>
+        <item >수비형 미드필더(DM)</item>
+        <item >왼쪽 윙어(LW)</item>
+        <item >오른쪽 윙어(RW)</item>
+       	<item >쉐도우 스트라이커(SS)</item>
+        <item >센터 포워드(CF)</item>
+    </string-array>
+    
+    <string-array name="positions_short">
+        <item >GK</item>
+        <item >LB</item>
+        <item >CB</item>
+        <item >RB</item>
+        <item >LWB</item>
+        <item >RWB</item>
+        <item >LM</item>
+        <item >CM</item>
+        <item >RM</item>
+        <item >AM</item>
+        <item >DM</item>
+        <item >LW</item>
+        <item >RW</item>
+       	<item >SS</item>
+        <item >CF</item>
+    </string-array>
+    
+    <string-array name="extra_items">
+        <item >로그인</item>
+        <item >스크랩</item>
+        <item >어플리케이션 설정</item>
+        <item >어플리케이션 정보</item>
+    </string-array>
+    
+    <string-array name="extra_items_on_team">
+        <item >계정 관리</item>
+        <item >내가 등록한 매치</item>
+        <item >내가 신청한 매치</item>
+        <item >스크랩</item>
+        <item >어플리케이션 설정</item>
+        <item >어플리케이션 정보</item>
+    </string-array>
+    
+    <string-array name="extra_items_on_player">
+        <item >계정 관리</item>
+        <item >내가 쓴 글</item>
+        <item >스크랩</item>
+        <item >어플리케이션 설정</item>
+        <item >어플리케이션 정보</item>
+    </string-array>    
+    
+</resources>

@@ -1,0 +1,18 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".TeamActivityInfoFragment" >
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <TextView
+    	android:id="@+id/empty"
+    	android:layout_width="match_parent"
+    	android:layout_height="match_parent"
+    	android:gravity="center"
+    	android:textSize="18sp"
+    	android:textColor="@color/gray"
+    	android:text="활동 정보가 존재하지 않습니다." />
+
+</FrameLayout>

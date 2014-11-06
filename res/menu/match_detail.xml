@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    
+    <item 
+        android:id="@+id/scrap" 
+        android:title="즐겨찾기"
+        android:icon="@drawable/scrap"
+        android:showAsAction="always"></item>
+    
+    <item 
+        android:id="@+id/apply" 
+        android:icon="@drawable/apply"
+        android:title="경기신청" 
+        android:showAsAction="always"></item>
+    
+</menu>

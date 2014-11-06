@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/padding"
+    android:background="@drawable/shadow_selector_box" >
+    
+    <LinearLayout
+        android:id="@+id/LinearLayout1" 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        
+        <TextView
+            android:id="@+id/position"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:textSize="18sp"
+            android:text="CF" />
+        
+        <TextView
+            android:id="@+id/nickname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="개발자"
+            android:textColor="@color/darkgray" />
+        
+    </LinearLayout>
+    
+    <RelativeLayout
+        android:id="@+id/LinearLayout2"
+        android:layout_below="@id/LinearLayout1" 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
+        
+        <ImageView
+            android:id="@+id/img_player"
+            android:layout_width="20dp"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/age"
+            android:layout_alignBottom="@id/age"
+            android:src="@drawable/player" />
+        
+        <TextView
+            android:id="@+id/age"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/img_player"
+            android:text="25세"
+            android:textColor="@color/darkgray" />
+        
+    </RelativeLayout>
+    
+    <RelativeLayout
+        android:id="@+id/LinearLayout3"
+        android:layout_below="@id/LinearLayout2" 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        
+        <ImageView
+            android:id="@+id/img_location"
+            android:layout_width="20dp"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/location"
+            android:layout_alignBottom="@id/location"
+            android:src="@drawable/ic_location" />
+        
+        <TextView
+            android:id="@+id/location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/img_location"
+            android:text="경기 김포시 대곶면"
+            android:textColor="@color/darkgray" />
+        
+    </RelativeLayout>
+    
+    <ImageView
+        android:id="@+id/img_scrap"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:clickable="true"
+        android:src="@drawable/scrap" />
+    
+
+</RelativeLayout>

@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="@dimen/padding" >
+
+        <RadioGroup
+            android:id="@+id/rg_member_type"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <RadioButton
+                android:id="@+id/rb_team"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="팀회원"
+                android:layout_marginRight="10dp"
+                android:textColor="#808080"
+                android:textSize="17sp" />
+            
+            <RadioButton
+                android:id="@+id/rb_player"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="선수회원"
+                android:textColor="#808080"
+                android:textSize="17sp" />
+        </RadioGroup>
+
+        <EditText
+            android:id="@+id/p_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/round_edittext"
+            android:hint="이메일"
+            android:inputType="textEmailAddress"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/p_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/round_edittext"
+            android:hint="비밀번호"
+            android:inputType="textPassword"
+            android:textSize="18sp" />
+
+        <Button
+            android:id="@+id/btn_login"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/round_button2"
+            android:text="로그인"
+            android:textColor="#FFFFFF"
+            android:textSize="17sp" />
+       
+        <TextView
+            android:id="@+id/txt_find_pw"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="40dp"
+            android:gravity="right"
+            android:text="비밀번호 찾기"
+            android:textColor="@color/main"
+            android:textSize="17sp" />
+        
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:text="아직 계정이 없으신가요?"
+            android:textColor="@color/darkgray"
+            android:textSize="17sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+            
+            <Button
+                android:id="@+id/btn_team_register"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/round_flat_button"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="팀회원\n 가입"
+                android:textColor="#FFFFFF"
+                android:textSize="17sp" />
+
+            <Button
+                android:id="@+id/btn_player_register"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/round_flat_button"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="선수회원\n 가입"
+                android:textColor="#FFFFFF"
+                android:textSize="17sp" />
+            
+        </LinearLayout>
+    </LinearLayout>
+
+</ScrollView>

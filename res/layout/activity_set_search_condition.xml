@@ -1,0 +1,134 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="15dp"
+    tools:context=".SetMatchConditionActivity" >
+    
+    <RelativeLayout
+        android:id="@+id/cond_location"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:background="@drawable/selector_button"
+        android:clickable="true"
+        android:padding="13dp" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:text="지역"
+            android:textSize="17sp" />
+
+        <TextView
+            android:id="@+id/txt_location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:text="TextView"
+            android:textColor="@color/main"
+            android:textSize="17sp" />
+
+    </RelativeLayout>
+    
+    <RelativeLayout
+        android:id="@+id/cond_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:background="@drawable/selector_button"
+        android:clickable="true"
+        android:padding="13dp" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:text="시간"
+            android:textSize="17sp" />
+
+        <TextView
+            android:id="@+id/txt_start_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:text="TextView"
+            android:textColor="@color/main"
+            android:textSize="17sp" />
+    </RelativeLayout>
+    
+    <RelativeLayout
+        android:id="@+id/cond_days"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:background="@drawable/selector_button"
+        android:clickable="true"
+        android:padding="13dp" >
+
+        <TextView
+            android:id="@+id/text1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:text="요일"
+            android:textSize="17sp" />
+
+        <TextView
+            android:id="@+id/txt_days"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:text="TextView"
+            android:textColor="@color/main"
+            android:textSize="17sp" />
+
+    </RelativeLayout>
+    
+    <RelativeLayout
+        android:id="@+id/cond_ages"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:background="@drawable/selector_button"
+        android:clickable="true"
+        android:padding="13dp" >
+
+        <TextView
+            android:id="@+id/text1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:text="연령대"
+            android:textSize="17sp" />
+
+        <TextView
+            android:id="@+id/txt_ages"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:text="TextView"
+            android:textColor="@color/main"
+            android:textSize="17sp" />
+
+    </RelativeLayout>
+    
+    <Button
+        android:id="@+id/complete"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/round_button2"
+        android:text="설정 완료"
+        android:textColor="#FFFFFF" />
+
+</LinearLayout>
