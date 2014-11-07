@@ -14,6 +14,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -45,6 +46,8 @@ import android.widget.Toast;
  */
 
 public class MatchListFragment extends Fragment implements OnItemClickListener, OnScrollListener {
+	private static final int MATCH_CONDITION = 0;
+	
 	ListView list;
 	TextView count;
 	TextView txtSort;		// 정렬기준 text
@@ -108,13 +111,33 @@ public class MatchListFragment extends Fragment implements OnItemClickListener, 
 	    list.setOnScrollListener(this);
 	}
 	
+	public void listCountUpdate() {
+		count.setText("총 " + matchList.size() + "개의 매치");
+	}
+
 	@Override
 	public void onResume() {
 		super.onResume();
 		
-		// load match list
-		GetMatchList gml = new GetMatchList();
-		gml.execute( new Integer[]{0} );
+		// 리스트가 비어있으면 서버로부터 리스트를 가져온다.
+		if (matchList.size() == 0) {
+			GetMatchList gml = new GetMatchList();
+			gml.execute(new Integer[] { 0 });
+		} else
+			// 리스트가 이미 차있으면 개수만 새로 출력한다.
+			listCountUpdate();
+	}
+	
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+		switch (requestCode) {
+		case MATCH_CONDITION:
+			// 검색 조건 설정 후에는 조건에 맞게 다시 가져온다.
+			if (resultCode == Activity.RESULT_OK) {
+				GetMatchList gml = new GetMatchList();
+				gml.execute(new Integer[] { 0 });
+			}
+		}
 	}
 	
 	// 매치 아이템 클릭 이벤트
@@ -149,7 +172,7 @@ public class MatchListFragment extends Fragment implements OnItemClickListener, 
 		} else if (itemId == R.id.search) {
 			// 검색조건 Activity 호출
 			Intent intent = new Intent(getActivity(), SetMatchConditionActivity.class);
-			startActivity(intent);
+			startActivityForResult(intent, MATCH_CONDITION);
 		} else if (itemId == R.id.refresh) {
 			// load match list
 		 	GetMatchList gml = new GetMatchList();
@@ -390,7 +413,7 @@ public class MatchListFragment extends Fragment implements OnItemClickListener, 
 				//matchList.clear();
 			} finally {
 				mlAdapter.notifyDataSetChanged();
-				count.setText("총 " + matchList.size() + "개의 매치");
+				listCountUpdate();
 
 				pd.dismiss();
 			}

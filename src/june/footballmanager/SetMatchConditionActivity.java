@@ -49,7 +49,10 @@ public class SetMatchConditionActivity extends Activity implements OnClickListen
 	// 시간대 배열
 	String[] arrTimes;
 	
-	// 시간 설정 정보를 저장할 정수
+	// 설정된 지역 정보를 임시로 저장하는 문자열
+	String tmpLocation;
+	
+	// 시간 설정 정보를 임시로 저장하는 정수
 	int selectedTime;
 	
 	// 요일 설정 여부를 저장할 배열
@@ -94,11 +97,12 @@ public class SetMatchConditionActivity extends Activity implements OnClickListen
 	    // 설정 완료 버튼 객체 생성
 	    btnComplete = (Button) findViewById(R.id.complete);
 	    btnComplete.setOnClickListener(this);
+	    
+	    // 저장되어있는 검색 조건을 각 뷰에 출력한다.
+	    printStoredCondition();
 	}
 	
-	@Override
-	protected void onResume() {
-		super.onResume();
+	private void printStoredCondition() {
 		
 		// 각 조건들을 출력할 텍스트뷰 생성 및 텍스트 출력
 	    txtLocation = (TextView) findViewById(R.id.txt_location);
@@ -187,10 +191,6 @@ public class SetMatchConditionActivity extends Activity implements OnClickListen
 				public void onClick(DialogInterface dialog, int which) {
 					selectedTime = which;
 					
-					// 설정된 시간 정보를 프리퍼런스에 저장한다.
-					prefConditionEditor.putInt("time", selectedTime);
-					prefConditionEditor.commit();
-					
 					// 설정된 시간 정보를 출력한다.
 					txtTime.setText(arrTimes[selectedTime]);
 				}
@@ -226,9 +226,33 @@ public class SetMatchConditionActivity extends Activity implements OnClickListen
 				}
 			} );
 			builder.setPositiveButton("확인", ageSetListener);
-			builder.create().show();			
-		} else if ( id == R.id.complete ) {
+			builder.create().show();		
+		} else if ( id == R.id.complete ) {	// "설정 완료" 버튼 클릭
+			// 임시로 설정된 지역정보를 프리퍼런스에 저장한다.
+			prefConditionEditor.putString("location", tmpLocation);
+			prefConditionEditor.commit();
+			
+			// 임시로 설정된 시간 정보를 프리퍼런스에 저장한다.
+			prefConditionEditor.putInt("time", selectedTime);
+			prefConditionEditor.commit();
+
+			// 임시로 설정된 요일 정보를 프리퍼런스에 저장한다.
+			for (int i = 0; i < 7; i++) {
+				prefConditionEditor.putBoolean("day" + i, bDays[i]);
+				prefConditionEditor.commit();
+			}
+
+			// 임시로 설정된 연령대 정보를 프리퍼런스에 저장한다.
+			for (int i = 0; i < 6; i++) {
+				prefConditionEditor.putBoolean("age" + i, bAges[i]);
+				prefConditionEditor.commit();
+			}
+			
 			Toast.makeText(SetMatchConditionActivity.this, "검색 조건이 설정되었습니다", 0).show();
+			
+			// 호출한 액티비티에 조건이 설정되었음을 알린다.
+			Intent intent = new Intent();
+			setResult(RESULT_OK, intent);
 			finish();
 		}
 	}
@@ -239,9 +263,9 @@ public class SetMatchConditionActivity extends Activity implements OnClickListen
 		switch (requestCode) {
 		case LOCATION:
 			if (resultCode == RESULT_OK) {
-				// 받아온 지역정보를 프리퍼런스에 저장한다.
-				prefConditionEditor.putString("location", intent.getStringExtra("location"));
-				prefConditionEditor.commit();
+				// 받아온 지역정보를 출력한다.
+				tmpLocation = intent.getStringExtra("location");
+				txtLocation.setText(tmpLocation);
 			}
 		}
 	}
@@ -252,18 +276,7 @@ public class SetMatchConditionActivity extends Activity implements OnClickListen
 		@Override
 		public void onClick(DialogInterface dialog, int which) {
 			
-			// 설정된 요일 정보를 프리퍼런스에 저장한다.
-			for( int i = 0; i < 7; i++ ) {
-				prefConditionEditor.putBoolean("day" + i, bDays[i]);
-				prefConditionEditor.commit();
-			}
-			
-			 // 프리퍼런스에 저장된 요일 정보 가져오기
-		    for( int i = 0; i < 7; i++ ) {
-		    	bDays[i] = prefCondition.getBoolean("day" + i, true);
-		    }
-		    
-		    // 가져온 요일 출력
+		    // 임시로 설정된 요일 출력
 		    Resources res = getResources();
 		    String[] days = res.getStringArray(R.array.days_short);
 		    String daysForDisplay = "";
@@ -281,18 +294,8 @@ public class SetMatchConditionActivity extends Activity implements OnClickListen
 		
 		@Override
 		public void onClick(DialogInterface dialog, int which) {
-			// 설정된 연령대 정보를 프리퍼런스에 저장한다.
-			for( int i = 0; i < 6; i++ ) {
-				prefConditionEditor.putBoolean("age" + i, bAges[i]);
-				prefConditionEditor.commit();
-			}
-			
-			// 프리퍼런스에 저장된 연령대 정보 가져오기
-		    for( int i = 0; i < 6; i++ ) {
-		    	bAges[i] = prefCondition.getBoolean("age" + i, true);
-		    }
 		    
-		    // 가져온 연령대 출력
+		    // 임시로 설정된 연령대 출력
 		    Resources res = getResources();
 		    String[] ages = res.getStringArray(R.array.ages);
 		    String agesForDisplay = "";
