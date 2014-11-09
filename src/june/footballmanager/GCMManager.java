@@ -259,9 +259,10 @@ public class GCMManager {
 	}
 	
 	// GCM 서버로 메시지를 전송한다.
-	public void sendMessage(String to, String from) {
+	public void sendMessage(String to, String from, int data) {
 		final String receiverID = to;
 		final String appliedTeam = from;
+		final int matchNo = data;
 		
 		new AsyncTask<Void, Void, String>() {
         	String jsonString = "";
@@ -272,7 +273,8 @@ public class GCMManager {
                 try {
                 	String param = "registration_id=" + receiverID;
                     param += "&data.message=" + URLEncoder.encode(appliedTeam + "팀이 매치를 신청하였습니다.", "UTF-8");
-					Log.i(TAG, param);
+                    param += "&data.matchNo=" + matchNo;
+                    Log.i("sendMessage params : ", param);
 					
 					URL url = new URL(GCM_SERVER);
 					HttpURLConnection conn = (HttpURLConnection)url.openConnection();

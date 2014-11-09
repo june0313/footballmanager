@@ -481,7 +481,7 @@ public class MatchDetailActivity extends Activity implements GoogleMap.OnMapClic
 				} else if ( success == 1 ) {
 					Toast.makeText(getApplicationContext(), "매치를 신청하였습니다", 0).show();
 					// GCM 메시지 전송
-					gm.sendMessage(regid, lm.getTeamName());
+					gm.sendMessage(regid, lm.getTeamName(), matchNo);
 				} else {
 					Toast.makeText(getApplicationContext(), "이미 신청한 매치입니다", 0).show();
 				}
