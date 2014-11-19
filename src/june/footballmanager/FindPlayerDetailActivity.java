@@ -1,38 +1,18 @@
 package june.footballmanager;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
-
 import android.app.ActionBar;
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Intent;
-import android.location.Address;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -125,13 +105,11 @@ public class FindPlayerDetailActivity extends Activity {
 		content = (TextView)findViewById(R.id.content);
 	}
 	
-	
 	@Override
 	protected void onResume() {
 		super.onResume();
-		new GetFindPlayerDetail().execute();	
+		getFindPlayerDetail();
 	}
-
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -144,7 +122,6 @@ public class FindPlayerDetailActivity extends Activity {
 			scrap.setIcon(R.drawable.scrap);
 		return super.onCreateOptionsMenu(menu);
 	}
-
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
@@ -172,95 +149,46 @@ public class FindPlayerDetailActivity extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 	
-	// DB로 부터 선수 구함 게시물의 상세 정보를 가져와 출력한다.
-	public class GetFindPlayerDetail extends AsyncTask<Void, Void, Void> {
+	// 서버로부터 선수구함 게시물의 상세 정보를 가져오는 메서드
+	private void getFindPlayerDetail() {
+		// 연결할 페이지의 URL
+		String url = getString(R.string.server)
+				+ getString(R.string.find_player_detail);
+		
+		// 파라미터 구성
+		String param = "no=" + no;
+		
+		// 서버 연결
+		JSONObject json = new HttpTask(url, param).getJSONObject();
+		
+		// check the success of getting information
+		try {
+			if (json.getInt("success") == 1) {
 
-		String jsonString = "";
-		ProgressDialog pd;
+				// 게시물을 등록한 팀 번호 저장
+				memberNo = json.getInt("MEMBER_NO");
 
-		@Override
-		public void onPreExecute() {
-			pd = new ProgressDialog(FindPlayerDetailActivity.this);
-			pd.setMessage("정보를 불러오는 중입니다...");
-			pd.show();
-		}
-
-		@Override
-		protected Void doInBackground(Void... params) {
-
-			try {
-				URL url = new URL(getString(R.string.server)
-						+ getString(R.string.find_player_detail));
-				HttpURLConnection conn = (HttpURLConnection) url
-						.openConnection();
-				conn.setRequestMethod("POST");
-				conn.setDoInput(true);
-				conn.setDoOutput(true);
+				// 연락처 저장
+				phone = json.getString("PHONE");
 				
-				String param = "no=" + no;
-				OutputStreamWriter out = new OutputStreamWriter(
-						conn.getOutputStream(), "euc-kr");
-				out.write(param);
-				out.flush();
-				out.close();
+				// 제목 출력
+				getActionBar().setSubtitle(json.getString("TITLE"));
 
-				String buffer = null;
-				BufferedReader in = new BufferedReader(new InputStreamReader(
-						conn.getInputStream(), "euc-kr"));
-				while ((buffer = in.readLine()) != null) {
-					jsonString += buffer;
-				}
-				in.close();
-				Log.i("FM", "GetFindPlayerDetail result : " + jsonString);
-
-			} catch (MalformedURLException e) {
-				Log.e("FM", "GetFindPlayerDetail : " + e.getMessage());
-			} catch (IOException e) {
-				Log.e("FM", "GetFindPlayerDetail : " + e.getMessage());
-			}
-
-			return null;
-		}
-
-		@Override
-		public void onPostExecute(Void params) {
-
-			JSONObject jsonObj;
-
-			try {
-				jsonObj = new JSONObject(jsonString);
-
-				// check the success of getting information
-				if (jsonObj.getInt("success") == 1) {
-
-					// 게시물을 등록한 팀 번호 저장
-					memberNo = jsonObj.getInt("MEMBER_NO");
-
-					// 연락처 저장
-					phone = jsonObj.getString("PHONE");
+				// 팀 정보를 뷰에 출력
+				teamName.setText(json.getString("TEAM_NAME"));
+				teamInfo.setText(json.getString("T_LOCATION") 
+						+ " / " + json.getString("NUM_OF_PLAYERS") 
+						+ "명 / " + json.getString("T_AGES") );
 					
-					// 제목 출력
-					getActionBar().setSubtitle(jsonObj.getString("TITLE"));
+				// 선수 구함 정보를 뷰에 출력
+				location.setText(json.getString("P_LOCATION"));
+				position.setText(json.getString("POSITION"));
+				ages.setText(json.getString("P_AGES"));
+				content.setText(json.getString("CONTENT").replace("__", "\n"));
 
-					// 팀 정보를 뷰에 출력
-					teamName.setText(jsonObj.getString("TEAM_NAME"));
-					teamInfo.setText(jsonObj.getString("T_LOCATION") 
-							+ " / " + jsonObj.getString("NUM_OF_PLAYERS") 
-							+ "명 / " + jsonObj.getString("T_AGES") );
-						
-					// 선수 구함 정보를 뷰에 출력
-					location.setText(jsonObj.getString("P_LOCATION"));
-					position.setText(jsonObj.getString("POSITION"));
-					ages.setText(jsonObj.getString("P_AGES"));
-					content.setText(jsonObj.getString("CONTENT").replace("__", "\n"));
-
-				}
-
-			} catch (JSONException e) {
-				Log.e("FM", "GetFindPlayerDetail : " + e.getMessage());
 			}
-
-			pd.dismiss();
+		} catch (JSONException e) {
+			Log.e("getFindPlayerDetail", e.getMessage());
 		}
 	}
 }

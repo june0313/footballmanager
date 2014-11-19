@@ -1,22 +1,13 @@
 package june.footballmanager;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -86,7 +77,8 @@ public class MyApplicationListFragment extends Fragment implements OnItemClickLi
 	public void onResume() {
 		super.onResume();
 		
-		new GetMyApplicationList().execute();
+		// 서버로부터 신청 목록을 가져온다.
+		getMyApplicationList();
 	}
 	
 	@Override
@@ -195,95 +187,36 @@ public class MyApplicationListFragment extends Fragment implements OnItemClickLi
 		}
 	}
 	
-	// 신청한 매치 리스트를 DB에서 가져온다.
-	private class GetMyApplicationList extends AsyncTask<Void, Void, Boolean> {
+	// 서버로부터 신청한 매치 리스트를 가져오는 메서드
+	private void getMyApplicationList() {
+		// 연결할 페이지의 URL
+		String url = getString(R.string.server) + getString(R.string.my_application_list);
+		
+		// 파라미터 구성
+		LoginManager lm = new LoginManager(getActivity());
+		String param = "memberNo=" + lm.getMemberNo();
+		param += "&isAccepted=" + isAccepted;
+		
+		// 서버 연결
+		JSONObject json = new HttpTask(url, param).getJSONObject();
+		JSONArray jsonArr = null;
+		
+		try {
+			jsonArr = json.getJSONArray("list");
 
-		// 서버로 전달할 파라미터(팀의 email정보)
-		String param = "";
+			JSONObject item;
 
-		// 로그인 정보
-		LoginManager lm;
-
-		// URL로부터 가져온 json 형식의 string
-		String jsonString = "";
-
-		ProgressDialog pd;
-
-		public void onPreExecute() {
-			lm = new LoginManager(getActivity());
-			param += "memberNo=" + lm.getMemberNo();
-			param += "&isAccepted=" + isAccepted;
-
-			Log.i("param", param);
-
-			// 프로그레스 다이얼로그 출력
-			pd = new ProgressDialog(getActivity());
-			pd.setMessage("리스트를 불러오는 중입니다...");
-			pd.show();
-		}
-
-		@Override
-		protected Boolean doInBackground(Void... arg0) {
-
-			try {
-				URL url = new URL(getString(R.string.server)
-						+ getString(R.string.my_application_list));
-				HttpURLConnection conn = (HttpURLConnection) url
-						.openConnection();
-				conn.setRequestMethod("POST");
-				conn.setDoInput(true);
-				conn.setDoOutput(true);
-
-				// URL에 파리미터 넘기기
-				OutputStreamWriter out = new OutputStreamWriter(
-						conn.getOutputStream(), "euc-kr");
-				out.write(param);
-				out.flush();
-				out.close();
-
-				// URL 결과 가져오기
-				String buffer = null;
-				BufferedReader in = new BufferedReader(new InputStreamReader(
-						conn.getInputStream(), "euc-kr"));
-				while ((buffer = in.readLine()) != null) {
-					jsonString += buffer;
-				}
-				in.close();
-
-				Log.i("FM", "GetMyApplicationList result : " + jsonString);
-
-			} catch (MalformedURLException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
+			myApplicationList.clear();
+			for (int i = 0; i < jsonArr.length(); i++) {
+				item = jsonArr.getJSONObject(i);
+				myApplicationList.add(new ApplicationItem(item));
 			}
-
-			return null;
-		}
-
-		public void onPostExecute(Boolean isSuccess) {
-			try {
-				JSONObject jsonObj = new JSONObject(jsonString);
-				JSONArray jsonArr = jsonObj.getJSONArray("list");
-
-				JSONObject item;
-
-				myApplicationList.clear();
-				for (int i = 0; i < jsonArr.length(); i++) {
-					item = jsonArr.getJSONObject(i);
-					myApplicationList.add(new ApplicationItem(item));
-				}
-			} catch (JSONException e) {
-				myApplicationList.clear();
-				e.printStackTrace();
-			} finally {
-
-				malAdapter.notifyDataSetChanged();
-				count.setText("총 " + myApplicationList.size() + "개");
-
-				// 프로그레스 다이얼로그 종료
-				pd.dismiss();
-			}
+		} catch (JSONException e) {
+			myApplicationList.clear();
+			Log.e("getMyApplicationList", e.getMessage());
+		} finally {
+			malAdapter.notifyDataSetChanged();
+			count.setText("총 " + myApplicationList.size() + "개");
 		}
 	}
 }

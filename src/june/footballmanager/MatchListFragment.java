@@ -1,13 +1,5 @@
 package june.footballmanager;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
-import java.net.URL;
 import java.util.ArrayList;
 
 import org.json.JSONArray;
@@ -15,11 +7,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -121,8 +111,9 @@ public class MatchListFragment extends Fragment implements OnItemClickListener, 
 		
 		// 리스트가 비어있으면 서버로부터 리스트를 가져온다.
 		if (matchList.size() == 0) {
-			GetMatchList gml = new GetMatchList();
-			gml.execute(new Integer[] { 0 });
+			//GetMatchList gml = new GetMatchList();
+			//gml.execute(new Integer[] { 0 });
+			getMatchList(0);
 		} else
 			// 리스트가 이미 차있으면 개수만 새로 출력한다.
 			listCountUpdate();
@@ -134,8 +125,7 @@ public class MatchListFragment extends Fragment implements OnItemClickListener, 
 		case MATCH_CONDITION:
 			// 검색 조건 설정 후에는 조건에 맞게 다시 가져온다.
 			if (resultCode == Activity.RESULT_OK) {
-				GetMatchList gml = new GetMatchList();
-				gml.execute(new Integer[] { 0 });
+				getMatchList(0);
 			}
 		}
 	}
@@ -175,8 +165,7 @@ public class MatchListFragment extends Fragment implements OnItemClickListener, 
 			startActivityForResult(intent, MATCH_CONDITION);
 		} else if (itemId == R.id.refresh) {
 			// load match list
-		 	GetMatchList gml = new GetMatchList();
-			gml.execute( new Integer[]{0} );
+		 	getMatchList(0);
 		}	    
 	    return true;
 	}
@@ -294,132 +283,61 @@ public class MatchListFragment extends Fragment implements OnItemClickListener, 
 		}
 	}
 	
-	private class GetMatchList extends AsyncTask<Integer, Void, Boolean> {
-		
-		String jsonString = "";
-		
-		JSONArray jsonArr;
-		
-		// 저장된 검색 조건 가져오기
-		SharedPreferences prefCondition;
-		
-		// 검색 조건을 저장할 파라미터 문자열
-		String param = "";
-		
-		ProgressDialog pd;
+	// 서버로부터 매치 리스트를 가져오는 메서드
+	private void getMatchList(int startIdx) {
 		
 		boolean isInitial = false;
+		// 시작 인덱스가 0 이면 리스트를 최초로 출력하는 것 이므로 isInitial 플래그를 true로 설정해준다.
+		if( startIdx == 0) isInitial = true;
 		
-		@Override
-		public void onPreExecute() {
-			
-			// 대기창 출력
-			pd = new ProgressDialog(getActivity());
-			pd.setMessage("리스트를 불러오는 중입니다...");
-			pd.show();
-			
-			// 시간대 배열
-			String[] startTimes = getResources().getStringArray(R.array.start_time);
-			String[] endTimes = getResources().getStringArray(R.array.end_time);
-			
-			// 검색 조건 프리퍼런스 열기
-			prefCondition = getActivity().getSharedPreferences("matchConditions", Context.MODE_PRIVATE);
-			
-			// 검색 조건 파리미터 구성
-			param += "location=" + prefCondition.getString("location", "전국");
-			param += "&startTime=" + startTimes[prefCondition.getInt("time", 0)];
-			param += "&endTime=" + endTimes[prefCondition.getInt("time", 0)];
-			for( int i = 0; i < 7; i++ )
-				param += "&day" + i + "=" + prefCondition.getBoolean("day" + i, true);
-			for( int i = 0; i < 6; i++ )
-				param += "&age" + i + "=" + prefCondition.getBoolean("age" + i, true);
-			
-			Log.i("param", param);
-		}
-
-		@Override
-		protected Boolean doInBackground(Integer... params) {
+		String url = getString(R.string.server) + getString(R.string.match_list);
 		
-			Boolean isSuccess = false;
-			
-			try {
-				URL url = new URL(getString(R.string.server) + getString(R.string.match_list));
-				HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-				conn.setRequestMethod("POST");
-				conn.setDoInput(true);
-				conn.setDoOutput(true);
-				
-				// 가져올 레코드의 시작 인덱스를 파라미터에 추가해준다.
-				param += "&startIdx=" + params[0];
-				
-				// 시작 인덱스가 0 이면 리스트를 최초로 출력하는 것 이므로 isInitial 플래그를 true로 설정해준다.
-				if( params[0] == 0) isInitial = true;
-				
-				// URL에 파리미터 넘겨주기
-				OutputStreamWriter out = new OutputStreamWriter( conn.getOutputStream(), "euc-kr" );
-				out.write(param);
-				out.flush();
-				out.close();
-				
-				// 웹페이지 결과 가져오기
-				String buffer = null;
-				BufferedReader in = new BufferedReader(new InputStreamReader(
-						conn.getInputStream(), "euc-kr"));
-				while ((buffer = in.readLine()) != null) {
-					jsonString += buffer;
-				}
-				in.close();
-				
-				Log.i("FM", "GetMatchList result : " + jsonString);
-				
-			} catch (ProtocolException e) {
-				Log.e("FM", "GetMatchList : " + e.getMessage());
-			} catch (MalformedURLException e) {
-				Log.e("FM", "GetMatchList : " + e.getMessage());
-			} catch (IOException e) {
-				Log.e("FM", "GetMatchList : " + e.getMessage());
-			}
-
-			return isSuccess;
-		}
+		// 저장된 검색 조건 가져오기
+		SharedPreferences prefCondition = getActivity().getSharedPreferences("matchConditions", Context.MODE_PRIVATE);
 		
-		public void onPostExecute(Boolean isSuccess) {
-			
-			JSONObject jsonObj;
-			
-			try {
-
-				jsonObj = new JSONObject(jsonString);
+		// 시간대 배열
+		String[] startTimes = getResources().getStringArray(R.array.start_time);
+		String[] endTimes = getResources().getStringArray(R.array.end_time);
+		
+		// 검색 조건 파리미터 구성
+		String param = "location=" + prefCondition.getString("location", "전국");
+		param += "&startTime=" + startTimes[prefCondition.getInt("time", 0)];
+		param += "&endTime=" + endTimes[prefCondition.getInt("time", 0)];
+		for( int i = 0; i < 7; i++ )
+			param += "&day" + i + "=" + prefCondition.getBoolean("day" + i, true);
+		for( int i = 0; i < 6; i++ )
+			param += "&age" + i + "=" + prefCondition.getBoolean("age" + i, true);
+		param += "&startIdx=" + startIdx;
+		
+		
+		// 서버 연결
+		JSONObject json = new HttpTask(url, param).getJSONObject();
+		JSONArray jsonArr = null;
+		
+		try {
+			// check the success of getting information
+			if (json.getInt("success") == 1) {
 				
 				// 리스트가 처음부터 출력되는 경우 기존의 리스트를 clear 한다.
-				if(isInitial)
-					matchList.clear();
+				if(isInitial) matchList.clear();
+
+				jsonArr = json.getJSONArray("list");
+
+				JSONObject jo;
 				
-				// check the success of getting information
-				if (jsonObj.getInt("success") == 1) {
-					isSuccess = true;
-
-					jsonArr = jsonObj.getJSONArray("list");
-
-					JSONObject jo;
-					
-					// 추가로 가져온 레코드를 리스트에 추가한다.
-					for (int i = 0; i < jsonArr.length(); i++) {
-						jo = jsonArr.getJSONObject(i);
-						matchList.add(new MatchItem(jo));
-					}
-				} 
-			} catch (JSONException e) {
-				//matchList.clear();
-			} finally {
-				mlAdapter.notifyDataSetChanged();
-				listCountUpdate();
-
-				pd.dismiss();
-			}
-		}		
+				// 추가로 가져온 레코드를 리스트에 추가한다.
+				for (int i = 0; i < jsonArr.length(); i++) {
+					jo = jsonArr.getJSONObject(i);
+					matchList.add(new MatchItem(jo));
+				}
+			} 
+		} catch (JSONException e) {
+			//matchList.clear();
+		} finally {
+			mlAdapter.notifyDataSetChanged();
+			listCountUpdate();
+		}
 	}
-	
 	
 	// 리스트뷰 스크롤 이벤트 관련 콜백 메서드와 플래그
 	boolean isEndOfList = false;
@@ -449,7 +367,8 @@ public class MatchListFragment extends Fragment implements OnItemClickListener, 
 		if( scrollState == SCROLL_STATE_IDLE && isEndOfList ) {
 			
 			// 서버로부터 다음 리스트를 가져온다.
-			new GetMatchList().execute( new Integer[]{ totalCount -1 } );
+			//new GetMatchList().execute( new Integer[]{ totalCount -1 } );
+			getMatchList(totalCount - 1);
 		}
 	}
 }

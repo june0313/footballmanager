@@ -1,27 +1,18 @@
 package june.footballmanager;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.os.AsyncTask;
-import android.os.Bundle;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -30,7 +21,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -79,8 +69,8 @@ public class AppliedTeamActivity extends Activity {
 		list.setAdapter(atlAdapter);
 		// list.setOnItemClickListener(this);
 		
-		// DB로부터 신청한 팀 정보 가져오기
-		new GetAppliedTeam().execute();
+		// 서버로부터 신청한 팀의 리스트르 가져온다.
+		getAppliedTeamList();
 	}
 
 	@Override
@@ -179,7 +169,8 @@ public class AppliedTeamActivity extends Activity {
 						public void onClick(DialogInterface dialog, int which) {
 							memberNo = getItem(pos).getMemberNo();
 							
-							new AcceptOpposingTeam().execute();
+							// 신청을 수락한다.
+							acceptOpposingTeam();
 						}
 					})
 					.setNegativeButton("아니오", null);
@@ -193,173 +184,67 @@ public class AppliedTeamActivity extends Activity {
 		
 	}
 	
-	private class GetAppliedTeam extends AsyncTask<Void, Void, Void> {
+	// 서버로부터 신청한 팀 리스트를 가져오는 메서드
+	private void getAppliedTeamList() {
+		// 연결할 페이지의 URL
+		String url = getString(R.string.server) + getString(R.string.applied_team);
 		
-		// 서버로 전달할 파라미터(매치 번호)
-		String param = "";
+		// 파라미터 구성
+		String param = "matchNo=" + matchNo;
 		
-		// URL로부터 가져온 json 형식의 string
-		String jsonString = "";
+		// 서버 연결
+		JSONObject json = new HttpTask(url, param).getJSONObject();
+		JSONArray jsonArr = null;
 		
-		ProgressDialog pd;
-		
-		@Override
-		public void onPreExecute() {
-			param = "matchNo=" + matchNo;
-			Log.i("param", param);
+		try {
+			jsonArr = json.getJSONArray("list");
 			
-			// 프로그래스 다이얼로그 출력
-			pd = new ProgressDialog(AppliedTeamActivity.this);
-			pd.setMessage("팀 리스트를 가져오는 중입니다...");
-			pd.show();
-		}
-
-		@Override
-		protected Void doInBackground(Void... params) {
+			JSONObject item;
+			appliedTeamList.clear();
 			
-			try {
-				URL url = new URL(getString(R.string.server) + getString(R.string.applied_team));
-				HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-				conn.setRequestMethod("POST");
-				conn.setDoInput(true);
-				conn.setDoOutput(true);
-				
-				// URL에 파리미터 넘기기
-				OutputStreamWriter out = new OutputStreamWriter( conn.getOutputStream(), "euc-kr" );
-				out.write(param);
-				out.flush();
-				out.close();
-				
-				// URL 결과 가져오기
-				String buffer = null;
-				BufferedReader in = new BufferedReader( new InputStreamReader( conn.getInputStream(), "euc-kr" ));
-				while( ( buffer = in.readLine() ) != null ) {
-					jsonString += buffer;
-				}
-				in.close();
-				
-				Log.i( "AppliedTeam", jsonString );
-				
-				
-			} catch (MalformedURLException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
+			for( int i = 0; i < jsonArr.length(); i++ ) {
+				item = jsonArr.getJSONObject(i);
+				appliedTeamList.add( new TeamItem(
+						item.getInt("MEMBER_NO"),
+						item.getString("TEAM_NAME"),
+						item.getString("AGES"),
+						item.getInt("NUM_OF_PLAYERS"),
+						item.getString("LOCATION"),
+						null,
+						item.getString("PHONE"),
+						item.getString("MSG")
+						) 
+				);
 			}
-			
-			return null;
-		}
-		
-		public void onPostExecute(Void arg) {
-			
-			try {
-				JSONObject jsonObj = new JSONObject(jsonString);
-				JSONArray jsonArr = jsonObj.getJSONArray("list");
-				
-				JSONObject item;
-				appliedTeamList.clear();
-				
-				for( int i = 0; i < jsonArr.length(); i++ ) {
-					item = jsonArr.getJSONObject(i);
-					appliedTeamList.add( new TeamItem(
-							item.getInt("MEMBER_NO"),
-							item.getString("TEAM_NAME"),
-							item.getString("AGES"),
-							item.getInt("NUM_OF_PLAYERS"),
-							item.getString("LOCATION"),
-							null,
-							item.getString("PHONE"),
-							item.getString("MSG")
-							) 
-					);
-				}
-				
-			} catch (JSONException e) {
-				
-				appliedTeamList.clear();
-				e.printStackTrace();
-			} finally {
-				atlAdapter.notifyDataSetChanged();
-				pd.dismiss();
-			}
-			
+		} catch (JSONException e) {
+			appliedTeamList.clear();
+			Log.e("getAppliedTeamList", e.getMessage());
+		} finally {
+			atlAdapter.notifyDataSetChanged();
 		}
 	}
 	
-	// 매치 수락
-	private class AcceptOpposingTeam extends AsyncTask<Void, Void, Void> {
-		// 파리미터 정보(매치번호 + 팀번호)
-		String param = "";
+	// 신청을 수락하는 메서드
+	private void acceptOpposingTeam() {
+		// 연결할 페이지의 URL
+		String url = getString(R.string.server) + getString(R.string.accept_opposing_team);
 		
-		// 결과를 담기 위한 문자열
-		String jsonString = "";
+		// 파라미터 구성
+		String param = "matchNo=" + matchNo;
+		param +="&memberNo=" + memberNo; 
 		
-		ProgressDialog pd;
+		// 서버 연결
+		JSONObject json = new HttpTask(url, param).getJSONObject();
 		
-		@Override
-		public void onPreExecute() {
-			param += "matchNo=" + matchNo;
-			param +="&memberNo=" + memberNo; 
-			Log.i("param", param);
-			
-			pd = new ProgressDialog(AppliedTeamActivity.this);
-			pd.setMessage("상대팀의 신청을 수락하는 중입니다...");
-			pd.show();
-		}
-
-		@Override
-		protected Void doInBackground(Void... arg0) {
-			try {
-				URL url = new URL(getString(R.string.server) + getString(R.string.accept_opposing_team));
-				HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-				conn.setRequestMethod("POST");
-				conn.setDoInput(true);
-				conn.setDoOutput(true);
-				
-				// URL에 파리미터 넘기기
-				OutputStreamWriter out = new OutputStreamWriter( conn.getOutputStream(), "euc-kr" );
-				out.write(param);
-				out.flush();
-				out.close();
-				
-				// URL 결과 가져오기
-				String buffer = null;
-				BufferedReader in = new BufferedReader( new InputStreamReader( conn.getInputStream(), "euc-kr" ));
-				while( ( buffer = in.readLine() ) != null ) {
-					jsonString += buffer;
-				}
-				in.close();
-				
-				Log.i( "AcceptOpposingTeam", jsonString );
-				
-				
-			} catch (MalformedURLException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
+		try {
+			if( json.getInt("success") == 1 ) {
+				Toast.makeText(AppliedTeamActivity.this, "매치가 성사되었습니다!", 0).show();
+				finish();
 			}
-			
-			return null;
-		}
-		
-		@Override
-		public void onPostExecute(Void arg) {
-			try {
-				JSONObject jsonObj = new JSONObject(jsonString);
-				if( jsonObj.getInt("success") == 1 ) {
-					Toast.makeText(AppliedTeamActivity.this, "매치가 성사되었습니다!", 0).show();
-					finish();
-				}
-
-				else
-					Toast.makeText(AppliedTeamActivity.this, "fail!", 0).show();
-					
-			} catch (JSONException e) {
-				e.printStackTrace();
-			} finally {
-				pd.dismiss();
-			}
-			
+			else
+				Toast.makeText(AppliedTeamActivity.this, "신청 수락을 실패하였습니다.", 0).show();
+		} catch (JSONException e) {
+			Log.e("acceptOpposingTeam", e.getMessage());
 		}
 	}
 }

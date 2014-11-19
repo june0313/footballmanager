@@ -1,24 +1,13 @@
 package june.footballmanager;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
-import java.net.URL;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -116,7 +105,7 @@ public class PlayerRegisterActivity extends Activity implements OnClickListener{
 				Toast.makeText(getApplicationContext(), "이메일 주소가 잘못되었습니다.", 0).show();
 			} else {
 				// 회원가입 실행
-				new AttemptPlayerRegistration().execute();
+				registerPlayerAccount();
 			}
 		} else if( id == R.id.p_position ) {
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -145,85 +134,40 @@ public class PlayerRegisterActivity extends Activity implements OnClickListener{
 		}
 	}
 	
-	public class AttemptPlayerRegistration extends AsyncTask<Void, Void, Void> {
-		String param = "";
-		String jsonString = "";
+	private void registerPlayerAccount() {
+		// 연결할 페이지의 URL
+		String url = getString(R.string.server)+ getString(R.string.regi_player);
 		
-		ProgressDialog pd;
+		// 파라미터 구성
+		String param = "email=" + email.getText().toString();
+		param += "&password=" + password.getText().toString();
+		param += "&nickname=" + nickname.getText().toString();
+		param += "&position=" + position.getText().toString();
+		param += "&age=" + age.getText().toString();
+		param += "&location=" + location.getText().toString();
+		param += "&phone=" + phone.getText().toString();
 		
-		@Override
-		public void onPreExecute() {
-			pd = new ProgressDialog(PlayerRegisterActivity.this);
-			pd.setMessage("잠시만 기다려 주세요.");
-			pd.show();
-			
-			param += "email=" + email.getText().toString();
-			param += "&password=" + password.getText().toString();
-			param += "&nickname=" + nickname.getText().toString();
-			param += "&position=" + position.getText().toString();
-			param += "&age=" + age.getText().toString();
-			param += "&location=" + location.getText().toString();
-			param += "&phone=" + phone.getText().toString();
-		}
-
-		@Override
-		protected Void doInBackground(Void... params) {
-			
-			try {
-				URL url = new URL(getString(R.string.server)+ getString(R.string.regi_player));
-				HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-				conn.setRequestMethod("POST");
-				conn.setDoInput(true);
-				conn.setDoOutput(true);
+		// 서버 연결
+		JSONObject json = new HttpTask(url, param).getJSONObject();
+		
+		// check the success of registration
+		try {
+			if (json.getInt("success") == 1) {
+				Toast.makeText(getApplicationContext(), "회원 가입이 완료되었습니다.", 0).show();
+				finish();
+			} else {
+				int errorcode = json.getInt("errorcode");
+				String errormsg = json.getString("errormsg");
 				
-				OutputStreamWriter out = new OutputStreamWriter( conn.getOutputStream(), "euc-kr" );
-				out.write(param);
-				out.flush();
-				out.close();
-				
-				String buffer = null;
-				BufferedReader in = new BufferedReader( new InputStreamReader( conn.getInputStream(), "euc-kr"));
-				while( (buffer = in.readLine()) != null ) {
-					jsonString += buffer;
-				}
-				in.close();	
-				
-			} catch (ProtocolException e) {
-				Log.e("FM", "AttemptPlayerRegistratioin : " + e.getMessage());
-			} catch (MalformedURLException e) {
-				Log.e("FM", "AttemptPlayerRegistratioin : " + e.getMessage());
-			} catch (IOException e) {
-				Log.e("FM", "AttemptPlayerRegistratioin : " + e.getMessage());
+				if (errorcode == 1062 && errormsg.contains("EMAIL"))
+					Toast.makeText(getApplicationContext(), "이미 가입된 이메일 주소입니다.", 0).show();
+				else if(errorcode == 1062 && errormsg.contains("NICKNAME")) 
+					Toast.makeText(getApplicationContext(), "중복되는 닉네임이 존재합니다.", 0).show();
+				else
+					Toast.makeText(getApplicationContext(), "회원가입에 실패하였습니다.", 0).show();
 			}
-			
-			return null;
-		}
-		
-		@Override
-		public void onPostExecute(Void result) {
-			pd.dismiss();
-			
-			try {
-				JSONObject jsonObj = new JSONObject(jsonString);
-
-				// check the success of registration
-				if (jsonObj.getInt("success") == 1) {
-					Toast.makeText(getApplicationContext(), "회원 가입이 완료되었습니다.", 0).show();
-					finish();
-				} else {
-					int errorcode = jsonObj.getInt("errorcode");
-					String errormsg = jsonObj.getString("errormsg");
-					
-					if (errorcode == 1062 && errormsg.contains("EMAIL"))
-						Toast.makeText(getApplicationContext(), "이미 가입된 이메일 주소입니다.", 0).show();
-					else if(errorcode == 1062 && errormsg.contains("NICKNAME")) 
-						Toast.makeText(getApplicationContext(), "중복되는 닉네임이 존재합니다.", 0).show();
-					else
-						Toast.makeText(getApplicationContext(), "회원가입에 실패하였습니다.", 0).show();
-				}
-			} catch (JSONException e) {
-				Log.e("FM", "AttemptPlayerRegistratioin : " + e.getMessage());
-			}
+		} catch (JSONException e) {
+			Log.e("registerPlayerAccount", e.getMessage());
 		}
 	}
 }

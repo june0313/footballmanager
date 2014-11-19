@@ -1,12 +1,6 @@
 package june.footballmanager;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -16,24 +10,15 @@ import java.util.Locale;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
-
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.location.Address;
 import android.location.Geocoder;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -45,6 +30,12 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 // 메치 상세 정보 페이지
 public class MatchDetailActivity extends Activity implements GoogleMap.OnMapClickListener {
@@ -87,9 +78,6 @@ public class MatchDetailActivity extends Activity implements GoogleMap.OnMapClic
 	
 	// 상대팀 이메일 정보
 	String opposingTeamEmail;
-	
-	// 매치 신청 메시지
-	String applyMsg;
 	
 	// GCM 관리자 객체
 	GCMManager gm;
@@ -185,10 +173,8 @@ public class MatchDetailActivity extends Activity implements GoogleMap.OnMapClic
 	public void onStart() {
 		super.onStart();
 		
-		// 서버로부터 매치 정보 가져오기
-		GetMatchDetail gmd = new GetMatchDetail();
-		gmd.execute();
-		
+		// 서버로부터 매치 상세 정보를 가져와 출력한다.
+		printMatchDetail();
 	}
 	
 	@Override
@@ -232,17 +218,16 @@ public class MatchDetailActivity extends Activity implements GoogleMap.OnMapClic
 				
 				builder.setTitle("매치 신청");
 				// builder.setMessage("매치를 신청하시겠습니까?");
-				builder.setPositiveButton("신청",
-						new DialogInterface.OnClickListener() {
+				builder.setPositiveButton("신청", new DialogInterface.OnClickListener() {
 
 							@Override
 							public void onClick(DialogInterface dialog, int which) {
 								// 신청 메시지 저장
 								EditText edit = (EditText)layout.findViewById(R.id.apply_msg);
-								applyMsg = edit.getText().toString();
+								String applyMsg = edit.getText().toString();
 								
-								// 매치 신청
-								new ApplyMatch().execute();
+								// 매치 신청 작업 수행
+								applyMatch(applyMsg);
 							}
 						});
 				builder.setNegativeButton("취소", null);
@@ -289,205 +274,93 @@ public class MatchDetailActivity extends Activity implements GoogleMap.OnMapClic
 		return addresses;
 	}
 	
-	// DB로 부터 매치 정보를 가져와 출력한다.
-	public class GetMatchDetail extends AsyncTask<Void, Void, Boolean> {
-
-		String param = "matchNo=" + matchNo;
-		String jsonString = "";
-		JSONObject jsonObj;
+	// 웹 서버로 부터 매치 상세 정보를 가져와 각 뷰에 출력한다.
+	private void printMatchDetail() {
+		String url = getString(R.string.server) + getString(R.string.match_detail);
+		String parameter = "matchNo=" + matchNo;
+		JSONObject json = new HttpTask(url, parameter).getJSONObject();
 		
-		@Override
-		public void onPreExecute() {
-			pd = new ProgressDialog(MatchDetailActivity.this);
-			pd.setMessage("매치 정보를 불러오는 중입니다..");
-			pd.show();
-		}
-
-		@Override
-		protected Boolean doInBackground(Void... params) {
-
-			Boolean isSuccess = false;
-
-			try {
-				URL url = new URL(getString(R.string.server)
-						+ getString(R.string.match_detail));
-				HttpURLConnection conn = (HttpURLConnection) url
-						.openConnection();
-				conn.setRequestMethod("POST");
-				conn.setDoInput(true);
-				conn.setDoOutput(true);
-
-				OutputStreamWriter out = new OutputStreamWriter(
-						conn.getOutputStream(), "euc-kr");
-				out.write(param);
-				out.flush();
-				out.close();
-
-				String buffer = null;
-				BufferedReader in = new BufferedReader(new InputStreamReader(
-						conn.getInputStream(), "euc-kr"));
-				while ((buffer = in.readLine()) != null) {
-					jsonString += buffer;
-				}
-				in.close();
-
-				jsonObj = new JSONObject(jsonString);
-				Log.i("FM", "GetMatchDetail result : " + jsonString);
-
-				// check the success of getting information
-				if (jsonObj.getInt("success") == 1) {
-					isSuccess = true;
-				}
-
-			} catch (MalformedURLException e) {
-				Log.e("FM", "GetMatchDetail : " + e.getMessage());
-			} catch (IOException e) {
-				Log.e("FM", "GetMatchDetail : " + e.getMessage());
-			} catch (JSONException e) {
-				Log.e("FM", "GetMatchDetail : " + e.getMessage());
-			}
-
-			return isSuccess;
-		}
-
-		@Override
-		public void onPostExecute(Boolean isSuccess) {
-
-			if (isSuccess) {
+		try {
+			if(json.getInt("success") == 1) {
+				SimpleDateFormat originalFormat = new SimpleDateFormat("HH:mm:ss");
+				SimpleDateFormat newFormat = new SimpleDateFormat("a h:mm");
+				String session = null;
 				
-				try {
-					SimpleDateFormat originalFormat = new SimpleDateFormat("HH:mm:ss");
-					SimpleDateFormat newFormat = new SimpleDateFormat("a h:mm");
-					String session = null;
-					
-					Date d = originalFormat.parse(jsonObj.getString("MATCH_TIME"));
-					session = newFormat.format(d);
-					
-					d = originalFormat.parse(jsonObj.getString("MATCH_TIME2"));
-					session += " ~ " + newFormat.format(d);
-					
-					// 연락처 저장
-					phone = jsonObj.getString("PHONE");
-					
-					// 매치 정보를 뷰에 출력
-					teamName.setText(jsonObj.getString("TEAM_NAME"));
-					teamInfo.setText(jsonObj.getString("TEAM_LOCATION") + " / " + jsonObj.getString("NUM_OF_PLAYERS") + "명 / " + jsonObj.getString("AGES") );
-					date.setText(jsonObj.getString("MATCH_DATE"));
-					time.setText(session);
-					location.setText(jsonObj.getString("MATCH_LOCATION"));
-					ground.setText(jsonObj.getString("GROUND"));
-					detail.setText(jsonObj.getString("DETAIL").replace("__", "\n"));
-					
-					// 매치 상태 저장
-					matchState = jsonObj.getInt("STATE");
-					
-					// 매치 상태별 출력
-					if(matchState == 1)
-						state.setText("매치가 성사되었습니다.");
-					
-					// 상대팀 Email 정보 저장
-					opposingTeamEmail = jsonObj.getString("EMAIL");
-					
-					// 매치를 등록한 팀 번호 저장
-					memberNo = jsonObj.getInt("MEMBER_NO");
-					
-					// 매치를 등록한 팀의 GCM Registration ID 저장
-					regid = jsonObj.getString("REGID");
-					
-					// 지도에 출력할 좌표 생성
-				    List<Address> addrs = GetLocationPoint( location.getText().toString() );
-				    if( addrs.size() == 0 ) 
-				    	point = new LatLng( 35, 128 );
-				    else
-				    	point = new LatLng( addrs.get(0).getLatitude(), addrs.get(0).getLongitude() );
-				    
-				    // 좌표를 지도에 출력
-				    map.moveCamera(CameraUpdateFactory.newLatLngZoom(point, 15));
-				    map.addMarker(new MarkerOptions().position(point));
-				    
-					
-				} catch (JSONException e) {
-					Log.e("FM", "GetMatchDetail : " + e.getMessage());
-				} catch (ParseException e) {
-					Log.e("FM", "GetMatchDetail : " + e.getMessage());
-				}
+				Date d = originalFormat.parse(json.getString("MATCH_TIME"));
+				session = newFormat.format(d);
+				
+				d = originalFormat.parse(json.getString("MATCH_TIME2"));
+				session += " ~ " + newFormat.format(d);
+				
+				// 연락처 저장
+				phone = json.getString("PHONE");
+				
+				// 매치 정보를 뷰에 출력
+				teamName.setText(json.getString("TEAM_NAME"));
+				teamInfo.setText(json.getString("TEAM_LOCATION") + " / " + json.getString("NUM_OF_PLAYERS") + "명 / " + json.getString("AGES") );
+				date.setText(json.getString("MATCH_DATE"));
+				time.setText(session);
+				location.setText(json.getString("MATCH_LOCATION"));
+				ground.setText(json.getString("GROUND"));
+				detail.setText(json.getString("DETAIL").replace("__", "\n"));
+				
+				// 매치 상태 저장
+				matchState = json.getInt("STATE");
+				
+				// 매치 상태별 출력
+				if(matchState == 1)
+					state.setText("매치가 성사되었습니다.");
+				
+				// 상대팀 Email 정보 저장
+				opposingTeamEmail = json.getString("EMAIL");
+				
+				// 매치를 등록한 팀 번호 저장
+				memberNo = json.getInt("MEMBER_NO");
+				
+				// 매치를 등록한 팀의 GCM Registration ID 저장
+				regid = json.getString("REGID");
+				
+				// 지도에 출력할 좌표 생성
+			    List<Address> addrs = GetLocationPoint( location.getText().toString() );
+			    if( addrs.size() == 0 ) 
+			    	point = new LatLng( 35, 128 );
+			    else
+			    	point = new LatLng( addrs.get(0).getLatitude(), addrs.get(0).getLongitude() );
+			    
+			    // 좌표를 지도에 출력
+			    map.moveCamera(CameraUpdateFactory.newLatLngZoom(point, 15));
+			    map.addMarker(new MarkerOptions().position(point));
 			}
-			
-			pd.dismiss();
+		} catch (JSONException e) {
+			Log.e("printMatchDetail", e.getMessage());
+		} catch (ParseException e) {
+			Log.e("printMatchDetail", e.getMessage());
 		}
 	}
 	
-	// 매치 신청 비동기 태스크
-	private class ApplyMatch extends AsyncTask<Void, Void, Void> {
-		String param;
+	// 매치 신청 작업을 수행하는 메서드
+	private void applyMatch(String msg) {
+		String url = getString(R.string.server) + getString(R.string.apply_match);
+		String parameter = "matchNo=" + matchNo;
+		parameter += "&memberNo=" + lm.getMemberNo();
+		parameter += "&applyMsg=" + msg;
 		
-		// 초기화 작업을 해주지 않으면 문자열 앞에 null이 들어가서 Object 변환시 예외가 발생한다.
-		String jsonString = "";
-
-		@Override
-		protected void onPreExecute() {
-			pd.setMessage("잠시만 기다려 주세요...");
-			pd.show();
+		JSONObject json = new HttpTask(url, parameter).getJSONObject();
+		
+		try {
+			int success = json.getInt("success");
 			
-			param = "matchNo=" + matchNo;
-			param += "&memberNo=" + lm.getMemberNo();
-			param += "&applyMsg=" + applyMsg;
-		}
-
-		@Override
-		protected Void doInBackground(Void... arg0) {
-			try {
-				// URL 연결 생성
-				URL url = new URL(getString(R.string.server) + getString(R.string.apply_match));
-				HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-				conn.setRequestMethod("POST");
-				conn.setDoInput(true);
-				conn.setDoOutput(true);
-				
-				// 파리미터 전송
-				OutputStreamWriter out = new OutputStreamWriter(conn.getOutputStream(), "euc-kr");
-				out.write(param);
-				out.flush();
-				out.close();
-				
-				// JSON 결과 가져오기
-				String buffer = null;
-				BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream(), "euc-kr"));
-				while ((buffer = in.readLine()) != null) {
-					jsonString += buffer;
-				}
-				in.close();
-				
-				Log.i("result", jsonString);
-				
-			} catch (MalformedURLException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}  
-			return null;
-		}
-
-		@Override
-		protected void onPostExecute(Void arg0) {
-			pd.dismiss();
-			
-			try {
-				JSONObject jsonObj = new JSONObject(jsonString);
-				int success = jsonObj.getInt("success");
-				
-				if( success == 0 ) {
-					Toast.makeText(getApplicationContext(), "매치 신청에 실패하였습니다", 0).show();
-				} else if ( success == 1 ) {
-					Toast.makeText(getApplicationContext(), "매치를 신청하였습니다", 0).show();
-					// GCM 메시지 전송
-					gm.sendMessage(regid, lm.getTeamName(), matchNo);
-				} else {
-					Toast.makeText(getApplicationContext(), "이미 신청한 매치입니다", 0).show();
-				}
-			} catch (JSONException e) {
-				e.printStackTrace();
+			if( success == 0 ) {
+				Toast.makeText(getApplicationContext(), "매치 신청에 실패하였습니다", 0).show();
+			} else if ( success == 1 ) {
+				Toast.makeText(getApplicationContext(), "매치를 신청하였습니다", 0).show();
+				// GCM 메시지 전송
+				gm.sendMessage(regid, lm.getTeamName(), matchNo);
+			} else {
+				Toast.makeText(getApplicationContext(), "이미 신청한 매치입니다", 0).show();
 			}
+		} catch (JSONException e) {
+			Log.e("applyMatch", e.getMessage());
 		}
 	}
 }

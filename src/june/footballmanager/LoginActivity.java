@@ -1,13 +1,5 @@
 package june.footballmanager;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -15,7 +7,6 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -29,8 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class LoginActivity extends Activity implements OnClickListener {
-	
-	ProgressDialog pd;
+
 	RadioGroup memberGroup ;
 	protected EditText email;
 	protected EditText password;
@@ -79,10 +69,13 @@ public class LoginActivity extends Activity implements OnClickListener {
 			}
 			else {
 				// 위의 모든 조건을 만족하면 로그인 시도
-				//hideKeyboard();
-				//new Login().execute();
-				AttemptLogin al = new AttemptLogin();
-				al.execute();
+				ProgressDialog pd = new ProgressDialog(this);
+				pd.setMessage("로그인 중 입니다...");
+				pd.show();
+				
+				attemptLogin();
+				
+				pd.dismiss();
 			}
 		} else if (id == R.id.btn_player_register) {
 			startActivity( new Intent(LoginActivity.this, PlayerRegisterActivity.class));
@@ -106,100 +99,55 @@ public class LoginActivity extends Activity implements OnClickListener {
 		return false;
 	}
 	
-	// Login through AsyncTask
-	public class AttemptLogin extends AsyncTask<Void, Void, Boolean> {
+	private void attemptLogin() {
+		// 연결할 페이지의 URL
+		String url = getString(R.string.server)+ getString(R.string.login);
+		
+		// 파라미터 구성
 		RadioButton btnMemberType = (RadioButton)findViewById(memberGroup.getCheckedRadioButtonId());
 		String memberType = btnMemberType.getText().toString();
 		String email = LoginActivity.this.email.getText().toString();
 		String password = LoginActivity.this.password.getText().toString();
 		String param = "memberType=" + memberType + "&email=" + email + "&password=" + password;
 		
-		String jsonString = "";
-		JSONObject jsonObj;
+		// 서버 연결
+		JSONObject json = new HttpTask(url, param).getJSONObject();
 		
-		@Override
-		public void onPreExecute() {
-			pd = new ProgressDialog(LoginActivity.this);
-			pd.setMessage("잠시만 기다려 주세요.");
-			pd.show();
-		}
-
-		@Override
-		protected Boolean doInBackground(Void... arg0) {
-			
-			Boolean isLoginSuccess = false;
-			
-			try {
-				URL url = new URL(getString(R.string.server)+ getString(R.string.login));
-				HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-				conn.setRequestMethod("POST");
-				conn.setDoInput(true);
-				conn.setDoOutput(true);
+		// check the success of login
+		try {
+			if(json.getInt("success") == 1) {
 				
-				OutputStreamWriter out = new OutputStreamWriter( conn.getOutputStream(), "euc-kr" );
-				out.write(param);
-				out.flush();
-				out.close();
+				// 로그인한 계정 정보를 저장한다.
+				LoginManager lm = new LoginManager(LoginActivity.this);
+				lm.setLoginInfo(memberType, email, password);
 				
-				String buffer = null;
-				BufferedReader in = new BufferedReader( new InputStreamReader( conn.getInputStream(), "euc-kr" ));
-				while( (buffer = in.readLine()) != null ) {
-					jsonString += buffer;
-				}
-				in.close();
+				// 로그인한 회원의 번호를 저장한다.
+				lm.setMemberNo(json.getInt("MEMBER_NO"));
+				Log.i("MEMBER_NO", Integer.toString(lm.getMemberNo()));
 				
-				Log.i("FM", "Login result : " + jsonString);
+				// 각 회원 유형에 맞는 정보를 저장한다.
+				if( memberType.equals("팀회원"))
+					lm.setTeamInfo(json.getString("TEAM_NAME"), 
+							json.getString("LOCATION"), json.getString("HOME"), 
+							json.getInt("NUM_OF_PLAYERS"), json.getString("AGES"),
+							json.getString("PHONE"));
+				else
+					lm.setPlayerInfo(json.getString("POSITION"), 
+							json.getInt("AGE"), json.getString("NICKNAME"), 
+							json.getString("PHONE"), json.getString("LOCATION"));
 				
-				jsonObj = new JSONObject(jsonString);
-				
-				// check the success of login
-				if(jsonObj.getInt("success") == 1) {
-					isLoginSuccess = true;
-					
-					// 로그인한 계정 정보를 저장한다.
-					LoginManager lm = new LoginManager(LoginActivity.this);
-					lm.setLoginInfo(memberType, email, password);
-					
-					// 로그인한 회원의 번호를 저장한다.
-					lm.setMemberNo(jsonObj.getInt("MEMBER_NO"));
-					Log.i("MEMBER_NO", Integer.toString(lm.getMemberNo()));
-					
-					// 각 회원 유형에 맞는 정보를 저장한다.
-					if( memberType.equals("팀회원"))
-						lm.setTeamInfo(jsonObj.getString("TEAM_NAME"), 
-								jsonObj.getString("LOCATION"), jsonObj.getString("HOME"), 
-								jsonObj.getInt("NUM_OF_PLAYERS"), jsonObj.getString("AGES"),
-								jsonObj.getString("PHONE"));
-					else
-						lm.setPlayerInfo(jsonObj.getString("POSITION"), 
-								jsonObj.getInt("AGE"), jsonObj.getString("NICKNAME"), 
-								jsonObj.getString("PHONE"), jsonObj.getString("LOCATION"));
-				}
-			} catch (MalformedURLException e) {
-				Log.e("FM", "AttemptLogin : " + e.getMessage());
-			} catch (IOException e) {
-				Log.e("FM", "AttemptLogin : " + e.getMessage());
-			} catch (JSONException e) {
-				Log.e("FM", "AttemptLogin : " + e.getMessage());
-			}
-			
-			return isLoginSuccess;
-		}
-		
-		@Override
-		public void onPostExecute(Boolean isLoginSuccess) {
-			pd.dismiss();
-			
-			if( isLoginSuccess ) {
 				Toast.makeText(getApplicationContext(), "로그인 되었습니다.", 0).show();
 				
 				// memberId와 registration ID를 DB에 저장한다.
 				GCMManager gm = new GCMManager(LoginActivity.this);
 				gm.sendRegistrationIdToBackend();
+				
 				finish();
 			} else {
 				Toast.makeText(getApplicationContext(), "이메일 또는 비밀번호가 올바르지 않습니다.", 0).show();
 			}
-		}
+		} catch (JSONException e) {
+			Log.e("attemptLogin", e.getMessage());
+		}	
 	}
 }

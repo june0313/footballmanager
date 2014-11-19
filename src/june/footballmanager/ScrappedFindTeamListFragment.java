@@ -1,40 +1,26 @@
 package june.footballmanager;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class ScrappedFindTeamListFragment extends Fragment implements
 		OnItemClickListener {
@@ -92,8 +78,8 @@ public class ScrappedFindTeamListFragment extends Fragment implements
 	public void onResume() {
 		super.onResume();
 		
-		// DB -> 리스트뷰 출력
-		new GetFindTeamList().execute();
+		// 서버로부터 스크랩한 팀구함 리스트를 가져온다.
+		getFindTeamList();
 	}
 
 	@Override
@@ -217,89 +203,36 @@ public class ScrappedFindTeamListFragment extends Fragment implements
 			return convertView;
 		}
 	}
+	
+	// 서버로부터 스크랩한 팀구함 리스트를 가져오는 메서드
+	private void getFindTeamList() {
+		// 연결할 페이지의 URL
+		String url = getString(R.string.server) + getString(R.string.scrapped_find_team_list);
+		
+		// 파라미터 설정
+		String param = "nos=" + scrappedItems;
+		
+		// 서버 연결
+		JSONObject json = new HttpTask(url ,param).getJSONObject();
+		JSONArray jsonArr = null;
+		
+		try {
+			jsonArr = json.getJSONArray("list");
 
-	// 팀 리스트를 DB에서 가져온다.
-	private class GetFindTeamList extends AsyncTask<Void, Void, Boolean> {
-		String param = "";
+			JSONObject item;
 
-		// URL로부터 가져온 json 형식의 string
-		String jsonString = "";
-
-		ProgressDialog pd;
-
-		public void onPreExecute() {
-
-			// 프로그레스 다이얼로그 출력
-			pd = new ProgressDialog(getActivity());
-			pd.setMessage("리스트를 불러오는 중입니다...");
-			pd.show();
-
-			param += "nos=" + scrappedItems;
-			Log.i("param", param);
-		}
-
-		@Override
-		protected Boolean doInBackground(Void... arg0) {
-
-			try {
-				URL url = new URL(getString(R.string.server)
-						+ getString(R.string.scrapped_find_team_list));
-				HttpURLConnection conn = (HttpURLConnection) url
-						.openConnection();
-				conn.setRequestMethod("POST");
-				conn.setDoInput(true);
-				conn.setDoOutput(true);
-
-				// URL에 파리미터 넘기기
-				OutputStreamWriter out = new OutputStreamWriter(
-						conn.getOutputStream(), "euc-kr");
-				out.write(param);
-				out.flush();
-				out.close();
-
-				// URL 결과 가져오기
-				String buffer = null;
-				BufferedReader in = new BufferedReader(new InputStreamReader(
-						conn.getInputStream(), "euc-kr"));
-				while ((buffer = in.readLine()) != null) {
-					jsonString += buffer;
-				}
-				in.close();
-
-				Log.i("FM", "GetFindTeamList result : " + jsonString);
-
-			} catch (MalformedURLException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
+			findTeamList.clear();
+			for (int i = 0; i < jsonArr.length(); i++) {
+				item = jsonArr.getJSONObject(i);
+				findTeamList.add(new FindTeamItem(item));
 			}
-
-			return null;
-		}
-
-		public void onPostExecute(Boolean isSuccess) {
-			try {
-				JSONObject jsonObj = new JSONObject(jsonString);
-				JSONArray jsonArr = jsonObj.getJSONArray("list");
-
-				JSONObject item;
-
-				findTeamList.clear();
-				for (int i = 0; i < jsonArr.length(); i++) {
-					item = jsonArr.getJSONObject(i);
-					findTeamList.add(new FindTeamItem(item));
-				}
-			} catch (JSONException e) {
-				findTeamList.clear();
-				e.printStackTrace();
-			} finally {
-
-				tlAdapter.notifyDataSetChanged();
-				count.setText("총 " + findTeamList.size() + "개");
-
-				// 프로그레스 다이얼로그 종료
-				pd.dismiss();
-			}
-		}
+			
+		} catch (JSONException e) {
+			findTeamList.clear();
+			Log.i("getFindTeamList", e.getMessage());
+		} finally {
+			tlAdapter.notifyDataSetChanged();
+			count.setText("총 " + findTeamList.size() + "개");
+		}	
 	}
 }

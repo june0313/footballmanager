@@ -49,9 +49,6 @@ public class SetMatchConditionActivity extends Activity implements OnClickListen
 	// 시간대 배열
 	String[] arrTimes;
 	
-	// 설정된 지역 정보를 임시로 저장하는 문자열
-	String tmpLocation;
-	
 	// 시간 설정 정보를 임시로 저장하는 정수
 	int selectedTime;
 	
@@ -229,7 +226,7 @@ public class SetMatchConditionActivity extends Activity implements OnClickListen
 			builder.create().show();		
 		} else if ( id == R.id.complete ) {	// "설정 완료" 버튼 클릭
 			// 임시로 설정된 지역정보를 프리퍼런스에 저장한다.
-			prefConditionEditor.putString("location", tmpLocation);
+			prefConditionEditor.putString("location", txtLocation.getText().toString());
 			prefConditionEditor.commit();
 			
 			// 임시로 설정된 시간 정보를 프리퍼런스에 저장한다.
@@ -264,8 +261,7 @@ public class SetMatchConditionActivity extends Activity implements OnClickListen
 		case LOCATION:
 			if (resultCode == RESULT_OK) {
 				// 받아온 지역정보를 출력한다.
-				tmpLocation = intent.getStringExtra("location");
-				txtLocation.setText(tmpLocation);
+				txtLocation.setText(intent.getStringExtra("location"));
 			}
 		}
 	}

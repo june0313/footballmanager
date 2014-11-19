@@ -1,12 +1,5 @@
 package june.footballmanager;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -23,7 +16,6 @@ import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -171,9 +163,8 @@ public class AddMatchActivity extends Activity implements OnClickListener {
 				Toast.makeText(getApplicationContext(), "경기장을 설정해주세요.", 0).show();
 			} else {
 				
-				// 모든 조건을 만족하면 매치 등록
-				AddMatch am = new AddMatch();
-				am.execute();
+				// 모든 조건을 만족하면 매치 등록 작업 수행
+				addMatch();
 			}
 		}
 	}
@@ -189,8 +180,9 @@ public class AddMatchActivity extends Activity implements OnClickListener {
 		}
 	}
 	
-	// 매치 등록 쓰레드
-	public class AddMatch extends AsyncTask<Void, Void, Boolean> {
+	// 웹서버로 매치를 등록하는 메서드
+	private void addMatch() {
+		String url = getString(R.string.server)	+ getString(R.string.add_match);
 		String param = "email=" + lm.getEmail()
 				+ "&match_date=" + matchDate
 				+ "&match_time1=" + matchTime1
@@ -199,73 +191,17 @@ public class AddMatchActivity extends Activity implements OnClickListener {
 				+ "&ground=" + ground.getText().toString()
 				+ "&detail=" + tvDetail.getText().toString().replace("\n", "__");
 		
-		String jsonString = "";
-		JSONObject jsonObj;
+		JSONObject json = new HttpTask(url, param).getJSONObject();
 		
-		@Override
-		public void onPreExecute() {
-			pd = new ProgressDialog(AddMatchActivity.this);
-			pd.setMessage("잠시만 기다려 주세요.");
-			pd.show();
-		}
-
-		@Override
-		protected Boolean doInBackground(Void... arg0) {
-			Boolean isSuccess = false;
-			
-			try {
-				URL url = new URL(getString(R.string.server)
-						+ getString(R.string.add_match));
-				HttpURLConnection conn = (HttpURLConnection) url
-						.openConnection();
-				conn.setRequestMethod("POST");
-				conn.setDoInput(true);
-				conn.setDoOutput(true);
-
-				OutputStreamWriter out = new OutputStreamWriter(
-						conn.getOutputStream(), "euc-kr");
-				out.write(param);
-				out.flush();
-				out.close();
-
-				String buffer = null;
-				BufferedReader in = new BufferedReader(new InputStreamReader(
-						conn.getInputStream(), "euc-kr"));
-				while ((buffer = in.readLine()) != null) {
-					jsonString += buffer;
-				}
-				in.close();
-				
-				Log.i("FM", "AddMatch result : " + jsonString);
-
-				jsonObj = new JSONObject(jsonString);
-
-				// check the success of getting information
-				if (jsonObj.getInt("success") == 1) {
-					isSuccess = true;
-				}
-
-			} catch (MalformedURLException e) {
-				Log.e("FM", "AddMatch : " + e.getMessage());
-			} catch (IOException e) {
-				Log.e("FM", "AddMatch : " + e.getMessage());
-			} catch (JSONException e) {
-				Log.e("FM", "AddMatch : " + e.getMessage());
-			}
-			
-			return isSuccess;
-		}
-		
-		@Override
-		public void onPostExecute(Boolean isSuccess) {
-			pd.dismiss();
-			
-			if(isSuccess) {
+		// check the success of getting information
+		try {
+			if (json.getInt("success") == 1) {
 				Toast.makeText(getApplicationContext(), "매치가 등록되었습니다.", 0).show();
 				finish();
 			}
+		} catch (JSONException e) {
+			Log.e("addMatch", e.getMessage());
 		}
-		
 	}
 	
 	@Override

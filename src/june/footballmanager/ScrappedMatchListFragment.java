@@ -1,29 +1,20 @@
 package june.footballmanager;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
@@ -83,7 +74,7 @@ public class ScrappedMatchListFragment extends Fragment implements OnItemClickLi
 	@Override
 	public void onResume() {
 		super.onResume();
-		new GetScrappedMatchList().execute();
+		getScrappedMatchList();
 	}
 	
 	@Override
@@ -213,89 +204,34 @@ public class ScrappedMatchListFragment extends Fragment implements OnItemClickLi
 		}
 	}
 	
-	// 신청한 매치 리스트를 DB에서 가져온다.
-	private class GetScrappedMatchList extends AsyncTask<Void, Void, Boolean> {
+	// 서버로부터 스크랩한 매치 리스트를 가져오는 메서드
+	private void getScrappedMatchList() {
+		// 연결할 페이지의 URL
+		String url = getString(R.string.server) + getString(R.string.scrapped_match_list);
+		
+		// 파라미터 구성
+		String param = "matchNos=" + scrappedItems;
+		
+		// 서버 연결
+		JSONObject json = new HttpTask(url, param).getJSONObject();
+		JSONArray jsonArr = null;
+		
+		try {
+			jsonArr = json.getJSONArray("list");
 
-		// 서버로 전달할 파라미터(팀의 email정보)
-		String param = "";
+			JSONObject item;
 
-		// URL로부터 가져온 json 형식의 string
-		String jsonString = "";
-
-		ProgressDialog pd;
-
-		public void onPreExecute() {
-			param += "matchNos=" + scrappedItems;
-			Log.i("param", param);
-
-			// 프로그레스 다이얼로그 출력
-			pd = new ProgressDialog(getActivity());
-			pd.setMessage("리스트를 불러오는 중입니다...");
-			pd.show();
-		}
-
-		@Override
-		protected Boolean doInBackground(Void... arg0) {
-
-			try {
-				URL url = new URL(getString(R.string.server)
-						+ getString(R.string.scrapped_match_list));
-				HttpURLConnection conn = (HttpURLConnection) url
-						.openConnection();
-				conn.setRequestMethod("POST");
-				conn.setDoInput(true);
-				conn.setDoOutput(true);
-
-				// URL에 파리미터 넘기기
-				OutputStreamWriter out = new OutputStreamWriter(
-						conn.getOutputStream(), "euc-kr");
-				out.write(param);
-				out.flush();
-				out.close();
-
-				// URL 결과 가져오기
-				String buffer = null;
-				BufferedReader in = new BufferedReader(new InputStreamReader(
-						conn.getInputStream(), "euc-kr"));
-				while ((buffer = in.readLine()) != null) {
-					jsonString += buffer;
-				}
-				in.close();
-
-				Log.i("FM", "GetScrapList result : " + jsonString);
-
-			} catch (MalformedURLException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
+			scrappedMatchList.clear();
+			for (int i = 0; i < jsonArr.length(); i++) {
+				item = jsonArr.getJSONObject(i);
+				scrappedMatchList.add(new MatchItem(item));
 			}
-
-			return null;
-		}
-
-		public void onPostExecute(Boolean isSuccess) {
-			try {
-				JSONObject jsonObj = new JSONObject(jsonString);
-				JSONArray jsonArr = jsonObj.getJSONArray("list");
-
-				JSONObject item;
-
-				scrappedMatchList.clear();
-				for (int i = 0; i < jsonArr.length(); i++) {
-					item = jsonArr.getJSONObject(i);
-					scrappedMatchList.add(new MatchItem(item));
-				}
-			} catch (JSONException e) {
-				scrappedMatchList.clear();
-				e.printStackTrace();
-			} finally {
-
-				malAdapter.notifyDataSetChanged();
-				count.setText("총 " + scrappedMatchList.size() + "개");
-
-				// 프로그레스 다이얼로그 종료
-				pd.dismiss();
-			}
+		} catch (JSONException e) {
+			scrappedMatchList.clear();
+			Log.e("getScrappedMatchList", e.getMessage());
+		} finally {
+			malAdapter.notifyDataSetChanged();
+			count.setText("총 " + scrappedMatchList.size() + "개");
 		}
 	}
 }

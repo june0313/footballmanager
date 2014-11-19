@@ -1,30 +1,21 @@
 package june.footballmanager;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -74,8 +65,8 @@ public class MyMatchConfirmedFragment extends Fragment implements OnItemClickLis
 	public void onResume() {
 		super.onResume();
 		
-		// 매치 리스트 로드
-		new GetMyMatchList().execute();	
+		// 서버로부터 매치 리스트를 가져온다.
+		getMyMatchConfirmed();
 	}
 	
 	// 매치 클릭 이벤트
@@ -142,100 +133,41 @@ public class MyMatchConfirmedFragment extends Fragment implements OnItemClickLis
 		
 	}
 	
-	// DB로부터 등록한 매치 리스트를 조회하여 가져온다.
-	private class GetMyMatchList extends AsyncTask<Void, Void, Boolean> {
+	// 서버로부터 내가 등록한 매치 중 성사된 매치를 가져오는 메서드
+	private void getMyMatchConfirmed() {
+		// 연결할 페이지의 URL
+		String url = getString(R.string.server) + getString(R.string.my_match_list_confirmed);
 		
-		// 서버로 전달할 파라미터(팀의 email정보)
-		String param = "";
+		// 파라미터 구성
+		LoginManager lm = new LoginManager(getActivity());
+		String param = "email=" + lm.getEmail();
 		
-		// 로그인 정보
-		LoginManager lm;
+		// 서버 연결
+		JSONObject json = new HttpTask(url, param).getJSONObject();
+		JSONArray jsonArr = null;
 		
-		// URL로부터 가져온 json 형식의 string 
-		String jsonString = "";
-		
-		ProgressDialog pd;
-		
-		public void onPreExecute() {
-			lm = new LoginManager(getActivity());
-			param += "email=" + lm.getEmail();
-			
-			Log.i("param", param);
-			
-			// 프로그레스 다이얼로그 출력
-			pd = new ProgressDialog(getActivity());
-			pd.setMessage("리스트를 불러오는 중입니다...");
-			pd.show();
-		}
+		try {
+			jsonArr = json.getJSONArray("list");
 
-		@Override
-		protected Boolean doInBackground(Void... arg0) {
-			
-			try {
-				URL url = new URL(getString(R.string.server) + getString(R.string.my_match_list_confirmed));
-				HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-				conn.setRequestMethod("POST");
-				conn.setDoInput(true);
-				conn.setDoOutput(true);
-				
-				// URL에 파리미터 넘기기
-				OutputStreamWriter out = new OutputStreamWriter( conn.getOutputStream(), "euc-kr" );
-				out.write(param);
-				out.flush();
-				out.close();
-				
-				// URL 결과 가져오기
-				String buffer = null;
-				BufferedReader in = new BufferedReader( new InputStreamReader( conn.getInputStream(), "euc-kr" ));
-				while( ( buffer = in.readLine() ) != null ) {
-					jsonString += buffer;
-				}
-				in.close();
-				
-				Log.i( "FM", "GetMyMatchList result : " + jsonString );
-				
-				
-			} catch (MalformedURLException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
+			JSONObject item;
+
+			myMatchList.clear();
+			for (int i = 0; i < jsonArr.length(); i++) {
+				item = jsonArr.getJSONObject(i);
+				myMatchList.add(new MyMatchItem(item.getInt("MATCH_NO"), 
+						item.getString("LOCATION"), 
+						item.getString("GROUND"), 
+						item.getString("MATCH_DATE"), 
+						item.getString("MATCH_TIME"),
+						item.getString("MATCH_TIME2"), 
+						item.getString("TEAM_NAME")));
 			}
-	
-			return null;
-		}
-		
-		public void onPostExecute(Boolean isSuccess) {
-			try {
-				JSONObject jsonObj = new JSONObject(jsonString);
-				JSONArray jsonArr = jsonObj.getJSONArray("list");
-				
-				JSONObject item;
-				
-				myMatchList.clear();
-				for( int i = 0; i < jsonArr.length(); i++ ) {
-					item = jsonArr.getJSONObject(i);
-					myMatchList.add( new MyMatchItem( item.getInt("MATCH_NO"),
-							item.getString("LOCATION"),
-							item.getString("GROUND"),
-							item.getString("MATCH_DATE"),
-							item.getString("MATCH_TIME"), 
-							item.getString("MATCH_TIME2"),
-							item.getString("TEAM_NAME")
-							)
-					);
-				}
-			} catch (JSONException e) {
-				myMatchList.clear();
-				e.printStackTrace();
-			} finally {
-				
-				mmlAdapter.notifyDataSetChanged();
-				count.setText("총 " + myMatchList.size() + "개");
-				
-				// 프로그레스 다이얼로그 종료
-				pd.dismiss();
-			}
-		}
+		} catch (JSONException e) {
+			myMatchList.clear();
+			Log.e("getMyMatchConfirmed", e.getMessage());
+		} finally {
+			mmlAdapter.notifyDataSetChanged();
+			count.setText("총 " + myMatchList.size() + "개");
+		}	
 	}
-	
 }

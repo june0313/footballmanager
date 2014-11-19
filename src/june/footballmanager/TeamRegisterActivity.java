@@ -12,16 +12,14 @@ import java.net.URL;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import yuku.ambilwarna.AmbilWarnaDialog;
-import yuku.ambilwarna.AmbilWarnaDialog.OnAmbilWarnaListener;
-import android.os.AsyncTask;
-import android.os.Bundle;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -161,8 +159,7 @@ public class TeamRegisterActivity extends Activity implements OnClickListener {
 				Toast.makeText(TeamRegisterActivity.this, "연락처를 입력해주세요", 0).show();
 			} else {
 				// 위의 모든 조건을 만족하면 팀 회원 가입 시도
-				AttemptTeamRegistration atr = new AttemptTeamRegistration();
-				atr.execute();
+				registerTeamAccount();
 			}
 		}
 	}
@@ -188,6 +185,41 @@ public class TeamRegisterActivity extends Activity implements OnClickListener {
 		}
 		
 		return false;
+	}
+	
+	private void registerTeamAccount() {
+		// 연결할 페이지의 URL
+		String url = getString(R.string.server)+ getString(R.string.regi_team);
+		
+		// 파라미터 구성
+		String param = "email=" + email.getText().toString();
+		param += "&password=" + password.getText().toString();
+		param += "&name=" + teamName.getText().toString();
+		param += "&location=" + location.getText().toString();
+		param += "&home=" + homeGround.getText().toString();
+		param += "&numOfPlayer=" + numOfPlayer.getText().toString();
+		param += "&ages=" + ages.getText().toString();
+		param += "&phone=" + phone.getText().toString();
+		param += "&introduce=" + introduce.getText().toString().replace("\n", "__");
+		
+		// 서버 연결
+		JSONObject json = new HttpTask(url, param).getJSONObject();
+		
+		try {
+			if(json.getInt("success") == 1) {
+				Toast.makeText(getApplicationContext(), "회원 가입이 완료되었습니다!", 0).show();
+				finish();
+			} else {
+				int errno = json.getInt("errorcode");
+				String errorMsg = json.getString("message");
+				Log.e("registerTeamAccount", errorMsg);
+				
+				if( errno == 1062)
+					Toast.makeText(getApplicationContext(), "이미 가입된 이메일 주소입니다", 0).show();
+			}
+		} catch (JSONException e) {
+			Log.e("registerTeamAccount", e.getMessage());
+		}
 	}
 	
 	public class AttemptTeamRegistration extends AsyncTask<Void, Void, Boolean> {

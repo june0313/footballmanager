@@ -1,40 +1,26 @@
 package june.footballmanager;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 /**
  * A simple {@link android.support.v4.app.Fragment} subclass.
@@ -111,7 +97,7 @@ public class ScrappedFindPlayerListFragment extends Fragment implements OnItemCl
 	public void onResume() {
 		super.onResume();
 		
-		new GetFindPlayerList().execute();
+		getFindPlayerList();
 	}
 
 	// 어댑터 정의
@@ -219,88 +205,36 @@ public class ScrappedFindPlayerListFragment extends Fragment implements OnItemCl
 		}
 	}
 	
+	// 서버로부터 스크랩한 선수모집 리스트를 가져오는 메서드
+	private void getFindPlayerList() {
+		// 연결할 페이지의 URL
+		String url = getString(R.string.server) + getString(R.string.scrapped_find_player_list);
+		
+		// 파라미터 설정
+		String param = "nos=" + scrappedItems;
+		
+		// 서버 연결
+		JSONObject json = new HttpTask(url ,param).getJSONObject();
+		JSONArray jsonArr = null;
+		
+		try {
+			jsonArr = json.getJSONArray("list");
 
-	// 선수 리스트를 DB에서 가져온다.
-	private class GetFindPlayerList extends AsyncTask<Void, Void, Boolean> {
-		String param = "";
-		// URL로부터 가져온 json 형식의 string
-		String jsonString = "";
-		ProgressDialog pd;
+			JSONObject item;
 
-		public void onPreExecute() {
-
-			// 프로그레스 다이얼로그 출력
-			pd = new ProgressDialog(getActivity());
-			pd.setMessage("리스트를 불러오는 중입니다...");
-			pd.show();
+			playerList.clear();
+			for (int i = 0; i < jsonArr.length(); i++) {
+				item = jsonArr.getJSONObject(i);
+				playerList.add(new FindPlayerItem(item));
+			}
 			
-			param += "nos=" + scrappedItems;
-			Log.i("param", param);
-		}
-
-		@Override
-		protected Boolean doInBackground(Void... arg0) {
-
-			try {
-				URL url = new URL(getString(R.string.server)
-						+ getString(R.string.scrapped_find_player_list));
-				HttpURLConnection conn = (HttpURLConnection) url
-						.openConnection();
-				conn.setRequestMethod("POST");
-				conn.setDoInput(true);
-				conn.setDoOutput(true);
-
-				// URL에 파리미터 넘기기
-				OutputStreamWriter out = new OutputStreamWriter(
-						conn.getOutputStream(), "euc-kr");
-				out.write(param);
-				out.flush();
-				out.close();
-
-				// URL 결과 가져오기
-				String buffer = null;
-				BufferedReader in = new BufferedReader(new InputStreamReader(
-						conn.getInputStream(), "euc-kr"));
-				while ((buffer = in.readLine()) != null) {
-					jsonString += buffer;
-				}
-				in.close();
-
-				Log.i("FM", "GetPlayerList result : " + jsonString);
-
-			} catch (MalformedURLException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-
-			return null;
-		}
-
-		public void onPostExecute(Boolean isSuccess) {
-			try {
-				JSONObject jsonObj = new JSONObject(jsonString);
-				JSONArray jsonArr = jsonObj.getJSONArray("list");
-
-				JSONObject item;
-
-				playerList.clear();
-				for (int i = 0; i < jsonArr.length(); i++) {
-					item = jsonArr.getJSONObject(i);
-					playerList.add(new FindPlayerItem(item));
-				}
-			} catch (JSONException e) {
-				playerList.clear();
-				Log.i("JSON", e.getMessage());
-			} finally {
-
-				plAdapter.notifyDataSetChanged();
-				count.setText("총 " + playerList.size() + "개");
-
-				// 프로그레스 다이얼로그 종료
-				pd.dismiss();
-			}
-		}
+		} catch (JSONException e) {
+			playerList.clear();
+			Log.i("getFindPlayerList", e.getMessage());
+		} finally {
+			plAdapter.notifyDataSetChanged();
+			count.setText("총 " + playerList.size() + "개");
+		}	
 	}
 }
 
