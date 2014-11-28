@@ -1,4 +1,4 @@
-package june.footballmanager;
+﻿package june.footballmanager;
 
 public class PlayerItem {
 	int _memberNo;

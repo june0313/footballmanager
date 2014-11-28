@@ -31,7 +31,7 @@
                 android:gravity="right"
                 android:textSize="@dimen/major_font"
                 android:textColor="@color/darkgray"
-                android:text="경기 김포시 대곶면" />
+                android:text="" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -50,7 +50,7 @@
                 android:padding="@dimen/textView_padding"
                 android:textSize="@dimen/major_font"
                 android:textColor="@color/darkgray"
-                android:text="공설운동장" />
+                android:text="" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -69,7 +69,7 @@
                 android:padding="@dimen/textView_padding"
                 android:textSize="@dimen/major_font"
                 android:textColor="@color/darkgray"
-                android:text="20대" />
+                android:text="" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -88,7 +88,7 @@
                 android:padding="@dimen/textView_padding"
                 android:textSize="@dimen/major_font"
                 android:textColor="@color/darkgray"
-                android:text="11명" />
+                android:text="" />
 
             <TextView
                 android:layout_width="wrap_content"

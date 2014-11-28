@@ -1,4 +1,4 @@
-package june.footballmanager;
+﻿package june.footballmanager;
 
 public class TeamItem {
 	int _memberNo;
@@ -9,8 +9,9 @@ public class TeamItem {
 	String _home;
 	String _phone;
 	String _msg;
+	String _regid;
 	
-	public TeamItem(int memberNo, String teamName, String ages, int numOfPlayers, String location, String home, String phone, String msg ) {
+	public TeamItem(int memberNo, String teamName, String ages, int numOfPlayers, String location, String home, String phone, String msg, String regid ) {
 		this._memberNo = memberNo;
 		this._teamName = teamName;
 		this._ages = ages;
@@ -19,6 +20,7 @@ public class TeamItem {
 		this._home = home;
 		this._phone = phone;
 		this._msg = msg;
+		this._regid = regid;
 	}
 	
 	public int getMemberNo() {
@@ -51,6 +53,10 @@ public class TeamItem {
 	
 	public String getMsg() {
 		return this._msg;
+	}
+	
+	public String getRegid() {
+		return this._regid;
 	}
 }
 

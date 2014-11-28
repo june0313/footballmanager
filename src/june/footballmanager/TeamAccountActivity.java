@@ -1,4 +1,4 @@
-package june.footballmanager;
+ï»¿package june.footballmanager;
 
 import android.app.ActionBar;
 import android.app.Activity;
@@ -46,19 +46,21 @@ public class TeamAccountActivity extends Activity implements OnClickListener {
 		homeGround = (TextView) findViewById(R.id.home_ground);
 		numOfPlayer = (TextView) findViewById(R.id.num_of_player);
 		ages = (TextView) findViewById(R.id.ages);
-		
-		Button logout = (Button) findViewById(R.id.btn_logout);
-	    logout.setOnClickListener(this);
 	    
+	    // ì •ë³´ ìˆ˜ì • ë²„íŠ¼
 	    Button btnEditInfo = (Button) findViewById(R.id.btn_editinfo);
 	    btnEditInfo.setOnClickListener(this);
+	    
+	    // ë¹„ë°€ë²ˆí˜¸ ë³€ê²½ ë²„íŠ¼
+	    Button btnUpdatePW = (Button) findViewById(R.id.btn_change_pw);
+	    btnUpdatePW.setOnClickListener(this);
 	}
 	
 	public void onResume() {
 		super.onResume();
 		
-		// ÇÁ·¹ÆÛ·±½º¿¡ ÀúÀåµÇ¾î ÀÖ´Â ÆÀÁ¤º¸¸¦ °¡Á®¿Í Ãâ·ÂÇÑ´Ù.
-		// Á¤º¸ ¼öÁ¤ ÈÄ ¼öÁ¤µÈ ³»¿ëÀ» ¹Ù·Î ¹İ¿µÇÏ¿© Ãâ·ÂÇØ¾ß ÇÏ±â ¶§¹®¿¡ onResume¿¡ ±¸ÇöÇÔ.
+		// í”„ë ˆí¼ëŸ°ìŠ¤ì— ì €ì¥ë˜ì–´ ìˆëŠ” íŒ€ì •ë³´ë¥¼ ê°€ì ¸ì™€ ì¶œë ¥í•œë‹¤.
+		// ì •ë³´ ìˆ˜ì • í›„ ìˆ˜ì •ëœ ë‚´ìš©ì„ ë°”ë¡œ ë°˜ì˜í•˜ì—¬ ì¶œë ¥í•´ì•¼ í•˜ê¸° ë•Œë¬¸ì— onResumeì— êµ¬í˜„í•¨.
 		teamName.setText(lm.getTeamName());
 		phone.setText(lm.getPhone());
 		location.setText(lm.getLocation());
@@ -71,39 +73,42 @@ public class TeamAccountActivity extends Activity implements OnClickListener {
 	public void onClick(View v) {
 		int id = v.getId();
 		if( id == R.id.btn_editinfo) {
-			// Á¤º¸ ¼öÁ¤ ¹öÆ° Å¬¸¯½Ã
+			// ì •ë³´ ìˆ˜ì • ë²„íŠ¼ í´ë¦­ì‹œ
 			startActivity( new Intent(TeamAccountActivity.this, UpdateTeamInfoActivity.class));
+		} else if(id == R.id.btn_change_pw) {
+			// ë¹„ë°€ë²ˆí˜¸ ë³€ê²½ ë²„íŠ¼ í´ë¦­ì‹œ
+			startActivity( new Intent(TeamAccountActivity.this, UpdatePasswordActivity.class));
 		}
 		
 	}
 	
-	// ¸Ş´º Ãâ·Â
+	// ë©”ë‰´ ì¶œë ¥
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.account_menu, menu);
 		return super.onCreateOptionsMenu(menu);
 	}
 	
-	// ¸Ş´º ¼±ÅÃ
+	// ë©”ë‰´ ì„ íƒ
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case android.R.id.home:
-			// È¨¹öÆ° Å¬¸¯½Ã
+			// í™ˆë²„íŠ¼ í´ë¦­ì‹œ
 			finish();
 			return true;
 			
 		case R.id.logout:
-			// ·Î±×¾Æ¿ô Å¬¸¯½Ã
+			// ë¡œê·¸ì•„ì›ƒ í´ë¦­ì‹œ
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
-			builder.setMessage("·Î±×¾Æ¿ô ÇÏ½Ã°Ú½À´Ï±î?")
-			.setNegativeButton("¾Æ´Ï¿À", null)
-			.setPositiveButton("¿¹", new DialogInterface.OnClickListener() {
+			builder.setMessage("ë¡œê·¸ì•„ì›ƒ í•˜ì‹œê² ìŠµë‹ˆê¹Œ?")
+			.setNegativeButton("ì•„ë‹ˆì˜¤", null)
+			.setPositiveButton("ì˜ˆ", new DialogInterface.OnClickListener() {
 				
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					lm.removeLoginInfo();
-					Toast.makeText(TeamAccountActivity.this, "·Î±×¾Æ¿ô µÇ¾ú½À´Ï´Ù", 0).show();
+					Toast.makeText(TeamAccountActivity.this, "ë¡œê·¸ì•„ì›ƒ ë˜ì—ˆìŠµë‹ˆë‹¤", 0).show();
 					finish();
 				}
 			});

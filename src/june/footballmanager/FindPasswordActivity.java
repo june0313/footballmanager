@@ -1,5 +1,5 @@
-/*
- ºñ¹Ğ¹øÈ£ Ã£±â È­¸é
+ï»¿/*
+ ë¹„ë°€ë²ˆí˜¸ ì°¾ê¸° í™”ë©´
  */
 
 package june.footballmanager;
@@ -53,11 +53,11 @@ public class FindPasswordActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_find_password);
 		
-		// ¾×¼Ç¹Ù ¼³Á¤
+		// ì•¡ì…˜ë°” ì„¤ì •
 		ActionBar actionBar = getActionBar();
 	    actionBar.setDisplayHomeAsUpEnabled(true);
 	    
-	    // ºä ·¹ÆÛ·±½º
+	    // ë·° ë ˆí¼ëŸ°ìŠ¤
 	    memberGroup = (RadioGroup)findViewById(R.id.rg_member_type);
 	    tvEmail = (TextView)findViewById(R.id.tv_email);
 	    btnSend = (Button)findViewById(R.id.btn_send);
@@ -67,27 +67,26 @@ public class FindPasswordActivity extends Activity {
 			public void onClick(View v) {
 				
 				if( memberGroup.getCheckedRadioButtonId() == -1 ) {
-					Toast.makeText(FindPasswordActivity.this, "È¸¿ø À¯ÇüÀ» ¼±ÅÃÇØÁÖ¼¼¿ä.", 0).show();
+					Toast.makeText(FindPasswordActivity.this, "íšŒì› ìœ í˜•ì„ ì„ íƒí•´ì£¼ì„¸ìš”.", 0).show();
 				} else if(tvEmail.getText().toString().isEmpty())
-					Toast.makeText(FindPasswordActivity.this, "ÀÌ¸ŞÀÏ ÁÖ¼Ò¸¦ ÀÔ·ÂÇØÁÖ¼¼¿ä", 0).show();
+					Toast.makeText(FindPasswordActivity.this, "ì´ë©”ì¼ ì£¼ì†Œë¥¼ ì…ë ¥í•´ì£¼ì„¸ìš”", 0).show();
 				else {
-					// È¸¿ø À¯ÇüÀ» ½Äº°ÇÏ¿© memberType º¯¼ö¿¡ ÀúÀåÇÑ´Ù.
+					// íšŒì› ìœ í˜•ì„ ì‹ë³„í•˜ì—¬ memberType ë³€ìˆ˜ì— ì €ì¥í•œë‹¤.
 					RadioButton btnMemberType = (RadioButton)findViewById(memberGroup.getCheckedRadioButtonId());
 					int memberType;
-					if(btnMemberType.getText().toString().equals("ÆÀÈ¸¿ø"))
+					if(btnMemberType.getText().toString().equals("íŒ€íšŒì›"))
 						memberType = 0;
 					else memberType = 1;
 					
-					// ÀÓ½Ã ºñ¹Ğ¹øÈ£¸¦ »ı¼ºÇÑ´Ù.
+					// ì„ì‹œ ë¹„ë°€ë²ˆí˜¸ë¥¼ ìƒì„±í•œë‹¤.
 					String tempPasswd = createTempPasswd();
 					
-					// »ı¼ºµÈ ÀÓ½Ã ºñ¹Ğ¹øÈ£·Î »ç¿ëÀÚ °èÁ¤ÀÇ ºñ¹Ğ¹øÈ£¸¦ ÃÊ±âÈ­ ÇÑ´Ù.
+					// ìƒì„±ëœ ì„ì‹œ ë¹„ë°€ë²ˆí˜¸ë¡œ ì‚¬ìš©ì ê³„ì •ì˜ ë¹„ë°€ë²ˆí˜¸ë¥¼ ì´ˆê¸°í™” í•œë‹¤.
 					setTempPasswd(memberType, tvEmail.getText().toString(), tempPasswd);
 					
-					// ÀÓ½Ã ºñ¹Ğ¹øÈ£¸¦ ¸ŞÀÏ·Î ¹ß¼ÛÇÑ´Ù.
+					// ì„ì‹œ ë¹„ë°€ë²ˆí˜¸ë¥¼ ë©”ì¼ë¡œ ë°œì†¡í•œë‹¤.
 					sendTempPasswd(tvEmail.getText().toString(), tempPasswd);
 				}
-					
 			}
 			
 	    });
@@ -111,22 +110,22 @@ public class FindPasswordActivity extends Activity {
 		return false;
 	}
 	
-	// ÀÓ½Ã ºñ¹Ğ¹øÈ£¸¦ »ı¼ºÇÑ´Ù.
+	// ì„ì‹œ ë¹„ë°€ë²ˆí˜¸ë¥¼ ìƒì„±í•œë‹¤.
 	private String createTempPasswd() {
 		String elements = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890";
 		String tempPasswd = "";
 		Random random = new Random();
 		
-		// ÀÓÀÇ À§Ä¡¸¦ ¼±ÅÃÇÏ¿© 8ÀÚ¸® ºñ¹Ğ¹øÈ£¸¦ »ı¼ºÇÑ´Ù.
+		// ì„ì˜ ìœ„ì¹˜ë¥¼ ì„ íƒí•˜ì—¬ 8ìë¦¬ ë¹„ë°€ë²ˆí˜¸ë¥¼ ìƒì„±í•œë‹¤.
 		for( int i = 0; i < 8; i++ )
 			tempPasswd += elements.charAt(random.nextInt(elements.length()));
 		
 		return tempPasswd;
 	}
 	
-	// ÀÔ·ÂÇÑ °èÁ¤ÀÇ ºñ¹Ğ¹øÈ£¸¦ ÃÊ±âÈ­ÇÑ´Ù.
+	// ì…ë ¥í•œ ê³„ì •ì˜ ë¹„ë°€ë²ˆí˜¸ë¥¼ ì´ˆê¸°í™”í•œë‹¤.
 	private void setTempPasswd(int memberType, String email, String tempPasswd) {
-		// ÆÄ¶ó¹ÌÅÍ »ı¼º
+		// íŒŒë¼ë¯¸í„° ìƒì„±
 		final String param = "memberType=" + memberType + "&email=" + email + "&passwd=" + tempPasswd;
 		Log.i("param", param);
 		
@@ -169,15 +168,15 @@ public class FindPasswordActivity extends Activity {
 		}.execute();
 	}
 	
-	// email·Î ÀÓ½Ã ºñ¹Ğ¹øÈ£¸¦ ¹ß¼ÛÇÑ´Ù.
+	// emailë¡œ ì„ì‹œ ë¹„ë°€ë²ˆí˜¸ë¥¼ ë°œì†¡í•œë‹¤.
 	private void sendTempPasswd(String to, String tempPw) {
-		// ¹ß½Å, ¼ö½Å Á¤º¸
+		// ë°œì‹ , ìˆ˜ì‹  ì •ë³´
         final String fromEmail = "our.town.fm.master";
         final String password = "dnflehdsp123";
         final String toEmail = to;
         final String tempPasswd = tempPw;
 		
-        // º°µµÀÇ ¾²·¹µå¿¡¼­ ÁøÇà
+        // ë³„ë„ì˜ ì“°ë ˆë“œì—ì„œ ì§„í–‰
 		new AsyncTask<Void, Void, Void>() {
 			
 			ProgressDialog pd;
@@ -185,39 +184,39 @@ public class FindPasswordActivity extends Activity {
 			@Override
 			protected Void doInBackground(Void... params) {
 
-		        // ¸ŞÀÏ ³»¿ë
-		        String subject="ÀÓ½Ã ºñ¹Ğ¹øÈ£ ÀÔ´Ï´Ù.";
-		        String body="¾È³çÇÏ¼¼¿ä.\n¿ì¸®µ¿³× Ç²º¼ ¸Å´ÏÀú ÀÓ½Ã ºñ¹Ğ¹øÈ£ ÀÔ´Ï´Ù.\n\n"
-		        		+ "- ÀÓ½Ã ºñ¹Ğ¹øÈ£ : " + tempPasswd + "\n\n"
-		        		+ "À§ÀÇ ÀÓ½Ã ºñ¹Ğ¹øÈ£·Î ·Î±×ÀÎ ÈÄ ºñ¹Ğ¹øÈ£¸¦ º¯°æÇØÁÖ¼¼¿ä.\n\n"
-		        		+ "°¨»çÇÕ´Ï´Ù.";
+		        // ë©”ì¼ ë‚´ìš©
+		        String subject="ì„ì‹œ ë¹„ë°€ë²ˆí˜¸ ì…ë‹ˆë‹¤.";
+		        String body="ì•ˆë…•í•˜ì„¸ìš”.\nìš°ë¦¬ë™ë„¤ í’‹ë³¼ ë§¤ë‹ˆì € ì„ì‹œ ë¹„ë°€ë²ˆí˜¸ ì…ë‹ˆë‹¤.\n\n"
+		        		+ "- ì„ì‹œ ë¹„ë°€ë²ˆí˜¸ : " + tempPasswd + "\n\n"
+		        		+ "ìœ„ì˜ ì„ì‹œ ë¹„ë°€ë²ˆí˜¸ë¡œ ë¡œê·¸ì¸ í›„ ë¹„ë°€ë²ˆí˜¸ë¥¼ ë³€ê²½í•´ì£¼ì„¸ìš”.\n\n"
+		        		+ "ê°ì‚¬í•©ë‹ˆë‹¤.";
 		         
 		        Properties props = new Properties();
-		        // SSL »ç¿ëÇÏ´Â °æ¿ì
+		        // SSL ì‚¬ìš©í•˜ëŠ” ê²½ìš°
 		        props.put("mail.smtp.host", "smtp.gmail.com"); //SMTP Host
 		        props.put("mail.smtp.socketFactory.port", "465"); //SSL Port
 		        props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory"); //SSL Factory Class
 		        props.put("mail.smtp.auth", "true"); //Enabling SMTP Authentication
 		        props.put("mail.smtp.port", "465"); //SMTP Port
 		         
-		        // ÀÎÁõ
+		        // ì¸ì¦
 		        Authenticator auth = new Authenticator() {
 		            protected PasswordAuthentication getPasswordAuthentication() {
 		                return new PasswordAuthentication(fromEmail, password);
 		            }
 		        };
 		        
-		        // ¸ŞÀÏ ¼¼¼Ç
+		        // ë©”ì¼ ì„¸ì…˜
 		        Session session = Session.getInstance(props, auth);
 		         
-		        // ¸Ş½ÃÁö Çì´õ ¼³Á¤
+		        // ë©”ì‹œì§€ í—¤ë” ì„¤ì •
 		        MimeMessage msg = new MimeMessage(session);
 		        try {
 					msg.addHeader("Content-type", "text/HTML; charset=UTF-8");
 					msg.addHeader("format", "flowed");
 			        msg.addHeader("Content-Transfer-Encoding", "8bit");
 			         
-			        msg.setFrom(new InternetAddress("no_reply@fm.co.kr", "¿ì¸®µ¿³× Ç²º¼ ¸Å´ÏÀú"));
+			        msg.setFrom(new InternetAddress("no_reply@fm.co.kr", "ìš°ë¦¬ë™ë„¤ í’‹ë³¼ ë§¤ë‹ˆì €"));
 			        msg.setReplyTo(InternetAddress.parse("no_reply@fm.co.kr", false));
 			 
 			        msg.setSubject(subject, "UTF-8");
@@ -236,15 +235,15 @@ public class FindPasswordActivity extends Activity {
 			}
 			
 			public void onPreExecute() {
-				// ÇÁ·Î±×·¹½º ´ÙÀÌ¾ó·Î±× Ãâ·Â
+				// í”„ë¡œê·¸ë ˆìŠ¤ ë‹¤ì´ì–¼ë¡œê·¸ ì¶œë ¥
 				pd = new ProgressDialog(FindPasswordActivity.this);
-				pd.setMessage("¸ŞÀÏÀ» ¹ß¼ÛÇÏ°í ÀÖ½À´Ï´Ù...");
+				pd.setMessage("ë©”ì¼ì„ ë°œì†¡í•˜ê³  ìˆìŠµë‹ˆë‹¤...");
 				pd.show();
 			}
 			
 			public void onPostExecute(Void params) {
 				pd.dismiss();
-				Toast.makeText(FindPasswordActivity.this, "¸ŞÀÏÀÌ ¹ß¼ÛµÇ¾ú½À´Ï´Ù", 0).show();
+				Toast.makeText(FindPasswordActivity.this, "ë©”ì¼ì´ ë°œì†¡ë˜ì—ˆìŠµë‹ˆë‹¤", 0).show();
 				finish();
 			}
 			

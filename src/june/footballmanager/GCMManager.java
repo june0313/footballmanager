@@ -1,4 +1,4 @@
-package june.footballmanager;
+ï»¿package june.footballmanager;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -8,6 +8,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.json.JSONException;
@@ -32,27 +33,27 @@ public class GCMManager {
     private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
     public static final String GCM_SERVER = "https://android.googleapis.com/gcm/send";
     public static final String API_KEY = "AIzaSyDvNq6z6XIC91bpl1WXtDSIfWkV_eRDaOU";
-    // ÇÁ·ÎÁ§Æ® ³Ñ¹ö = SENDER ID
+    // í”„ë¡œì íŠ¸ ë„˜ë²„ = SENDER ID
     public static final String SENDER_ID = "408295761323";
     
-    // ·Î±× ¸Ş½ÃÁö¿¡ »ç¿ëµÉ ÅÂ±×
+    // ë¡œê·¸ ë©”ì‹œì§€ì— ì‚¬ìš©ë  íƒœê·¸
     static final String TAG = "FM_GCM";
     
-    // GCM¿¡ »ç¿ëµÉ °´Ã¼
+    // GCMì— ì‚¬ìš©ë  ê°ì²´
     static GoogleCloudMessaging gcm;
     static String regid;
     AtomicInteger msgId = new AtomicInteger();
     Activity activity;
     Context context;
     
-    // »ı¼ºÀÚ
+    // ìƒì„±ì
     GCMManager(Activity activity) {
     	this.activity = activity;
     	this.context = activity.getApplicationContext();
     }
     
-	// µğ¹ÙÀÌ½º°¡ Play Service¸¦ Áö¿øÇÏ´ÂÁö Ã¼Å©ÇÑ´Ù.
-	// Áö¿øÇÒ °æ¿ì GCM µî·ÏÀ» ÁøÇàÇÑ´Ù.
+	// ë””ë°”ì´ìŠ¤ê°€ Play Serviceë¥¼ ì§€ì›í•˜ëŠ”ì§€ ì²´í¬í•œë‹¤.
+	// ì§€ì›í•  ê²½ìš° GCM ë“±ë¡ì„ ì§„í–‰í•œë‹¤.
     public void checkAndRegister() {
 
     	if (checkPlayServices()) {
@@ -69,9 +70,9 @@ public class GCMManager {
     }
     
     /**
-	 * µğ¹ÙÀÌ½º°¡ Google Play Service APK¸¦ °¡Áö°í ÀÖ´ÂÁö È®ÀÎÇÑ´Ù.
-	 * ¸¸¾à °®°í ÀÖÁö ¾Ê´Ù¸é Play Store¿¡¼­ ´Ù¿î¹ŞÀ» ¼ö ÀÖµµ·Ï ÇÏ´Â ´ÙÀÌ¾ó·Î±×¸¦
-	 * Ãâ·ÂÇÏ°Å³ª, µğ¹ÙÀÌ½ºÀÇ ½Ã½ºÅÛ ¼³Á¤¿¡¼­ »ç¿ë °¡´ÉÇÏµµ·Ï ¹Ù²Û´Ù.
+	 * ë””ë°”ì´ìŠ¤ê°€ Google Play Service APKë¥¼ ê°€ì§€ê³  ìˆëŠ”ì§€ í™•ì¸í•œë‹¤.
+	 * ë§Œì•½ ê°–ê³  ìˆì§€ ì•Šë‹¤ë©´ Play Storeì—ì„œ ë‹¤ìš´ë°›ì„ ìˆ˜ ìˆë„ë¡ í•˜ëŠ” ë‹¤ì´ì–¼ë¡œê·¸ë¥¼
+	 * ì¶œë ¥í•˜ê±°ë‚˜, ë””ë°”ì´ìŠ¤ì˜ ì‹œìŠ¤í…œ ì„¤ì •ì—ì„œ ì‚¬ìš© ê°€ëŠ¥í•˜ë„ë¡ ë°”ê¾¼ë‹¤.
 	 */
     public boolean checkPlayServices() {
 	    int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(context);
@@ -89,8 +90,8 @@ public class GCMManager {
 	}
     
     /**
-	 * ÇöÀç registration ID¸¦ °¡Á®¿Â´Ù.
-	 * registration ID°¡ ¾ø´Ù¸é »õ·Î µî·ÏÇØ¾ß ÇÑ´Ù.
+	 * í˜„ì¬ registration IDë¥¼ ê°€ì ¸ì˜¨ë‹¤.
+	 * registration IDê°€ ì—†ë‹¤ë©´ ìƒˆë¡œ ë“±ë¡í•´ì•¼ í•œë‹¤.
 	 *
 	 * @return registration ID, or empty string if there is no existing
 	 *         registration ID.
@@ -102,9 +103,9 @@ public class GCMManager {
 	        Log.i(TAG, "Registration not found.");
 	        return "";
 	    }
-	    // ¾îÇÃ¸®ÄÉÀÌ¼ÇÀÌ ¾÷µ¥ÀÌÆ® µÇ¾ú´ÂÁö È®ÀÎÇÑ´Ù.
-	    // ¾÷µ¥ÀÌÆ® µÈ °æ¿ì, ÇöÀçÀÇ regID°¡ À¯È¿ÇÏÁö ¾ÊÀ»¼öµµ ÀÖÀ¸¹Ç·Î,
-	    // regID¸¦ ÃÊ±âÈ­ ½ÃÄÑÁÖ¾î¾ß ÇÑ´Ù.
+	    // ì–´í”Œë¦¬ì¼€ì´ì…˜ì´ ì—…ë°ì´íŠ¸ ë˜ì—ˆëŠ”ì§€ í™•ì¸í•œë‹¤.
+	    // ì—…ë°ì´íŠ¸ ëœ ê²½ìš°, í˜„ì¬ì˜ regIDê°€ ìœ íš¨í•˜ì§€ ì•Šì„ìˆ˜ë„ ìˆìœ¼ë¯€ë¡œ,
+	    // regIDë¥¼ ì´ˆê¸°í™” ì‹œì¼œì£¼ì–´ì•¼ í•œë‹¤.
 	    int registeredVersion = prefs.getInt(PROPERTY_APP_VERSION, Integer.MIN_VALUE);
 	    int currentVersion = getAppVersion();
 	    if (registeredVersion != currentVersion) {
@@ -118,7 +119,7 @@ public class GCMManager {
 	 * @return Application's {@code SharedPreferences}.
 	 */
 	private SharedPreferences getGCMPreferences() {
-		// regID°¡ ÀúÀåµÈ ÇÁ¸®ÆÛ·±½º¸¦ ¸®ÅÏÇÑ´Ù.
+		// regIDê°€ ì €ì¥ëœ í”„ë¦¬í¼ëŸ°ìŠ¤ë¥¼ ë¦¬í„´í•œë‹¤.
 	    return context.getSharedPreferences(MainActivity.class.getSimpleName(),
 	            Context.MODE_PRIVATE);
 	}
@@ -138,41 +139,42 @@ public class GCMManager {
 	}
 	
 	/**
-	 * ¾îÇÃ¸®ÄÉÀÌ¼ÇÀ» GCM ¼­¹ö¿¡ ºñµ¿±âÀûÀ¸·Î µî·ÏÇÑ´Ù.
-	 * registration ID¿Í app versionCode¸¦ shared preferences¿¡ ÀúÀåÇÑ´Ù.
+	 * ì–´í”Œë¦¬ì¼€ì´ì…˜ì„ GCM ì„œë²„ì— ë¹„ë™ê¸°ì ìœ¼ë¡œ ë“±ë¡í•œë‹¤.
+	 * registration IDì™€ app versionCodeë¥¼ shared preferencesì— ì €ì¥í•œë‹¤.
 	 */
 	private void registerInBackground() {
-	    new AsyncTask<Void, Void, String>() {
-	        @Override
-	        protected String doInBackground(Void... params) {
-	            String msg = "";
-	            try {
-	                if (gcm == null) {
-	                    gcm = GoogleCloudMessaging.getInstance(context);
-	                }
-	                regid = gcm.register(SENDER_ID);
-	                msg = "Device registered, registration ID=" + regid;
+		new AsyncTask<Void, Void, String>() {
+		    @Override
+		    protected String doInBackground(Void... params) {
+		        String msg = "";
+		        try {
+		            if (gcm == null) {
+		                gcm = GoogleCloudMessaging.getInstance(context);
+		            }
+		            regid = gcm.register(SENDER_ID);
+		            msg = "Device registered, registration ID=" + regid;
 
-	                // Persist the regID - no need to register again.
-	                // ´ÙÀ½¿¡ ´Ù½Ã µî·ÏÇÒ ÇÊ¿ä°¡ ¾øµµ·Ï registration ID¸¦ ÀúÀåÇÑ´Ù.
-	                storeRegistrationId(context, regid);
-	            } catch (IOException ex) {
-	                msg = "Error :" + ex.getMessage();
-	                // If there is an error, don't just keep trying to register.
-	                // Require the user to click a button again, or perform
-	                // exponential back-off.
-	            }
-	            return msg;
-	        }
+		            // Persist the regID - no need to register again.
+		            // ë‹¤ìŒì— ë‹¤ì‹œ ë“±ë¡í•  í•„ìš”ê°€ ì—†ë„ë¡ registration IDë¥¼ ì €ì¥í•œë‹¤.
+		            storeRegistrationId(context, regid);
+		        } catch (IOException ex) {
+		            msg = "Error :" + ex.getMessage();
+		            Log.e("GCM Register Error", msg);
+		            // If there is an error, don't just keep trying to register.
+		            // Require the user to click a button again, or perform
+		            // exponential back-off.
+		        }
+		        return msg;
+		    }
 
-	        @Override
-	        protected void onPostExecute(String msg) {
-	        }
-	    }.execute();
+		    @Override
+		    protected void onPostExecute(String msg) {
+		    }
+		}.execute();
 	}
 	
 	/**
-	 * app server·Î registration ID¸¦ Àü¼ÛÇÑ´Ù.
+	 * app serverë¡œ registration IDë¥¼ ì „ì†¡í•œë‹¤.
 	 */
 	public void sendRegistrationIdToBackend() {
 		new AsyncTask<Void, Void, Void>() {
@@ -184,7 +186,7 @@ public class GCMManager {
 				String memberType = lm.getMemberType();
 				int memberNo = lm.getMemberNo();
 				
-				// ÆÄ¶ó¹ÌÅÍ ±¸¼º
+				// íŒŒë¼ë¯¸í„° êµ¬ì„±
 				String param = "memberType=" + memberType;
 				param += "&memberNo=" + memberNo;
 				param += "&regid=" + regid;
@@ -194,18 +196,18 @@ public class GCMManager {
 					URL url = new URL(activity.getString(R.string.server) + activity.getString(R.string.register_gcm_id));
 					HttpURLConnection conn = (HttpURLConnection)url.openConnection();
 					
-					// ¿äÃ»¹æ½ÄÀ» POST·Î ¼³Á¤
+					// ìš”ì²­ë°©ì‹ì„ POSTë¡œ ì„¤ì •
 					conn.setRequestMethod("POST");
 					conn.setDoInput(true);
 					conn.setDoOutput(true);
 					
-					// URL¿¡ ÆÄ¸®¹ÌÅÍ ³Ñ±â±â
+					// URLì— íŒŒë¦¬ë¯¸í„° ë„˜ê¸°ê¸°
 					OutputStreamWriter out = new OutputStreamWriter(conn.getOutputStream(), "euc-kr");
 					out.write(param);
 					out.flush();
 					out.close();
 					
-					// URL °á°ú °¡Á®¿À±â
+					// URL ê²°ê³¼ ê°€ì ¸ì˜¤ê¸°
 					String buffer = null;
 					BufferedReader in = new BufferedReader(new InputStreamReader(
 							conn.getInputStream(), "euc-kr"));
@@ -229,9 +231,9 @@ public class GCMManager {
                 try {
 					JSONObject jobj = new JSONObject(jsonString);
 					if( jobj.getInt("success") == 1)
-						Log.i(TAG, "registration id ÀúÀå(¾÷µ¥ÀÌÆ®) ¼º°ø");
+						Log.i(TAG, "registration id ì €ì¥(ì—…ë°ì´íŠ¸) ì„±ê³µ");
 					else
-						Log.i(TAG, "registration id ÀúÀå(¾÷µ¥ÀÌÆ®) ¼º°ø");
+						Log.i(TAG, "registration id ì €ì¥(ì—…ë°ì´íŠ¸) ì‹¤íŒ¨");
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}
@@ -239,11 +241,11 @@ public class GCMManager {
 		}.execute();
 		
 		
-		Log.i(TAG, "sendRegistrationIdToBackend È£ÃâµÊ");
+		Log.i(TAG, "sendRegistrationIdToBackend í˜¸ì¶œë¨");
 	}
 	
 	/**
-	 * {@code SharedPreferences}¿¡ registration ID¿Í app versionCode¸¦ ÀúÀåÇÑ´Ù.
+	 * {@code SharedPreferences}ì— registration IDì™€ app versionCodeë¥¼ ì €ì¥í•œë‹¤.
 	 *
 	 * @param context application's context.
 	 * @param regId registration ID
@@ -258,22 +260,24 @@ public class GCMManager {
 	    editor.commit();
 	}
 	
-	// GCM ¼­¹ö·Î ¸Ş½ÃÁö¸¦ Àü¼ÛÇÑ´Ù.
-	public void sendMessage(String to, String from, int data) {
+	// GCM ì„œë²„ë¡œ ë©”ì‹œì§€ë¥¼ ì „ì†¡í•œë‹¤.
+	public void sendMessage(String to, String msg, int data, int t) {
 		final String receiverID = to;
-		final String appliedTeam = from;
+		final String message = msg;
 		final int matchNo = data;
+		final int type = t;
 		
 		new AsyncTask<Void, Void, String>() {
         	String jsonString = "";
             @Override
             protected String doInBackground(Void... params) {
-                String msg = "";
+                String errorMsg = "";
 
                 try {
                 	String param = "registration_id=" + receiverID;
-                    param += "&data.message=" + URLEncoder.encode(appliedTeam + "ÆÀÀÌ ¸ÅÄ¡¸¦ ½ÅÃ»ÇÏ¿´½À´Ï´Ù.", "UTF-8");
+                    param += "&data.message=" + URLEncoder.encode(message, "UTF-8");
                     param += "&data.matchNo=" + matchNo;
+                    param += "&data.type=" + type;
                     Log.i("sendMessage params : ", param);
 					
 					URL url = new URL(GCM_SERVER);
@@ -284,7 +288,7 @@ public class GCMManager {
 					conn.setDoInput(true);
 					conn.setDoOutput(true);
 					
-					// URL¿¡ ÆÄ¸®¹ÌÅÍ ³Ñ±â±â
+					// URLì— íŒŒë¦¬ë¯¸í„° ë„˜ê¸°ê¸°
 					OutputStreamWriter out = new OutputStreamWriter(
 							conn.getOutputStream(), "euc-kr");
 					out.write(param);
@@ -294,7 +298,7 @@ public class GCMManager {
 					int responseCode = conn.getResponseCode();
 					Log.i(TAG, Integer.toString(responseCode));
 					
-					// URL °á°ú °¡Á®¿À±â
+					// URL ê²°ê³¼ ê°€ì ¸ì˜¤ê¸°
 					
 					String buffer = null;
 					
@@ -309,12 +313,12 @@ public class GCMManager {
 					
 					
 				} catch (MalformedURLException e) {
-					msg = "MalFormed Error :" + e.getMessage();;
+					errorMsg = "MalFormed Error :" + e.getMessage();;
 				} catch (IOException e) {
-					msg = "IO Error :" + e.getMessage();
+					errorMsg = "IO Error :" + e.getMessage();
 				}
                 
-                return msg;
+                return errorMsg;
             }
 
             @Override

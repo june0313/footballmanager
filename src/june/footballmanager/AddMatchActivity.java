@@ -1,4 +1,4 @@
-package june.footballmanager;
+ï»¿package june.footballmanager;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -12,18 +12,22 @@ import org.json.JSONObject;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.NumberPicker;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -90,86 +94,220 @@ public class AddMatchActivity extends Activity implements OnClickListener {
 		
 		int id = v.getId();
 		if (id == R.id.date) {
-			// µ¥ÀÌÆ® ÇÇÄ¿ ¸®½º³Ê
+			// ë°ì´íŠ¸ í”¼ì»¤ ë¦¬ìŠ¤ë„ˆ
 			DatePickerDialog.OnDateSetListener mDateSetListener = new DatePickerDialog.OnDateSetListener() {
 
 				@Override
 				public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
 					Calendar cal = new GregorianCalendar(year, monthOfYear, dayOfMonth, 0, 0, 0);
-					String date = year + "³â " + (monthOfYear + 1) + "¿ù " + dayOfMonth + "ÀÏ ";
+					String date = year + "ë…„ " + (monthOfYear + 1) + "ì›” " + dayOfMonth + "ì¼ ";
 					date += cal.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.KOREAN);
 					
-					// ³¯Â¥ Ãâ·Â
+					// ë‚ ì§œ ì¶œë ¥
 					tvDate.setText(date);
 					
-					// ¼­¹ö·Î Àü¼ÛÇÒ ³¯Â¥ ±¸¼º
+					// ì„œë²„ë¡œ ì „ì†¡í•  ë‚ ì§œ êµ¬ì„±
 					matchDate = year + "-" + (monthOfYear + 1) + "-" + dayOfMonth;
 				}
 			};
+			
 			int curYear = cal.get(Calendar.YEAR);
 			int curMonth = cal.get(Calendar.MONTH);
 			int curDay = cal.get(Calendar.DAY_OF_MONTH);
-			// µ¥ÀÌÆ® ÇÇÄ¿ ´ÙÀÌ¾ó·Î±× È£Ãâ
+			// ë°ì´íŠ¸ í”¼ì»¤ ë‹¤ì´ì–¼ë¡œê·¸ í˜¸ì¶œ
 			new DatePickerDialog(AddMatchActivity.this, mDateSetListener, curYear, curMonth, curDay).show();
 		} else if (id == R.id.time1
 				|| id == R.id.time2) {
-			// Å¸ÀÓ ÇÇÄ¿ ¸®½º³Ê
-			TimePickerDialog.OnTimeSetListener mTimeSetListener = new TimePickerDialog.OnTimeSetListener() {
+//			// íƒ€ì„ í”¼ì»¤ ë¦¬ìŠ¤ë„ˆ
+//			TimePickerDialog.OnTimeSetListener mTimeSetListener = new TimePickerDialog.OnTimeSetListener() {
+//
+//				@Override
+//				public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+//					// ì‹œê°„ í¬ë§·ì„ 'ì˜¤ì „ 12:05' í˜•ì‹ìœ¼ë¡œ ë³€ê²½
+//					
+//					SimpleDateFormat originalFormat = new SimpleDateFormat("HH:m");
+//					SimpleDateFormat newFormat = new SimpleDateFormat("a h:mm");
+//					String time = "";
+//					
+//					try {
+//						Date date = originalFormat.parse(Integer.toString(hourOfDay) + ":" + Integer.toString(minute));
+//						time = newFormat.format(date);
+//						
+//					} catch (ParseException e) {
+//						Log.e("FM", e.getMessage());
+//					}
+//					
+//					// ì‹œê°„ ì¶œë ¥ ë° ì„œë²„ë¡œ ì „ì†¡í•  ì‹œê°„ êµ¬ì„±
+//					if( v.getId() == R.id.time1) {
+//						tvTime1.setText(time);
+//						matchTime1 = hourOfDay + ":" + minute;
+//					}
+//					else {
+//						tvTime2.setText(time);
+//						matchTime2 = hourOfDay + ":" + minute;
+//					}
+//				}
+//			};
+//			int curHour = cal.get(Calendar.HOUR_OF_DAY);
+//			int curMinute = cal.get(Calendar.MINUTE);
+//			// íƒ€ì„ í”¼ì»¤ ë‹¤ì´ì–¼ë¡œê·¸ í˜¸ì¶œ
+//			new TimePickerDialog(AddMatchActivity.this, mTimeSetListener, curHour, curMinute, false).show();
+			
+			LayoutInflater inflater = (LayoutInflater)getSystemService(LAYOUT_INFLATER_SERVICE);
+			View layout = inflater.inflate(R.layout.dialog_set_time, null);
+			final NumberPicker npHour = (NumberPicker)layout.findViewById(R.id.hour);
+			final NumberPicker npMinute = (NumberPicker)layout.findViewById(R.id.minute);
+			final NumberPicker npAMPM = (NumberPicker)layout.findViewById(R.id.ampm);
+			
+			npHour.setMinValue(1);
+			npHour.setMaxValue(12);
+			
+			npMinute.setMinValue(0);
+			npMinute.setMaxValue(11);
+			npMinute.setDisplayedValues(new String[]{"00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55"});
+			
+			npAMPM.setMinValue(0);
+			npAMPM.setMaxValue(1);
+			npAMPM.setDisplayedValues(new String[]{"ì˜¤ì „", "ì˜¤í›„"});
+			
+			AlertDialog.Builder builder = new AlertDialog.Builder(this);
+			builder.setView(layout)
+			.setTitle("ì‹œê°„ ì„¤ì •")
+			.setPositiveButton("ì™„ë£Œ", new DialogInterface.OnClickListener() {
 
 				@Override
-				public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-					// ½Ã°£ Æ÷¸ËÀ» '¿ÀÀü 12:05' Çü½ÄÀ¸·Î º¯°æ
+				public void onClick(DialogInterface dialog, int which) {
+					String time = npAMPM.getDisplayedValues()[npAMPM.getValue()] + " "
+							+ npHour.getValue() + ":" + npMinute.getDisplayedValues()[npMinute.getValue()];
 					
-					SimpleDateFormat originalFormat = new SimpleDateFormat("HH:m");
-					SimpleDateFormat newFormat = new SimpleDateFormat("a h:mm");
-					String time = "";
+					SimpleDateFormat originalFormat = new SimpleDateFormat("a h:mm");
+					SimpleDateFormat newFormat = new SimpleDateFormat("HH:mm");
+					Date date = null;
 					
 					
 					try {
-						Date date = originalFormat.parse(Integer.toString(hourOfDay) + ":" + Integer.toString(minute));
-						time = newFormat.format(date);
-						
+						date = originalFormat.parse(time);
 					} catch (ParseException e) {
-						Log.e("FM", e.getMessage());
+						// TODO Auto-generated catch block
+						e.printStackTrace();
 					}
 					
-					// ½Ã°£ Ãâ·Â ¹× ¼­¹ö·Î Àü¼ÛÇÒ ½Ã°£ ±¸¼º
+					//ì‹œê°„ ì¶œë ¥ ë° ì„œë²„ë¡œ ì „ì†¡í•  ì‹œê°„ êµ¬ì„±
 					if( v.getId() == R.id.time1) {
 						tvTime1.setText(time);
-						matchTime1 = hourOfDay + ":" + minute;
-					}
-					else {
+						matchTime1 = newFormat.format(date);
+					} else {
 						tvTime2.setText(time);
-						matchTime2 = hourOfDay + ":" + minute;
+						matchTime2 = newFormat.format(date);
 					}
-				}
-			};
-			int curHour = cal.get(Calendar.HOUR_OF_DAY);
-			int curMinute = cal.get(Calendar.MINUTE);
-			// Å¸ÀÓ ÇÇÄ¿ ´ÙÀÌ¾ó·Î±× È£Ãâ
-			new TimePickerDialog(AddMatchActivity.this, mTimeSetListener, curHour, curMinute, false).show();
+				};
+				
+			}).show();
+			
 		} else if (id == R.id.location) {
 			startActivityForResult(new Intent(this, SelectLocationActivity.class), LOCATION);
 		} else if (id == R.id.btn_add_match) {
+			// ë§¤ì¹˜ ì •ë³´ë“¤ì´ ì¡°ê±´ì— ë§ê²Œ ì…ë ¥ë˜ì—ˆëŠ”ì§€ í™•ì¸í•œë‹¤.
+			SimpleDateFormat koreanDateFormat = new SimpleDateFormat("yyyyë…„ MMì›” ddì¼");
+			Calendar currCal = null;
+			Calendar settedCal = null;
+			
+			// í˜„ì¬ ì‹œê°„, ì‹œì‘ ì‹œê°„, ì¢…ë£Œ ì‹œê°„
+			SimpleDateFormat koreanTimeFormat = new SimpleDateFormat("a h:mm");
+			Calendar currTime = null;
+			Calendar startTime = null;
+			Calendar endTime = null;
+			
+			try {
+				
+				// í˜„ì¬ ë‚ ì§œ
+				Date currDate = new Date();
+				currCal = Calendar.getInstance();
+				currCal.setTime(currDate);
+				
+				// í˜„ì¬ ë‚ ì§œì—ì„œ ì‹œ, ë¶„, ì´ˆë¥¼ 0ìœ¼ë¡œ ë§Œë“ ë‹¤.
+				currCal.set(Calendar.HOUR_OF_DAY, 0);
+				currCal.set(Calendar.MINUTE, 0);
+				currCal.set(Calendar.SECOND, 0);
+				currCal.set(Calendar.MILLISECOND, 0);
+				
+				// ì„¤ì •ëœ ë‚ ì§œ
+				Date settedDate = koreanDateFormat.parse(tvDate.getText().toString());
+				settedCal = Calendar.getInstance();
+				settedCal.setTime(settedDate);
+				
+				// ì„¤ì •ëœ ë‚ ì§œì—ì„œ ì‹œ, ë¶„, ì´ˆë¥¼ 0ìœ¼ë¡œ ë§Œë“ ë‹¤.
+				settedCal.set(Calendar.HOUR_OF_DAY, 0);
+				settedCal.set(Calendar.MINUTE, 0);
+				settedCal.set(Calendar.SECOND, 0);
+				
+				// í˜„ì¬ ì‹œê°„
+				currTime = Calendar.getInstance();
+				currTime.setTime(currDate);
+				
+				// í˜„ì¬ ì‹œê°„ì—ì„œ ë…„, ì›”, ì¼ì„ 0ìœ¼ë¡œ ë§Œë“ ë‹¤.
+				currTime.set(Calendar.YEAR, 0);
+				currTime.set(Calendar.MONTH, 0);
+				currTime.set(Calendar.DAY_OF_MONTH, 0);
+				currTime.set(Calendar.SECOND, 0);
+				currTime.set(Calendar.MILLISECOND, 0);
+				
+				// ì‹œì‘ ì‹œê°„
+				settedDate = koreanTimeFormat.parse(tvTime1.getText().toString());
+				startTime = Calendar.getInstance();
+				startTime.setTime(settedDate);
+				
+				// ì‹œì‘ ì‹œê°„ì—ì„œ ë…„, ì›”, ì¼ì„ 0ìœ¼ë¡œ ë§Œë“ ë‹¤.
+				startTime.set(Calendar.YEAR, 0);
+				startTime.set(Calendar.MONTH, 0);
+				startTime.set(Calendar.DAY_OF_MONTH, 0);
+				
+				// ì¢…ë£Œ ì‹œê°„
+				settedDate = koreanTimeFormat.parse(tvTime2.getText().toString());
+				endTime = Calendar.getInstance();
+				endTime.setTime(settedDate);
+				
+				// ì¢…ë£Œ ì‹œê°„ì—ì„œ ë…„, ì›”, ì¼ì„ 0ìœ¼ë¡œ ë§Œë“ ë‹¤.
+				endTime.set(Calendar.YEAR, 0);
+				endTime.set(Calendar.MONTH, 0);
+				endTime.set(Calendar.DAY_OF_MONTH, 0);
+				
+				//Log.i("cur date check", currCal.toString());
+				//Log.i("set date check", settedCal.toString());
+				
+				Log.i("cur time check", currTime.toString());
+				Log.i("strat time check", startTime.toString());
+				Log.i("end time check", endTime.toString());
+			} catch (ParseException e) {
+				Log.e("date check", e.getMessage());
+			}
+			
 			if( tvDate.getText().length() <= 0 ) {
-				Toast.makeText(getApplicationContext(), "°æ±â ³¯Â¥¸¦ ¼³Á¤ÇØÁÖ¼¼¿ä.", 0).show();
+				Toast.makeText(this, "ê²½ê¸° ë‚ ì§œë¥¼ ì„¤ì •í•´ì£¼ì„¸ìš”.", 0).show();
 			} else if(tvTime1.getText().length() <= 0 ) {
-				Toast.makeText(getApplicationContext(), "½ÃÀÛ ½Ã°£À» ¼³Á¤ÇØÁÖ¼¼¿ä.", 0).show();
+				Toast.makeText(this, "ì‹œì‘ ì‹œê°„ì„ ì„¤ì •í•´ì£¼ì„¸ìš”.", 0).show();
 			} else if(tvTime2.getText().length() <= 0 ) {
-				Toast.makeText(getApplicationContext(), "Á¾·á ½Ã°£À» ¼³Á¤ÇØÁÖ¼¼¿ä.", 0).show();
+				Toast.makeText(this, "ì¢…ë£Œ ì‹œê°„ì„ ì„¤ì •í•´ì£¼ì„¸ìš”.", 0).show();
 			} else if(tvLocation.getText().length() <= 0 ) {
-				Toast.makeText(getApplicationContext(), "Áö¿ªÀ» ¼³Á¤ÇØÁÖ¼¼¿ä.", 0).show();
+				Toast.makeText(this, "ì§€ì—­ì„ ì„¤ì •í•´ì£¼ì„¸ìš”.", 0).show();
 			} else if(ground.getText().length() <= 0 ) {
-				Toast.makeText(getApplicationContext(), "°æ±âÀåÀ» ¼³Á¤ÇØÁÖ¼¼¿ä.", 0).show();
+				Toast.makeText(this, "ê²½ê¸°ì¥ì„ ì„¤ì •í•´ì£¼ì„¸ìš”.", 0).show();
+			} else if(currCal.compareTo(settedCal) == 1) {
+				Toast.makeText(this, "ì˜¤ëŠ˜ ë‚ ì§œë³´ë‹¤ ì´ì „ ë‚ ì§œë¡œ ë“±ë¡í•  ìˆ˜ ì—†ìŠµë‹ˆë‹¤.", 0).show();
+			} else if(currCal.compareTo(settedCal) == 0 && currTime.compareTo(startTime) != -1) {
+				// í˜„ì¬ ë‚ ì§œì™€ ê°™ì€ ê²½ìš°, í˜„ì¬ ì‹œê°„ ì´í›„ë¡œ ë“±ë¡í•´ì•¼ í•œë‹¤.
+				Toast.makeText(this, "í˜„ì¬ ì‹œê°„ ì´í›„ë¡œ ë“±ë¡í•´ì•¼ í•©ë‹ˆë‹¤.", 0).show();
+			} else if(startTime.compareTo(endTime) != -1) {
+				Toast.makeText(this, "ì¢…ë£Œ ì‹œê°„ì€ ì‹œì‘ ì‹œê°„ ì´í›„ë¡œ ì„¤ì •í•´ì•¼ í•©ë‹ˆë‹¤.", 0).show();
 			} else {
 				
-				// ¸ğµç Á¶°ÇÀ» ¸¸Á·ÇÏ¸é ¸ÅÄ¡ µî·Ï ÀÛ¾÷ ¼öÇà
+				// ëª¨ë“  ì¡°ê±´ì„ ë§Œì¡±í•˜ë©´ ë§¤ì¹˜ ë“±ë¡ ì‘ì—… ìˆ˜í–‰
 				addMatch();
 			}
 		}
 	}
 	
-	// ÁÖ¼Ò ¹Ş¾Æ¿À±â
+	// ì£¼ì†Œ ë°›ì•„ì˜¤ê¸°
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent intent) {
 		switch (requestCode) {
@@ -180,7 +318,7 @@ public class AddMatchActivity extends Activity implements OnClickListener {
 		}
 	}
 	
-	// À¥¼­¹ö·Î ¸ÅÄ¡¸¦ µî·ÏÇÏ´Â ¸Ş¼­µå
+	// ì›¹ì„œë²„ë¡œ ë§¤ì¹˜ë¥¼ ë“±ë¡í•˜ëŠ” ë©”ì„œë“œ
 	private void addMatch() {
 		String url = getString(R.string.server)	+ getString(R.string.add_match);
 		String param = "email=" + lm.getEmail()
@@ -191,17 +329,26 @@ public class AddMatchActivity extends Activity implements OnClickListener {
 				+ "&ground=" + ground.getText().toString()
 				+ "&detail=" + tvDetail.getText().toString().replace("\n", "__");
 		
-		JSONObject json = new HttpTask(url, param).getJSONObject();
-		
-		// check the success of getting information
-		try {
-			if (json.getInt("success") == 1) {
-				Toast.makeText(getApplicationContext(), "¸ÅÄ¡°¡ µî·ÏµÇ¾ú½À´Ï´Ù.", 0).show();
-				finish();
+		// ì„œë²„ ì—°ê²°
+		new HttpAsyncTask(url, param, this, "ë§¤ì¹˜ë¥¼ ë“±ë¡í•˜ëŠ” ì¤‘ ì…ë‹ˆë‹¤...") {
+
+			@Override
+			protected void onPostExecute(String result) {
+				JSONObject json = null;
+				
+				// check the success of getting information
+				try {
+					json = new JSONObject(result);
+					
+					if (json.getInt("success") == 1) {
+						Toast.makeText(AddMatchActivity.this, "ë§¤ì¹˜ê°€ ë“±ë¡ë˜ì—ˆìŠµë‹ˆë‹¤.", 0).show();
+						finish();
+					}
+				} catch (JSONException e) {
+					Log.e("addMatch", e.getMessage());
+				}
 			}
-		} catch (JSONException e) {
-			Log.e("addMatch", e.getMessage());
-		}
+		}.execute();
 	}
 	
 	@Override

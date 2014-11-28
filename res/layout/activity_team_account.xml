@@ -20,7 +20,6 @@
             android:textSize="17sp" />
         
         <Button
-            android:visibility="gone"
             android:id="@+id/btn_change_pw"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -28,16 +27,6 @@
             android:background="@drawable/round_button2"
             android:minHeight="48dp"
             android:text="비밀번호 변경"
-            android:textColor="#FFFFFF"
-            android:textSize="17sp" />
-        
-        <Button
-            android:visibility="gone"
-            android:id="@+id/btn_logout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:text="로그아웃"
             android:textColor="#FFFFFF"
             android:textSize="17sp" />
 

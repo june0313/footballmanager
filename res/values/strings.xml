@@ -48,11 +48,12 @@
     <string name="scrapped_match_list">get_scrapped_match_list.php</string>
     <string name="scrapped_find_player_list">get_scrapped_find_player_list.php</string>
     <string name="scrapped_find_team_list">get_scrapped_find_team_list.php</string>
-    
+    <string name="opposing_teamname">get_opposing_teamname.php</string>
+
     <!-- 액티비티 타이틀 -->
     <string name="title_activity_login">로그인</string>
-    <string name="title_activity_player_register">선수 회원 가입</string>
-    <string name="title_activity_team_register">팀 회원 가입</string>
+    <string name="title_activity_player_register">선수 계정 등록</string>
+    <string name="title_activity_team_register">팀 계정 등록</string>
     <string name="title_activity_account">계정 관리</string>
     <string name="title_activity_add_match">매치 등록</string>
     <string name="title_activity_match_detail">매치 정보</string>
@@ -76,5 +77,6 @@
     <string name="title_activity_set_find_team_condition">팀 구함</string>
     <string name="title_activity_find_team_detail">팀 구함</string>
     <string name="title_activity_scrap">스크랩</string>
+    <string name="title_activity_update_password">비밀번호 변경</string>
 
 </resources>

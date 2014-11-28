@@ -1,4 +1,4 @@
-package june.footballmanager;
+ï»¿package june.footballmanager;
 
 import java.util.ArrayList;
 
@@ -31,11 +31,11 @@ public class ScrappedFindPlayerListFragment extends Fragment implements OnItemCl
 	ListView list;
 	TextView empty;
 	TextView count;
-	TextView txtSort;		// Á¤·Ä±âÁØ text
+	TextView txtSort;		// ì •ë ¬ê¸°ì¤€ text
 	ArrayList<FindPlayerItem> playerList;
 	FindPlayerListAdapter plAdapter;
 	
-	// ½ºÅ©·¦ÇÑ ±Û ¹øÈ£ ½ºÆ®¸µ
+	// ìŠ¤í¬ë©í•œ ê¸€ ë²ˆí˜¸ ìŠ¤íŠ¸ë§
 	String scrappedItems;
 	
 	@Override
@@ -59,10 +59,10 @@ public class ScrappedFindPlayerListFragment extends Fragment implements OnItemCl
 		
 		count = (TextView) getView().findViewById(R.id.count);
 		
-		// ¸®½ºÆ® °´Ã¼ »ı¼º
+		// ë¦¬ìŠ¤íŠ¸ ê°ì²´ ìƒì„±
 		playerList = new ArrayList<FindPlayerItem>();
 		
-		// ¾î´ğÅÍ °´Ã¼ »ı¼º
+		// ì–´ëŒ‘í„° ê°ì²´ ìƒì„±
 		plAdapter = new FindPlayerListAdapter(getActivity(), playerList);
 		
 		list = (ListView) getView().findViewById(R.id.list);
@@ -72,11 +72,11 @@ public class ScrappedFindPlayerListFragment extends Fragment implements OnItemCl
 	    list.setAdapter(plAdapter);
 	    list.setOnItemClickListener(this);
 	    
-	    // ¿¥Æ¼ºä ÅØ½ºÆ® ¼³Á¤
+	    // ì— í‹°ë·° í…ìŠ¤íŠ¸ ì„¤ì •
 	    empty = (TextView)getView().findViewById(R.id.empty);
-	    empty.setText("½ºÅ©·¦ÇÑ °Ô½Ã¹°ÀÌ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
+	    empty.setText("ìŠ¤í¬ë©í•œ ê²Œì‹œë¬¼ì´ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
 	    
-	    // DB·ÎºÎÅÍ ½ºÅ©·¦ ¸ñ·Ï °¡Á®¿À±â
+	    // DBë¡œë¶€í„° ìŠ¤í¬ë© ëª©ë¡ ê°€ì ¸ì˜¤ê¸°
 	    DatabaseHandler db = new DatabaseHandler(getActivity());
 		scrappedItems = db.getAllScrapFindPlayer();
 		Log.i("Scrapped Find Player List", scrappedItems);
@@ -86,8 +86,8 @@ public class ScrappedFindPlayerListFragment extends Fragment implements OnItemCl
 	public void onItemClick(AdapterView<?> parent, View view, int position, long arg3) {
 		Intent intent = new Intent(getActivity(), FindPlayerDetailActivity.class);
 		
-		// °Ô½Ã¹° ¹øÈ£¸¦ ³Ñ°ÜÁÜ
-		// Çì´õºä°¡ Ãß°¡µÇ¾ú±â ¶§¹®¿¡ ÀÎµ¦½º¸¦ 1 °¨¼Ò½ÃÅ²´Ù.
+		// ê²Œì‹œë¬¼ ë²ˆí˜¸ë¥¼ ë„˜ê²¨ì¤Œ
+		// í—¤ë”ë·°ê°€ ì¶”ê°€ë˜ì—ˆê¸° ë•Œë¬¸ì— ì¸ë±ìŠ¤ë¥¼ 1 ê°ì†Œì‹œí‚¨ë‹¤.
 		position--;
 		intent.putExtra("no", playerList.get(position).getNo());
 		startActivity(intent);
@@ -100,7 +100,7 @@ public class ScrappedFindPlayerListFragment extends Fragment implements OnItemCl
 		getFindPlayerList();
 	}
 
-	// ¾î´ğÅÍ Á¤ÀÇ
+	// ì–´ëŒ‘í„° ì •ì˜
 	public class FindPlayerListAdapter extends BaseAdapter {
 
 		private Context context;
@@ -147,7 +147,7 @@ public class ScrappedFindPlayerListFragment extends Fragment implements OnItemCl
 			
 			String strPos = getItem(position).getPosition();
 			
-			// Æ÷Áö¼Çº° »ö»ó Ã³¸®
+			// í¬ì§€ì…˜ë³„ ìƒ‰ìƒ ì²˜ë¦¬
 			if(strPos.equals("GK"))
 				tvPosition.setTextColor(getResources().getColor(android.R.color.holo_orange_light));
 			else if(strPos.equals("LB") || strPos.equals("CB") || strPos.equals("RB") 
@@ -165,20 +165,20 @@ public class ScrappedFindPlayerListFragment extends Fragment implements OnItemCl
 			TextView location = (TextView) convertView.findViewById(R.id.location);
 			location.setText(getItem(position).getLocation());
 			
-			// Áñ°ÜÃ£±â ¹öÆ°
+			// ì¦ê²¨ì°¾ê¸° ë²„íŠ¼
 			ImageView scrap = (ImageView) convertView
 					.findViewById(R.id.img_scrap);
 			DatabaseHandler db = new DatabaseHandler(
 					ScrappedFindPlayerListFragment.this.getActivity());
 			boolean isScrapped = db.selectScrapFindPlayer(getItem(position).getNo());
 			
-			// Áñ°ÜÃ£±â ¿©ºÎ¿¡ µû¶ó ´Ù¸¥ ÀÌ¹ÌÁö¸¦ Ãâ·ÂÇÑ´Ù.
+			// ì¦ê²¨ì°¾ê¸° ì—¬ë¶€ì— ë”°ë¼ ë‹¤ë¥¸ ì´ë¯¸ì§€ë¥¼ ì¶œë ¥í•œë‹¤.
 			if (isScrapped)
 				scrap.setImageResource(R.drawable.scrapped);
 			else
 				scrap.setImageResource(R.drawable.scrap);
 
-			// Å¬¸¯ ÀÌº¥Æ® ¸®½º³Ê µî·Ï
+			// í´ë¦­ ì´ë²¤íŠ¸ ë¦¬ìŠ¤ë„ˆ ë“±ë¡
 			scrap.setOnClickListener(new OnClickListener() {
 
 				@Override
@@ -205,36 +205,46 @@ public class ScrappedFindPlayerListFragment extends Fragment implements OnItemCl
 		}
 	}
 	
-	// ¼­¹ö·ÎºÎÅÍ ½ºÅ©·¦ÇÑ ¼±¼ö¸ğÁı ¸®½ºÆ®¸¦ °¡Á®¿À´Â ¸Ş¼­µå
+	// ì„œë²„ë¡œë¶€í„° ìŠ¤í¬ë©í•œ ì„ ìˆ˜ëª¨ì§‘ ë¦¬ìŠ¤íŠ¸ë¥¼ ê°€ì ¸ì˜¤ëŠ” ë©”ì„œë“œ
 	private void getFindPlayerList() {
-		// ¿¬°áÇÒ ÆäÀÌÁöÀÇ URL
+		// ì—°ê²°í•  í˜ì´ì§€ì˜ URL
 		String url = getString(R.string.server) + getString(R.string.scrapped_find_player_list);
 		
-		// ÆÄ¶ó¹ÌÅÍ ¼³Á¤
+		// íŒŒë¼ë¯¸í„° ì„¤ì •
 		String param = "nos=" + scrappedItems;
 		
-		// ¼­¹ö ¿¬°á
-		JSONObject json = new HttpTask(url ,param).getJSONObject();
-		JSONArray jsonArr = null;
-		
-		try {
-			jsonArr = json.getJSONArray("list");
+		// ì„œë²„ ì—°ê²°
+		new HttpAsyncTask(url, param) {
 
-			JSONObject item;
+			@Override
+			protected void onPostExecute(String result) {
+				JSONObject json = null;
+				JSONArray jsonArr = null;
+				
+				try {
+					json = new JSONObject(result);
+					jsonArr = json.getJSONArray("list");
 
-			playerList.clear();
-			for (int i = 0; i < jsonArr.length(); i++) {
-				item = jsonArr.getJSONObject(i);
-				playerList.add(new FindPlayerItem(item));
+					JSONObject item;
+
+					playerList.clear();
+					for (int i = 0; i < jsonArr.length(); i++) {
+						item = jsonArr.getJSONObject(i);
+						playerList.add(new FindPlayerItem(item));
+					}
+					
+				} catch (JSONException e) {
+					playerList.clear();
+					Log.i("getFindPlayerList", e.getMessage());
+				} finally {
+					plAdapter.notifyDataSetChanged();
+					count.setText("ì´ " + playerList.size() + "ê°œ");
+				}	
+				
 			}
 			
-		} catch (JSONException e) {
-			playerList.clear();
-			Log.i("getFindPlayerList", e.getMessage());
-		} finally {
-			plAdapter.notifyDataSetChanged();
-			count.setText("ÃÑ " + playerList.size() + "°³");
-		}	
+		}.execute();
+		
 	}
 }
 

@@ -1,5 +1,5 @@
-/*
- * ½ºÅ©·¦ ¾×Æ¼ºñÆ¼
+ï»¿/*
+ * ìŠ¤í¬ë© ì•¡í‹°ë¹„í‹°
  */
 
 package june.footballmanager;
@@ -42,7 +42,7 @@ public class ScrapActivity extends FragmentActivity implements
 		// Set up the action bar.
 		final ActionBar actionBar = getActionBar();
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-		actionBar.setIcon(R.drawable.scrapped);
+		actionBar.setIcon(new ColorDrawable(getResources().getColor(android.R.color.transparent)));
 		actionBar.setDisplayHomeAsUpEnabled(true);
 
 		// Create the adapter that will return a fragment for each of the three
@@ -84,7 +84,7 @@ public class ScrapActivity extends FragmentActivity implements
 		return true;
 	}
 	
-	// ¸Ş´º ¼±ÅÃ½Ã Äİ¹é ¸Ş¼­µå
+	// ë©”ë‰´ ì„ íƒì‹œ ì½œë°± ë©”ì„œë“œ
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {

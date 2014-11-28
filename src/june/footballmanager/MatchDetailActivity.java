@@ -1,4 +1,4 @@
-package june.footballmanager;
+ï»¿package june.footballmanager;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -37,22 +37,22 @@ import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-// ¸ŞÄ¡ »ó¼¼ Á¤º¸ ÆäÀÌÁö
+// ë©”ì¹˜ ìƒì„¸ ì •ë³´ í˜ì´ì§€
 public class MatchDetailActivity extends Activity implements GoogleMap.OnMapClickListener {
 
-	// ¸ÅÄ¡ ¹øÈ£
+	// ë§¤ì¹˜ ë²ˆí˜¸
 	int matchNo;
 	
-	// ¸ÅÄ¡ »óÅÂ
+	// ë§¤ì¹˜ ìƒíƒœ
 	int matchState;
 	
-	// ¸ÅÄ¡¸¦ µî·ÏÇÑ ÆÀÀÇ ¹øÈ£
+	// ë§¤ì¹˜ë¥¼ ë“±ë¡í•œ íŒ€ì˜ ë²ˆí˜¸
 	int memberNo;
 	
-	// ¸ÅÄ¡¸¦ µî·ÏÇÑ ÆÀÀÇ ¿¬¶ôÃ³
+	// ë§¤ì¹˜ë¥¼ ë“±ë¡í•œ íŒ€ì˜ ì—°ë½ì²˜
 	String phone;
 	
-	// ¸ÅÄ¡¸¦ µî·ÏÇÑ ÆÀÀÇ GCM Registration ID
+	// ë§¤ì¹˜ë¥¼ ë“±ë¡í•œ íŒ€ì˜ GCM Registration ID
 	String regid;
 	
 	ProgressDialog pd;
@@ -73,16 +73,16 @@ public class MatchDetailActivity extends Activity implements GoogleMap.OnMapClic
 	GoogleMap map;
 	LatLng point;
 	
-	// ·Î±×ÀÎ Á¤º¸
+	// ë¡œê·¸ì¸ ì •ë³´
 	LoginManager lm;
 	
-	// »ó´ëÆÀ ÀÌ¸ŞÀÏ Á¤º¸
+	// ìƒëŒ€íŒ€ ì´ë©”ì¼ ì •ë³´
 	String opposingTeamEmail;
 	
-	// GCM °ü¸®ÀÚ °´Ã¼
+	// GCM ê´€ë¦¬ì ê°ì²´
 	GCMManager gm;
 	
-	// ½ºÅ©·¦ ¿©ºÎ¸¦ ÀúÀåÇÏ´Â º¯¼ö
+	// ìŠ¤í¬ë© ì—¬ë¶€ë¥¼ ì €ì¥í•˜ëŠ” ë³€ìˆ˜
 	boolean isScrapped = false;
 	
 	@Override
@@ -94,28 +94,28 @@ public class MatchDetailActivity extends Activity implements GoogleMap.OnMapClic
 	    actionBar.setDisplayHomeAsUpEnabled(true);
 	    actionBar.setDisplayShowHomeEnabled(false);
 	    
-	    // ¸ÅÄ¡ ¹øÈ£ °¡Á®¿À±â
+	    // ë§¤ì¹˜ ë²ˆí˜¸ ê°€ì ¸ì˜¤ê¸°
 	    Intent i = getIntent();
 	    matchNo = i.getIntExtra("matchNo", 0);
 	    Log.i("FM", "Match No : " + Integer.toString(matchNo));
 	    
-	    // ·Î±×ÀÎ Á¤º¸ °´Ã¼ »ı¼º
+	    // ë¡œê·¸ì¸ ì •ë³´ ê°ì²´ ìƒì„±
 	    lm = new LoginManager(this);
 	    
-	    // GCM °ü¸®ÀÚ °´Ã¼ »ı¼º
+	    // GCM ê´€ë¦¬ì ê°ì²´ ìƒì„±
 	    gm = new GCMManager(this);
 	    
-	    // »ó´ëÆÀÀÇ Email 
+	    // ìƒëŒ€íŒ€ì˜ Email 
 	    opposingTeamEmail = new String("");
 	    
-	    // ÀüÈ­ ¹öÆ°
+	    // ì „í™” ë²„íŠ¼
 	    call = (ImageButton)findViewById(R.id.call);
 	    call.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				
 				if ( phone.equals("") ) {
-					Toast.makeText(MatchDetailActivity.this, "¿¬¶ôÃ³°¡ µî·ÏµÇÁö ¾Ê¾Ò½À´Ï´Ù", 0).show();
+					Toast.makeText(MatchDetailActivity.this, "ì—°ë½ì²˜ê°€ ë“±ë¡ë˜ì§€ ì•Šì•˜ìŠµë‹ˆë‹¤", 0).show();
 				} else {
 					Intent i = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + phone));
 					startActivity(i);
@@ -123,13 +123,13 @@ public class MatchDetailActivity extends Activity implements GoogleMap.OnMapClic
 			}
 		});
 	    
-	    // SMS ¹öÆ°
+	    // SMS ë²„íŠ¼
 	    sms = (ImageButton)findViewById(R.id.sms);
 	    sms.setOnClickListener( new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				if ( phone.equals("") ) {
-					Toast.makeText(MatchDetailActivity.this, "¿¬¶ôÃ³°¡ µî·ÏµÇÁö ¾Ê¾Ò½À´Ï´Ù", 0).show();
+					Toast.makeText(MatchDetailActivity.this, "ì—°ë½ì²˜ê°€ ë“±ë¡ë˜ì§€ ì•Šì•˜ìŠµë‹ˆë‹¤", 0).show();
 				} else {
 					Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse("smsto:" + phone));
 					startActivity(i);
@@ -147,7 +147,7 @@ public class MatchDetailActivity extends Activity implements GoogleMap.OnMapClic
 	    detail = (TextView)findViewById(R.id.detail);
 	    state = (TextView)findViewById(R.id.state);
 	    
-	    // ÆÀ Á¤º¸ ¹öÆ°
+	    // íŒ€ ì •ë³´ ë²„íŠ¼
 	    info = (ImageButton)findViewById(R.id.info);
 	    info.setOnClickListener(new OnClickListener() {
 
@@ -160,11 +160,11 @@ public class MatchDetailActivity extends Activity implements GoogleMap.OnMapClic
 			}
 	    });
 	    
-	    // Áöµµ Ãâ·Â
+	    // ì§€ë„ ì¶œë ¥
 	    map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap(); 
 	    map.setOnMapClickListener(this);
 	    
-	    // ½ºÅ©·¦ ¿©ºÎ È®ÀÎ
+	    // ìŠ¤í¬ë© ì—¬ë¶€ í™•ì¸
 	    DatabaseHandler db = new DatabaseHandler(this);
 	    isScrapped = db.selectScrapMatch(matchNo);
 	}
@@ -173,7 +173,7 @@ public class MatchDetailActivity extends Activity implements GoogleMap.OnMapClic
 	public void onStart() {
 		super.onStart();
 		
-		// ¼­¹ö·ÎºÎÅÍ ¸ÅÄ¡ »ó¼¼ Á¤º¸¸¦ °¡Á®¿Í Ãâ·ÂÇÑ´Ù.
+		// ì„œë²„ë¡œë¶€í„° ë§¤ì¹˜ ìƒì„¸ ì •ë³´ë¥¼ ê°€ì ¸ì™€ ì¶œë ¥í•œë‹¤.
 		printMatchDetail();
 	}
 	
@@ -183,12 +183,12 @@ public class MatchDetailActivity extends Activity implements GoogleMap.OnMapClic
 		startActivity(new Intent(Intent.ACTION_VIEW,uri));
 	}
 	
-	// ¸Ş´º Ãâ·Â
+	// ë©”ë‰´ ì¶œë ¥
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.match_detail, menu);
 		MenuItem scrap = menu.findItem(R.id.scrap);
-		// ½ºÅ©·¦ ¿©ºÎ¿¡ µû¶ó ´Ù¸¥ ¾ÆÀÌÄÜÀ» Ãâ·ÂÇÑ´Ù.
+		// ìŠ¤í¬ë© ì—¬ë¶€ì— ë”°ë¼ ë‹¤ë¥¸ ì•„ì´ì½˜ì„ ì¶œë ¥í•œë‹¤.
 		if(isScrapped)
 			scrap.setIcon(R.drawable.scrapped);
 		else
@@ -198,17 +198,17 @@ public class MatchDetailActivity extends Activity implements GoogleMap.OnMapClic
 		return true;
 	}
 	
-	// ¸Ş´º ¼±ÅÃ
+	// ë©”ë‰´ ì„ íƒ
 	@Override
     public boolean onOptionsItemSelected(MenuItem item) {
 		switch( item.getItemId()) {
 		case R.id.apply :
-			if( !(lm.isLogin() && lm.getMemberType().equals("ÆÀÈ¸¿ø") ) ) {
-				Toast.makeText(this, "¸ÅÄ¡¸¦ ½ÅÃ»ÇÏ·Á¸é ÆÀ °èÁ¤À¸·Î ·Î±×ÀÎ ÇØ¾ßÇÕ´Ï´Ù", 0).show();
+			if( !(lm.isLogin() && lm.getMemberType().equals("íŒ€íšŒì›") ) ) {
+				Toast.makeText(this, "ë§¤ì¹˜ ì‹ ì²­ì€ íŒ€ ê³„ì •ë§Œ ê°€ëŠ¥í•©ë‹ˆë‹¤.", 0).show();
 			} else if( opposingTeamEmail.equals( lm.getEmail() ) ) {
-				Toast.makeText(this, "ÀÚ½ÅÀÌ µî·ÏÇÑ ¸ÅÄ¡¿¡´Â ¸ÅÄ¡¸¦ ½ÅÃ»ÇÒ ¼ö ¾ø½À´Ï´Ù", 0).show();
+				Toast.makeText(this, "ìì‹ ì´ ë“±ë¡í•œ ë§¤ì¹˜ì—ëŠ” ë§¤ì¹˜ë¥¼ ì‹ ì²­í•  ìˆ˜ ì—†ìŠµë‹ˆë‹¤", 0).show();
 			} else if( matchState == 1 ) {
-				Toast.makeText(this, "ÀÌ¹Ì ¼º»çµÈ ¸ÅÄ¡ÀÔ´Ï´Ù", 0).show();
+				Toast.makeText(this, "ì´ë¯¸ ì„±ì‚¬ëœ ë§¤ì¹˜ì…ë‹ˆë‹¤", 0).show();
 			} else {
 
 				AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -216,39 +216,39 @@ public class MatchDetailActivity extends Activity implements GoogleMap.OnMapClic
 				final View layout = inflater.inflate(R.layout.dialog_match_apply, null);
 				builder.setView(layout);
 				
-				builder.setTitle("¸ÅÄ¡ ½ÅÃ»");
-				// builder.setMessage("¸ÅÄ¡¸¦ ½ÅÃ»ÇÏ½Ã°Ú½À´Ï±î?");
-				builder.setPositiveButton("½ÅÃ»", new DialogInterface.OnClickListener() {
+				builder.setTitle("ë§¤ì¹˜ ì‹ ì²­");
+				// builder.setMessage("ë§¤ì¹˜ë¥¼ ì‹ ì²­í•˜ì‹œê² ìŠµë‹ˆê¹Œ?");
+				builder.setPositiveButton("ì‹ ì²­", new DialogInterface.OnClickListener() {
 
 							@Override
 							public void onClick(DialogInterface dialog, int which) {
-								// ½ÅÃ» ¸Ş½ÃÁö ÀúÀå
+								// ì‹ ì²­ ë©”ì‹œì§€ ì €ì¥
 								EditText edit = (EditText)layout.findViewById(R.id.apply_msg);
 								String applyMsg = edit.getText().toString();
 								
-								// ¸ÅÄ¡ ½ÅÃ» ÀÛ¾÷ ¼öÇà
+								// ë§¤ì¹˜ ì‹ ì²­ ì‘ì—… ìˆ˜í–‰
 								applyMatch(applyMsg);
 							}
 						});
-				builder.setNegativeButton("Ãë¼Ò", null);
+				builder.setNegativeButton("ì·¨ì†Œ", null);
 				builder.create().show();
 			}
 				
 			return true;
 		case R.id.scrap:
-			// Áñ°ÜÃ£±â
+			// ì¦ê²¨ì°¾ê¸°
 			DatabaseHandler db = new DatabaseHandler(this);
 			isScrapped = db.selectScrapMatch(matchNo);
 			
 			if(isScrapped) {
 				db.deleteScrapMatch(matchNo);
 				item.setIcon(R.drawable.scrap);
-				Log.i("¸ÅÄ¡ ½ºÅ©·¦ »èÁ¦", "¸ÅÄ¡ ¹øÈ£ : " + matchNo);
+				Log.i("ë§¤ì¹˜ ìŠ¤í¬ë© ì‚­ì œ", "ë§¤ì¹˜ ë²ˆí˜¸ : " + matchNo);
 				
 			} else {
 				db.insertScrapMatch(matchNo);
 				item.setIcon(R.drawable.scrapped);
-				Log.i("¸ÅÄ¡ ½ºÅ©·¦", "¸ÅÄ¡ ¹øÈ£ : " + matchNo);
+				Log.i("ë§¤ì¹˜ ìŠ¤í¬ë©", "ë§¤ì¹˜ ë²ˆí˜¸ : " + matchNo);
 			}
 			return true;
 		case android.R.id.home :
@@ -259,7 +259,7 @@ public class MatchDetailActivity extends Activity implements GoogleMap.OnMapClic
 		return false;
 	}
 	
-	// LocationÀÇ ÁÂÇ¥¸¦ ¸®ÅÏÇÏ´Â ¸Ş¼­µå
+	// Locationì˜ ì¢Œí‘œë¥¼ ë¦¬í„´í•˜ëŠ” ë©”ì„œë“œ
 	public List<Address> GetLocationPoint( String location ) {
 		Geocoder geocoder = null;
 		List<Address> addresses = null;
@@ -274,93 +274,137 @@ public class MatchDetailActivity extends Activity implements GoogleMap.OnMapClic
 		return addresses;
 	}
 	
-	// À¥ ¼­¹ö·Î ºÎÅÍ ¸ÅÄ¡ »ó¼¼ Á¤º¸¸¦ °¡Á®¿Í °¢ ºä¿¡ Ãâ·ÂÇÑ´Ù.
+	// ë§¤ì¹˜ê°€ ì„±ì‚¬ëœ íŒ€ì˜ ì´ë¦„ì„ ì¶œë ¥í•˜ëŠ” ë©”ì„œë“œ
+	private void printOpposingTeamname() {
+		String url = getString(R.string.server) + getString(R.string.opposing_teamname);
+		String parameter = "matchNo=" + matchNo;
+		
+		// ì„œë²„ ì—°ê²°
+		new HttpAsyncTask(url, parameter) {
+
+			@Override
+			protected void onPostExecute(String result) {
+				JSONObject json = null;
+				
+				try {
+					json = new JSONObject(result);
+					if(json.getInt("success") == 1) {
+						state.setText(json.getString("TEAM_NAME") + "íŒ€ê³¼ ë§¤ì¹˜ê°€ ì„±ì‚¬ë˜ì—ˆìŠµë‹ˆë‹¤.");
+					}
+				} catch (JSONException e) {
+					Log.e("getOpposingTeamname", e.getMessage());
+				}
+			}
+		}.execute();
+	}
+	
+	// ì›¹ ì„œë²„ë¡œ ë¶€í„° ë§¤ì¹˜ ìƒì„¸ ì •ë³´ë¥¼ ê°€ì ¸ì™€ ê° ë·°ì— ì¶œë ¥í•œë‹¤.
 	private void printMatchDetail() {
 		String url = getString(R.string.server) + getString(R.string.match_detail);
 		String parameter = "matchNo=" + matchNo;
-		JSONObject json = new HttpTask(url, parameter).getJSONObject();
 		
-		try {
-			if(json.getInt("success") == 1) {
-				SimpleDateFormat originalFormat = new SimpleDateFormat("HH:mm:ss");
-				SimpleDateFormat newFormat = new SimpleDateFormat("a h:mm");
-				String session = null;
+		// ì„œë²„ ì—°ê²°
+		new HttpAsyncTask(url, parameter, this, "ì ì‹œë§Œ ê¸°ë‹¤ë ¤ ì£¼ì„¸ìš”...") {
+
+			@Override
+			protected void onPostExecute(String result) {
+				JSONObject json = null;
 				
-				Date d = originalFormat.parse(json.getString("MATCH_TIME"));
-				session = newFormat.format(d);
-				
-				d = originalFormat.parse(json.getString("MATCH_TIME2"));
-				session += " ~ " + newFormat.format(d);
-				
-				// ¿¬¶ôÃ³ ÀúÀå
-				phone = json.getString("PHONE");
-				
-				// ¸ÅÄ¡ Á¤º¸¸¦ ºä¿¡ Ãâ·Â
-				teamName.setText(json.getString("TEAM_NAME"));
-				teamInfo.setText(json.getString("TEAM_LOCATION") + " / " + json.getString("NUM_OF_PLAYERS") + "¸í / " + json.getString("AGES") );
-				date.setText(json.getString("MATCH_DATE"));
-				time.setText(session);
-				location.setText(json.getString("MATCH_LOCATION"));
-				ground.setText(json.getString("GROUND"));
-				detail.setText(json.getString("DETAIL").replace("__", "\n"));
-				
-				// ¸ÅÄ¡ »óÅÂ ÀúÀå
-				matchState = json.getInt("STATE");
-				
-				// ¸ÅÄ¡ »óÅÂº° Ãâ·Â
-				if(matchState == 1)
-					state.setText("¸ÅÄ¡°¡ ¼º»çµÇ¾ú½À´Ï´Ù.");
-				
-				// »ó´ëÆÀ Email Á¤º¸ ÀúÀå
-				opposingTeamEmail = json.getString("EMAIL");
-				
-				// ¸ÅÄ¡¸¦ µî·ÏÇÑ ÆÀ ¹øÈ£ ÀúÀå
-				memberNo = json.getInt("MEMBER_NO");
-				
-				// ¸ÅÄ¡¸¦ µî·ÏÇÑ ÆÀÀÇ GCM Registration ID ÀúÀå
-				regid = json.getString("REGID");
-				
-				// Áöµµ¿¡ Ãâ·ÂÇÒ ÁÂÇ¥ »ı¼º
-			    List<Address> addrs = GetLocationPoint( location.getText().toString() );
-			    if( addrs.size() == 0 ) 
-			    	point = new LatLng( 35, 128 );
-			    else
-			    	point = new LatLng( addrs.get(0).getLatitude(), addrs.get(0).getLongitude() );
-			    
-			    // ÁÂÇ¥¸¦ Áöµµ¿¡ Ãâ·Â
-			    map.moveCamera(CameraUpdateFactory.newLatLngZoom(point, 15));
-			    map.addMarker(new MarkerOptions().position(point));
+				try {
+					json = new JSONObject(result);
+					if(json.getInt("success") == 1) {
+						SimpleDateFormat originalFormat = new SimpleDateFormat("HH:mm:ss");
+						SimpleDateFormat newFormat = new SimpleDateFormat("a h:mm");
+						String session = null;
+						
+						Date d = originalFormat.parse(json.getString("MATCH_TIME"));
+						session = newFormat.format(d);
+						
+						d = originalFormat.parse(json.getString("MATCH_TIME2"));
+						session += " ~ " + newFormat.format(d);
+						
+						// ì—°ë½ì²˜ ì €ì¥
+						phone = json.getString("PHONE");
+						
+						// ë§¤ì¹˜ ì •ë³´ë¥¼ ë·°ì— ì¶œë ¥
+						teamName.setText(json.getString("TEAM_NAME"));
+						teamInfo.setText(json.getString("TEAM_LOCATION") + " / " + json.getString("NUM_OF_PLAYERS") + "ëª… / " + json.getString("AGES") );
+						date.setText(json.getString("MATCH_DATE"));
+						time.setText(session);
+						location.setText(json.getString("MATCH_LOCATION"));
+						ground.setText(json.getString("GROUND"));
+						detail.setText(json.getString("DETAIL").replace("__", "\n"));
+						
+						// ë§¤ì¹˜ ìƒíƒœ ì €ì¥
+						matchState = json.getInt("STATE");
+						
+						// ë§¤ì¹˜ ìƒíƒœë³„ ì¶œë ¥
+						if(matchState == 1)
+							printOpposingTeamname();
+						else
+							state.setText("ì•„ì§ ìƒëŒ€íŒ€ì´ ì •í•´ì§€ì§€ ì•Šì•˜ìŠµë‹ˆë‹¤.");
+						
+						// ìƒëŒ€íŒ€ Email ì •ë³´ ì €ì¥
+						opposingTeamEmail = json.getString("EMAIL");
+						
+						// ë§¤ì¹˜ë¥¼ ë“±ë¡í•œ íŒ€ ë²ˆí˜¸ ì €ì¥
+						memberNo = json.getInt("MEMBER_NO");
+						
+						// ë§¤ì¹˜ë¥¼ ë“±ë¡í•œ íŒ€ì˜ GCM Registration ID ì €ì¥
+						regid = json.getString("REGID");
+						
+						// ì§€ë„ì— ì¶œë ¥í•  ì¢Œí‘œ ìƒì„±
+					    List<Address> addrs = GetLocationPoint( location.getText().toString() );
+					    if( addrs.size() == 0 ) 
+					    	point = new LatLng( 35, 128 );
+					    else
+					    	point = new LatLng( addrs.get(0).getLatitude(), addrs.get(0).getLongitude() );
+					    
+					    // ì¢Œí‘œë¥¼ ì§€ë„ì— ì¶œë ¥
+					    map.moveCamera(CameraUpdateFactory.newLatLngZoom(point, 15));
+					    map.addMarker(new MarkerOptions().position(point));
+					}
+				} catch (JSONException e) {
+					Log.e("printMatchDetail", e.getMessage());
+				} catch (ParseException e) {
+					Log.e("printMatchDetail", e.getMessage());
+				}
 			}
-		} catch (JSONException e) {
-			Log.e("printMatchDetail", e.getMessage());
-		} catch (ParseException e) {
-			Log.e("printMatchDetail", e.getMessage());
-		}
+		}.execute();
 	}
 	
-	// ¸ÅÄ¡ ½ÅÃ» ÀÛ¾÷À» ¼öÇàÇÏ´Â ¸Ş¼­µå
+	// ë§¤ì¹˜ ì‹ ì²­ ì‘ì—…ì„ ìˆ˜í–‰í•˜ëŠ” ë©”ì„œë“œ
 	private void applyMatch(String msg) {
 		String url = getString(R.string.server) + getString(R.string.apply_match);
 		String parameter = "matchNo=" + matchNo;
 		parameter += "&memberNo=" + lm.getMemberNo();
 		parameter += "&applyMsg=" + msg;
 		
-		JSONObject json = new HttpTask(url, parameter).getJSONObject();
-		
-		try {
-			int success = json.getInt("success");
-			
-			if( success == 0 ) {
-				Toast.makeText(getApplicationContext(), "¸ÅÄ¡ ½ÅÃ»¿¡ ½ÇÆĞÇÏ¿´½À´Ï´Ù", 0).show();
-			} else if ( success == 1 ) {
-				Toast.makeText(getApplicationContext(), "¸ÅÄ¡¸¦ ½ÅÃ»ÇÏ¿´½À´Ï´Ù", 0).show();
-				// GCM ¸Ş½ÃÁö Àü¼Û
-				gm.sendMessage(regid, lm.getTeamName(), matchNo);
-			} else {
-				Toast.makeText(getApplicationContext(), "ÀÌ¹Ì ½ÅÃ»ÇÑ ¸ÅÄ¡ÀÔ´Ï´Ù", 0).show();
+		// ì„œë²„ ì—°ê²°
+		new HttpAsyncTask(url, parameter, this, "ì ì‹œë§Œ ê¸°ë‹¤ë ¤ ì£¼ì„¸ìš”...") {
+
+			@Override
+			protected void onPostExecute(String result) {
+				JSONObject json = null;
+				
+				try {
+					json = new JSONObject(result);
+					int success = json.getInt("success");
+					
+					if( success == 0 ) {
+						Toast.makeText(MatchDetailActivity.this, "ë§¤ì¹˜ ì‹ ì²­ì— ì‹¤íŒ¨í•˜ì˜€ìŠµë‹ˆë‹¤", 0).show();
+					} else if ( success == 1 ) {
+						Toast.makeText(MatchDetailActivity.this, "ë§¤ì¹˜ë¥¼ ì‹ ì²­í•˜ì˜€ìŠµë‹ˆë‹¤", 0).show();
+						// GCM ë©”ì‹œì§€ ì „ì†¡
+						// ë§ˆì§€ë§‰ ì¸ì 0ì€ ë§¤ì¹˜ 'ì‹ ì²­'ì„ ë‚˜íƒ€ë‚¸ë‹¤.(ìˆ˜ë½ì€ 1)
+						gm.sendMessage(regid, lm.getTeamName() + "íŒ€ì´ ë§¤ì¹˜ë¥¼ ì‹ ì²­í•˜ì˜€ìŠµë‹ˆë‹¤.", matchNo, 0);
+					} else {
+						Toast.makeText(MatchDetailActivity.this, "ì´ë¯¸ ì‹ ì²­í•œ ë§¤ì¹˜ì…ë‹ˆë‹¤", 0).show();
+					}
+				} catch (JSONException e) {
+					Log.e("applyMatch", e.getMessage());
+				}
 			}
-		} catch (JSONException e) {
-			Log.e("applyMatch", e.getMessage());
-		}
+		}.execute();	
 	}
 }

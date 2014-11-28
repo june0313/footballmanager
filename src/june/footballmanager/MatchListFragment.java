@@ -1,4 +1,4 @@
-package june.footballmanager;
+ï»¿package june.footballmanager;
 
 import java.util.ArrayList;
 
@@ -7,7 +7,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -35,36 +37,38 @@ import android.widget.Toast;
  * 
  */
 
-public class MatchListFragment extends Fragment implements OnItemClickListener, OnScrollListener {
+public class MatchListFragment extends Fragment implements OnItemClickListener, OnScrollListener, DialogInterface.OnClickListener {
 	private static final int MATCH_CONDITION = 0;
 	
 	ListView list;
 	TextView count;
-	TextView txtSort;		// Á¤·Ä±âÁØ text
+	TextView txtSort;		// ì •ë ¬ê¸°ì¤€ text
 	ArrayList<MatchItem> matchList;
 	MatchListAdapter mlAdapter;
 	
-	// ·Î±×ÀÎ Á¤º¸
+	// ë¡œê·¸ì¸ ì •ë³´
 	LoginManager lm;
+	
+	// ìŠ¤í¬ë© ë¦¬ìŠ¤íŠ¸
+	ArrayList<Integer> scrappedList;
 
-	// ÇÁ·¹±×¸ÕÆ®°¡ »ı¼ºµÉ ¶§ ÃÖÃÊ ÇÑ¹ø¸¸ ½ÇÇà
-	// ÇÁ·¹±×¸ÕÆ®ÀÇ onCreate¿¡¼­´Â UI ÀÛ¾÷À» ÇÒ ¼ö ¾ø´Ù.
+	// í”„ë ˆê·¸ë¨¼íŠ¸ê°€ ìƒì„±ë  ë•Œ ìµœì´ˆ í•œë²ˆë§Œ ì‹¤í–‰
+	// í”„ë ˆê·¸ë¨¼íŠ¸ì˜ onCreateì—ì„œëŠ” UI ì‘ì—…ì„ í•  ìˆ˜ ì—†ë‹¤.
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
 		
-		// ·Î±×ÀÎÁ¤º¸ °¡Á®¿À±â
+		// ë¡œê·¸ì¸ì •ë³´ ê°€ì ¸ì˜¤ê¸°
 		lm = new LoginManager(getActivity());
 		
 		matchList = new ArrayList<MatchItem>();
 		
-		// ¾î´ğÅÍ »ı¼º
+		// ì–´ëŒ‘í„° ìƒì„±
 		mlAdapter = new MatchListAdapter(getActivity(), matchList);
-		
 	}
 	
-	// ·çÆ® view¸¦ »ı¼ºÇÏ¿© ¸®ÅÏÇÑ´Ù.
+	// ë£¨íŠ¸ viewë¥¼ ìƒì„±í•˜ì—¬ ë¦¬í„´í•œë‹¤.
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -73,15 +77,15 @@ public class MatchListFragment extends Fragment implements OnItemClickListener, 
 		return view;
 	}
 	
-	// ActivityÀÇ setContentView()´ÙÀ½À¸·Î ½ÇÇà
+	// Activityì˜ setContentView()ë‹¤ìŒìœ¼ë¡œ ì‹¤í–‰
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		
-		// count(¸ÅÄ¡ °³¼ö) TextView ÂüÃÊ
+		// count(ë§¤ì¹˜ ê°œìˆ˜) TextView ì°¸ì´ˆ
 		count = (TextView)getView().findViewById(R.id.count);
 		
-		// °Ë»öÁ¶°Ç TextView ÂüÁ¶
+		// ê²€ìƒ‰ì¡°ê±´ TextView ì°¸ì¡°
 		txtSort = (TextView)getView().findViewById(R.id.txt_sort);
 		txtSort.setOnClickListener(new OnClickListener() {
 
@@ -91,7 +95,7 @@ public class MatchListFragment extends Fragment implements OnItemClickListener, 
 			}
 		});
 		
-		// ¸®½ºÆ® »ı¼º ¹× ¼³Á¤
+		// ë¦¬ìŠ¤íŠ¸ ìƒì„± ë° ì„¤ì •
 	    list = (ListView)getView().findViewById(R.id.list);
 	    list.setEmptyView(getView().findViewById(R.id.empty));
 	    list.addHeaderView(new View(getActivity()), null, true);
@@ -102,41 +106,43 @@ public class MatchListFragment extends Fragment implements OnItemClickListener, 
 	}
 	
 	public void listCountUpdate() {
-		count.setText("ÃÑ " + matchList.size() + "°³ÀÇ ¸ÅÄ¡");
+		count.setText("ì´ " + matchList.size() + "ê°œì˜ ë§¤ì¹˜");
 	}
 
 	@Override
 	public void onResume() {
 		super.onResume();
 		
-		// ¸®½ºÆ®°¡ ºñ¾îÀÖÀ¸¸é ¼­¹ö·ÎºÎÅÍ ¸®½ºÆ®¸¦ °¡Á®¿Â´Ù.
+		// ë¦¬ìŠ¤íŠ¸ê°€ ë¹„ì–´ìˆìœ¼ë©´ ì„œë²„ë¡œë¶€í„° ë¦¬ìŠ¤íŠ¸ë¥¼ ê°€ì ¸ì˜¨ë‹¤.
 		if (matchList.size() == 0) {
-			//GetMatchList gml = new GetMatchList();
-			//gml.execute(new Integer[] { 0 });
 			getMatchList(0);
 		} else
-			// ¸®½ºÆ®°¡ ÀÌ¹Ì Â÷ÀÖÀ¸¸é °³¼ö¸¸ »õ·Î Ãâ·ÂÇÑ´Ù.
+			// ë¦¬ìŠ¤íŠ¸ê°€ ì´ë¯¸ ì°¨ìˆìœ¼ë©´ ê°œìˆ˜ë§Œ ìƒˆë¡œ ì¶œë ¥í•œë‹¤.
 			listCountUpdate();
+		
+		// ë¡œì»¬DBì—ì„œ ìŠ¤í¬ë© ì •ë³´ ê°€ì ¸ì˜¤ê¸°
+		DatabaseHandler db = new DatabaseHandler(MatchListFragment.this.getActivity());
+		scrappedList = db.getScrappedMatchList();
 	}
 	
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent intent) {
 		switch (requestCode) {
 		case MATCH_CONDITION:
-			// °Ë»ö Á¶°Ç ¼³Á¤ ÈÄ¿¡´Â Á¶°Ç¿¡ ¸Â°Ô ´Ù½Ã °¡Á®¿Â´Ù.
+			// ê²€ìƒ‰ ì¡°ê±´ ì„¤ì • í›„ì—ëŠ” ì¡°ê±´ì— ë§ê²Œ ë‹¤ì‹œ ê°€ì ¸ì˜¨ë‹¤.
 			if (resultCode == Activity.RESULT_OK) {
 				getMatchList(0);
 			}
 		}
 	}
 	
-	// ¸ÅÄ¡ ¾ÆÀÌÅÛ Å¬¸¯ ÀÌº¥Æ®
+	// ë§¤ì¹˜ ì•„ì´í…œ í´ë¦­ ì´ë²¤íŠ¸
 	@Override
 	public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
-		// ¸ÅÄ¡ »ó¼¼ ¾×Æ¼ºñÆ¼ ½ÇÇà
+		// ë§¤ì¹˜ ìƒì„¸ ì•¡í‹°ë¹„í‹° ì‹¤í–‰
 		Intent intent = new Intent(getActivity(), MatchDetailActivity.class);
-		// ¸ÅÄ¡ ¹øÈ£¸¦ ³Ñ°ÜÁÜ
-		// Çì´õºä°¡ Ãß°¡µÇ¾ú±â ¶§¹®¿¡ ÀÎµ¦½º¸¦ 1 °¨¼Ò½ÃÅ²´Ù.
+		// ë§¤ì¹˜ ë²ˆí˜¸ë¥¼ ë„˜ê²¨ì¤Œ
+		// í—¤ë”ë·°ê°€ ì¶”ê°€ë˜ì—ˆê¸° ë•Œë¬¸ì— ì¸ë±ìŠ¤ë¥¼ 1 ê°ì†Œì‹œí‚¨ë‹¤.
 		position--;
 		intent.putExtra("matchNo", matchList.get(position).getMatchNo());
 		startActivity(intent);
@@ -151,16 +157,19 @@ public class MatchListFragment extends Fragment implements OnItemClickListener, 
 	public boolean onOptionsItemSelected(MenuItem item) {
 	    int itemId = item.getItemId();
 	  
-	    // ¸ÅÄ¡ µî·Ï ¹öÆ° Å¬¸¯½Ã
+	    // ë§¤ì¹˜ ë“±ë¡ ë²„íŠ¼ í´ë¦­ì‹œ
 		if (itemId == R.id.add) {
-			// ÆÀ°èÁ¤ ·Î±×ÀÎ ¿©ºÎ¸¦ È®ÀÎÇÑ´Ù.
-			if(lm.isLogin() && lm.getMemberType().equals("ÆÀÈ¸¿ø")) {
+			// íŒ€ê³„ì • ë¡œê·¸ì¸ ì—¬ë¶€ë¥¼ í™•ì¸í•œë‹¤.
+			if(lm.isLogin() && lm.getMemberType().equals("íŒ€íšŒì›")) {
 	    		startActivity(new Intent(getActivity(), AddMatchActivity.class));
-	    	} else {
-	    		Toast.makeText(getActivity(), "¸ÅÄ¡¸¦ µî·ÏÇÏ·Á¸é ÆÀ °èÁ¤À¸·Î ·Î±×ÀÎ ÇØ¾ßÇÕ´Ï´Ù.", 0).show();
+	    	} else if(lm.isLogin() && lm.getMemberType().equals("ì„ ìˆ˜íšŒì›")) {
+	    		Toast.makeText(getActivity(), "ë§¤ì¹˜ ë“±ë¡ì€ íŒ€ ê³„ì •ë§Œ ê°€ëŠ¥í•©ë‹ˆë‹¤", 0).show();
+	    	} else{
+	    		// ë¡œê·¸ì¸ í• ê²ƒì¸ì§€ ë¬»ëŠ” ë‹¤ì´ì–¼ë¡œê·¸ë¥¼ ë„ìš´ë‹¤.
+	    		showLoginAlert();
 	    	}
 		} else if (itemId == R.id.search) {
-			// °Ë»öÁ¶°Ç Activity È£Ãâ
+			// ê²€ìƒ‰ì¡°ê±´ Activity í˜¸ì¶œ
 			Intent intent = new Intent(getActivity(), SetMatchConditionActivity.class);
 			startActivityForResult(intent, MATCH_CONDITION);
 		} else if (itemId == R.id.refresh) {
@@ -170,7 +179,7 @@ public class MatchListFragment extends Fragment implements OnItemClickListener, 
 	    return true;
 	}
 	
-	// ¾î´ğÅÍ Á¤ÀÇ
+	// ì–´ëŒ‘í„° ì •ì˜
 	public class MatchListAdapter extends BaseAdapter {
 		
 		private Context context;
@@ -205,7 +214,7 @@ public class MatchListFragment extends Fragment implements OnItemClickListener, 
 			}
 			TextView dateHeader = (TextView)convertView.findViewById(R.id.date_header);
 			
-			// Ã¹¹øÂ° ¾ÆÀÌÅÛÀÌ°Å³ª, ÀÌÀü ¾ÆÀÌÅÛ°ú µî·Ï ³¯Â¥°¡ ´Ù¸¥°æ¿ì µî·Ï ³¯Â¥¸¦ Ãâ·ÂÇÑ´Ù.
+			// ì²«ë²ˆì§¸ ì•„ì´í…œì´ê±°ë‚˜, ì´ì „ ì•„ì´í…œê³¼ ë“±ë¡ ë‚ ì§œê°€ ë‹¤ë¥¸ê²½ìš° ë“±ë¡ ë‚ ì§œë¥¼ ì¶œë ¥í•œë‹¤.
 			if(position == 0 || !getItem(position-1).getPostedDate().equals(getItem(position).getPostedDate())) {
 				dateHeader.setText(getItem(position).getPostedDate());
 				dateHeader.setVisibility(View.VISIBLE);
@@ -231,36 +240,36 @@ public class MatchListFragment extends Fragment implements OnItemClickListener, 
 			time.setText(getItem(position).getSession());
 			
 			TextView state = (TextView) convertView.findViewById(R.id.state);
-			// ¸ÅÄ¡ »óÅÂ¿¡ µû¶ó ´Ù¸¥ text Ãâ·Â
-			// 0 : »ó´ëÆÀ ½ÅÃ» ´ë±âÁß
-			// 1 : ¸ÅÄ¡°¡ ¼º»çµÊ
-			// 2 : ¸ÅÄ¡°¡ Á¾·áµÊ
+			// ë§¤ì¹˜ ìƒíƒœì— ë”°ë¼ ë‹¤ë¥¸ text ì¶œë ¥
+			// 0 : ìƒëŒ€íŒ€ ì‹ ì²­ ëŒ€ê¸°ì¤‘
+			// 1 : ë§¤ì¹˜ê°€ ì„±ì‚¬ë¨
+			// 2 : ë§¤ì¹˜ê°€ ì¢…ë£Œë¨
 			switch(getItem(position).getState()) {
 			case 0:
-				state.setText(getItem(position).getApplyCnt() + "ÆÀ ½ÅÃ»");
+				state.setText(getItem(position).getApplyCnt() + "íŒ€ ì‹ ì²­");
 				state.setTextColor(getResources().getColor(android.R.color.holo_blue_light));
 				break;
 			case 1:
-				state.setText("¸ÅÄª ¿Ï·á");
+				state.setText("ë§¤ì¹­ ì™„ë£Œ");
 				state.setTextColor(getResources().getColor(android.R.color.holo_green_light));
 				break;
 			case 2:
-				state.setText("Á¾·áµÊ");
+				state.setText("ì¢…ë£Œë¨");
 				state.setTextColor(getResources().getColor(R.color.gray));
 				break;
 			}
 			
-			// Áñ°ÜÃ£±â ¹öÆ° 
+			// ìŠ¤í¬ë© ë²„íŠ¼ 
 			ImageView scrap = (ImageView)convertView.findViewById(R.id.img_scrap);
-			DatabaseHandler db = new DatabaseHandler(MatchListFragment.this.getActivity());
-			boolean isScrapped = db.selectScrapMatch(getItem(position).getMatchNo());
-			// Áñ°ÜÃ£±â ¿©ºÎ¿¡ µû¶ó ´Ù¸¥ ÀÌ¹ÌÁö¸¦ Ãâ·ÂÇÑ´Ù.
+			Integer matchNo = new Integer(getItem(position).getMatchNo());
+			boolean isScrapped = scrappedList.contains(matchNo);
+			// ìŠ¤í¬ë© ì—¬ë¶€ì— ë”°ë¼ ë‹¤ë¥¸ ì´ë¯¸ì§€ë¥¼ ì¶œë ¥í•œë‹¤.
 			if(isScrapped)
 				scrap.setImageResource(R.drawable.scrapped);
 			else
 				scrap.setImageResource(R.drawable.scrap);
 			
-			// Å¬¸¯ ÀÌº¥Æ® ¸®½º³Ê µî·Ï
+			// í´ë¦­ ì´ë²¤íŠ¸ ë¦¬ìŠ¤ë„ˆ ë“±ë¡
 			scrap.setOnClickListener(new OnClickListener() {
 
 				@Override
@@ -283,24 +292,20 @@ public class MatchListFragment extends Fragment implements OnItemClickListener, 
 		}
 	}
 	
-	// ¼­¹ö·ÎºÎÅÍ ¸ÅÄ¡ ¸®½ºÆ®¸¦ °¡Á®¿À´Â ¸Ş¼­µå
-	private void getMatchList(int startIdx) {
-		
-		boolean isInitial = false;
-		// ½ÃÀÛ ÀÎµ¦½º°¡ 0 ÀÌ¸é ¸®½ºÆ®¸¦ ÃÖÃÊ·Î Ãâ·ÂÇÏ´Â °Í ÀÌ¹Ç·Î isInitial ÇÃ·¡±×¸¦ true·Î ¼³Á¤ÇØÁØ´Ù.
-		if( startIdx == 0) isInitial = true;
+	// ì„œë²„ë¡œë¶€í„° ë§¤ì¹˜ ë¦¬ìŠ¤íŠ¸ë¥¼ ê°€ì ¸ì˜¤ëŠ” ë©”ì„œë“œ
+	private void getMatchList(final int startIdx) {
 		
 		String url = getString(R.string.server) + getString(R.string.match_list);
 		
-		// ÀúÀåµÈ °Ë»ö Á¶°Ç °¡Á®¿À±â
+		// ì €ì¥ëœ ê²€ìƒ‰ ì¡°ê±´ ê°€ì ¸ì˜¤ê¸°
 		SharedPreferences prefCondition = getActivity().getSharedPreferences("matchConditions", Context.MODE_PRIVATE);
 		
-		// ½Ã°£´ë ¹è¿­
+		// ì‹œê°„ëŒ€ ë°°ì—´
 		String[] startTimes = getResources().getStringArray(R.array.start_time);
 		String[] endTimes = getResources().getStringArray(R.array.end_time);
 		
-		// °Ë»ö Á¶°Ç ÆÄ¸®¹ÌÅÍ ±¸¼º
-		String param = "location=" + prefCondition.getString("location", "Àü±¹");
+		// ê²€ìƒ‰ ì¡°ê±´ íŒŒë¦¬ë¯¸í„° êµ¬ì„±
+		String param = "location=" + prefCondition.getString("location", "ì „êµ­");
 		param += "&startTime=" + startTimes[prefCondition.getInt("time", 0)];
 		param += "&endTime=" + endTimes[prefCondition.getInt("time", 0)];
 		for( int i = 0; i < 7; i++ )
@@ -310,48 +315,56 @@ public class MatchListFragment extends Fragment implements OnItemClickListener, 
 		param += "&startIdx=" + startIdx;
 		
 		
-		// ¼­¹ö ¿¬°á
-		JSONObject json = new HttpTask(url, param).getJSONObject();
-		JSONArray jsonArr = null;
-		
-		try {
-			// check the success of getting information
-			if (json.getInt("success") == 1) {
-				
-				// ¸®½ºÆ®°¡ Ã³À½ºÎÅÍ Ãâ·ÂµÇ´Â °æ¿ì ±âÁ¸ÀÇ ¸®½ºÆ®¸¦ clear ÇÑ´Ù.
-				if(isInitial) matchList.clear();
+		// ì„œë²„ ì—°ê²°
+		new HttpAsyncTask(url, param) {
 
-				jsonArr = json.getJSONArray("list");
-
-				JSONObject jo;
+			@Override
+			protected void onPostExecute(String result) {
+				JSONObject json = null;
+				JSONArray jsonArr = null;
 				
-				// Ãß°¡·Î °¡Á®¿Â ·¹ÄÚµå¸¦ ¸®½ºÆ®¿¡ Ãß°¡ÇÑ´Ù.
-				for (int i = 0; i < jsonArr.length(); i++) {
-					jo = jsonArr.getJSONObject(i);
-					matchList.add(new MatchItem(jo));
+				try {
+					json = new JSONObject(result);
+					
+					// check the success of getting information
+					if (json.getInt("success") == 1) {
+						
+						// ë¦¬ìŠ¤íŠ¸ê°€ ì²˜ìŒë¶€í„° ì¶œë ¥ë˜ëŠ” ê²½ìš° ê¸°ì¡´ì˜ ë¦¬ìŠ¤íŠ¸ë¥¼ clear í•œë‹¤.
+						if(startIdx == 0) matchList.clear();
+
+						jsonArr = json.getJSONArray("list");
+
+						JSONObject jo;
+						
+						// ì¶”ê°€ë¡œ ê°€ì ¸ì˜¨ ë ˆì½”ë“œë¥¼ ë¦¬ìŠ¤íŠ¸ì— ì¶”ê°€í•œë‹¤.
+						for (int i = 0; i < jsonArr.length(); i++) {
+							jo = jsonArr.getJSONObject(i);
+							matchList.add(new MatchItem(jo));
+						}
+					} 
+				} catch (JSONException e) {
+					//matchList.clear();
+				} finally {
+					mlAdapter.notifyDataSetChanged();
+					listCountUpdate();
 				}
-			} 
-		} catch (JSONException e) {
-			//matchList.clear();
-		} finally {
-			mlAdapter.notifyDataSetChanged();
-			listCountUpdate();
-		}
+			}
+		}.execute();
 	}
 	
-	// ¸®½ºÆ®ºä ½ºÅ©·Ñ ÀÌº¥Æ® °ü·Ã Äİ¹é ¸Ş¼­µå¿Í ÇÃ·¡±×
+	// ë¦¬ìŠ¤íŠ¸ë·° ìŠ¤í¬ë¡¤ ì´ë²¤íŠ¸ ê´€ë ¨ ì½œë°± ë©”ì„œë“œì™€ í”Œë˜ê·¸
 	boolean isEndOfList = false;
 	int totalCount;
 	
-	// ½ºÅ©·ÑÀÌ ¹ß»ıÇÏ¸é È£ÃâµÈ´Ù.
+	// ìŠ¤í¬ë¡¤ì´ ë°œìƒí•˜ë©´ í˜¸ì¶œëœë‹¤.
 	@Override
 	public void onScroll(AbsListView view, int firstVisibleItem,
 			int visibleItemCount, int totalItemCount) {
 
 		Log.i("FM", "first : " + firstVisibleItem + " visiCnt : " + visibleItemCount + " totalCnt : " + totalItemCount);
 		
-		// Ã¹¹øÂ° ¾ÆÀÌÅÛÀÇ ÀÎµ¦½º + º¸ÀÌ´Â ¾ÆÀÌÅÛÀÇ °³¼ö°¡ ÃÑ ¾ÆÀÌÅÛÀÇ °³¼ö¿Í °°À¸¸é
-		// ¸¶Áö¸· ¾ÆÀÌÅÛÀÌ º¸ÀÌ´Â »óÅÂ
+		// ì²«ë²ˆì§¸ ì•„ì´í…œì˜ ì¸ë±ìŠ¤ + ë³´ì´ëŠ” ì•„ì´í…œì˜ ê°œìˆ˜ê°€ ì´ ì•„ì´í…œì˜ ê°œìˆ˜ì™€ ê°™ìœ¼ë©´
+		// ë§ˆì§€ë§‰ ì•„ì´í…œì´ ë³´ì´ëŠ” ìƒíƒœ
 		if( firstVisibleItem + visibleItemCount == totalItemCount ) {
 			totalCount = totalItemCount;
 			isEndOfList = true;
@@ -360,16 +373,33 @@ public class MatchListFragment extends Fragment implements OnItemClickListener, 
 			isEndOfList = false;
 	}
 	
-	// ½ºÅ©·Ñ »óÅÂ°¡ º¯ÇÒ ¶§ È£ÃâµÈ´Ù.
+	// ìŠ¤í¬ë¡¤ ìƒíƒœê°€ ë³€í•  ë•Œ í˜¸ì¶œëœë‹¤.
 	@Override
 	public void onScrollStateChanged(AbsListView view, int scrollState) {
-		// ¸®½ºÆ®ÀÇ ³¡¿¡ µµ´ŞÇÏ¸é
+		// ë¦¬ìŠ¤íŠ¸ì˜ ëì— ë„ë‹¬í•˜ë©´
 		if( scrollState == SCROLL_STATE_IDLE && isEndOfList ) {
 			
-			// ¼­¹ö·ÎºÎÅÍ ´ÙÀ½ ¸®½ºÆ®¸¦ °¡Á®¿Â´Ù.
+			// ì„œë²„ë¡œë¶€í„° ë‹¤ìŒ ë¦¬ìŠ¤íŠ¸ë¥¼ ê°€ì ¸ì˜¨ë‹¤.
 			//new GetMatchList().execute( new Integer[]{ totalCount -1 } );
 			getMatchList(totalCount - 1);
 		}
+	}
+	
+	// ë¡œê·¸ì¸ ë‹¤ì´ì–¼ë¡œê·¸ë¥¼ ë„ìš´ë‹¤.
+	private void showLoginAlert() {
+		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+		builder.setMessage("ë§¤ì¹˜ë¥¼ ë“±ë¡í•˜ë ¤ë©´ íŒ€ ê³„ì •ìœ¼ë¡œ ë¡œê·¸ì¸ í•´ì•¼í•©ë‹ˆë‹¤.\n\në¡œê·¸ì¸ í•˜ì‹œê² ìŠµë‹ˆê¹Œ?")
+		.setNegativeButton("ì•„ë‹ˆì˜¤", null)
+		.setPositiveButton("ì˜ˆ", this);
+		
+		AlertDialog ad = builder.create();
+		ad.show();
+	}
+	
+	// ë‹¤ì´ì–¼ë¡œê·¸ ì´ë²¤íŠ¸ ì½œë°± ë©”ì„œë“œ
+	@Override
+	public void onClick(DialogInterface dialog, int which) {
+		startActivity(new Intent(this.getActivity(), LoginActivity.class));
 	}
 }
 

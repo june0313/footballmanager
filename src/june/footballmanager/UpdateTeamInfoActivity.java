@@ -1,4 +1,4 @@
-package june.footballmanager;
+ï»¿package june.footballmanager;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -73,7 +73,7 @@ public class UpdateTeamInfoActivity extends Activity implements OnClickListener 
 		else if( id == R.id.et_ages ) {
 			
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
-			builder.setTitle("¿¬·ÉÃşÀ» ¼±ÅÃÇÏ¼¼¿ä");
+			builder.setTitle("ì—°ë ¹ì¸µì„ ì„ íƒí•˜ì„¸ìš”");
 			builder.setItems(R.array.ages, new DialogInterface.OnClickListener(){
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
@@ -84,7 +84,7 @@ public class UpdateTeamInfoActivity extends Activity implements OnClickListener 
 			ad.show();
 			
 		} else if( id == R.id.btn_edit_complete) {
-			// ÆÀ Á¤º¸¸¦ ¾÷µ¥ÀÌÆ® ÇÑ´Ù.
+			// íŒ€ ì •ë³´ë¥¼ ì—…ë°ì´íŠ¸ í•œë‹¤.
 			updateTeamInfo();
 			Log.i("FM","complete");
 		}
@@ -111,12 +111,12 @@ public class UpdateTeamInfoActivity extends Activity implements OnClickListener 
 		return false;
 	}
 	
-	// ¼öÁ¤µÈ ÆÀ Á¤º¸¸¦ ¼­¹ö¿¡ ¾÷µ¥ÀÌÆ® ÇÏ´Â ¸Ş¼­µå
+	// ìˆ˜ì •ëœ íŒ€ ì •ë³´ë¥¼ ì„œë²„ì— ì—…ë°ì´íŠ¸ í•˜ëŠ” ë©”ì„œë“œ
 	private void updateTeamInfo() {
-		// ¿¬°áÇÒ ÆäÀÌÁöÀÇ URL
+		// ì—°ê²°í•  í˜ì´ì§€ì˜ URL
 		String url = getString(R.string.server) + getString(R.string.update_team_info);
 		
-		// ÆÄ¶ó¹ÌÅÍ ±¸¼º
+		// íŒŒë¼ë¯¸í„° êµ¬ì„±
 		String param = "email=" + lm.getEmail()
 				+ "&name=" + etTeamName.getText().toString()
 				+ "&location=" + tvLocation.getText().toString()
@@ -125,27 +125,37 @@ public class UpdateTeamInfoActivity extends Activity implements OnClickListener 
 				+ "&ages=" + tvAges.getText().toString()
 				+ "&phone=" + etPhone.getText().toString();
 		
-		// ¼­¹ö ¿¬°á
-		JSONObject json = new HttpTask(url, param).getJSONObject();
-		
-		try {
-			if( json.getInt("success") == 1 ) {
-				lm.setTeamInfo(etTeamName.getText().toString(), 
-						tvLocation.getText().toString(), 
-						etHomeGround.getText().toString(), 
-						Integer.parseInt(etNumOfPlayer.getText().toString()), 
-						tvAges.getText().toString(),
-						etPhone.getText().toString());
+		// ì„œë²„ ì—°ê²°
+		new HttpAsyncTask(url, param, this, "ì ì‹œë§Œ ê¸°ë‹¤ë ¤ ì£¼ì„¸ìš”...") {
+
+			@Override
+			protected void onPostExecute(String result) {
+				JSONObject json = null;
 				
-				Toast.makeText(getApplicationContext(), "Á¤º¸°¡ ¼öÁ¤µÇ¾ú½À´Ï´Ù.", 0).show();
-				finish();
-			} else {
-				Toast.makeText(getApplicationContext(), "Á¤º¸ ¼öÁ¤¿¡ ½ÇÆĞÇÏ¿´½À´Ï´Ù.", 0).show();
+				try {
+					json = new JSONObject(result);
+					if( json.getInt("success") == 1 ) {
+						lm.setTeamInfo(etTeamName.getText().toString(), 
+								tvLocation.getText().toString(), 
+								etHomeGround.getText().toString(), 
+								Integer.parseInt(etNumOfPlayer.getText().toString()), 
+								tvAges.getText().toString(),
+								etPhone.getText().toString());
+						
+						Toast.makeText(UpdateTeamInfoActivity.this, "ì •ë³´ê°€ ìˆ˜ì •ë˜ì—ˆìŠµë‹ˆë‹¤.", 0).show();
+						finish();
+					} else {
+						Toast.makeText(UpdateTeamInfoActivity.this, "ì •ë³´ ìˆ˜ì •ì— ì‹¤íŒ¨í•˜ì˜€ìŠµë‹ˆë‹¤.", 0).show();
+					}
+				} catch (NumberFormatException e) {
+					Log.e("updateTeamInfo", e.getMessage());
+				} catch (JSONException e) {
+					Log.e("updateTeamInfo", e.getMessage());
+				}
+				
 			}
-		} catch (NumberFormatException e) {
-			Log.e("updateTeamInfo", e.getMessage());
-		} catch (JSONException e) {
-			Log.e("updateTeamInfo", e.getMessage());
-		}
+			
+		}.execute();
+		
 	}
 }

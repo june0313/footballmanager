@@ -1,4 +1,4 @@
-package june.footballmanager;
+ï»¿package june.footballmanager;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -48,12 +48,12 @@ public class TeamInfoFragment extends Fragment {
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		
-		// ÆÀ ¹øÈ£ °¡Á®¿À±â
+		// íŒ€ ë²ˆí˜¸ ê°€ì ¸ì˜¤ê¸°
 		Bundle extra = getArguments();
 		memberNo = extra.getInt("memberNo");
 		Log.i("TeamInfoFragment - memberNo : ", memberNo + "");
 		
-		// ºä ·¹ÆÛ·±½Ì
+		// ë·° ë ˆí¼ëŸ°ì‹±
 		tvLocation = (TextView)getView().findViewById(R.id.location);
 		tvHome = (TextView)getView().findViewById(R.id.home);
 		tvAges = (TextView)getView().findViewById(R.id.ages);
@@ -71,7 +71,7 @@ public class TeamInfoFragment extends Fragment {
 	private class GetTeamInfo extends AsyncTask<Void, Void, Void> {
 		String param = "";
 		
-		// URL·ÎºÎÅÍ °¡Á®¿Â json Çü½ÄÀÇ string
+		// URLë¡œë¶€í„° ê°€ì ¸ì˜¨ json í˜•ì‹ì˜ string
 		String jsonString = "";
 		
 		ProgressDialog pd;
@@ -83,9 +83,9 @@ public class TeamInfoFragment extends Fragment {
 			param += "memberNo=" + memberNo;
 			Log.i("param", param);
 			
-			// ÇÁ·Î±×·¹½º ´ÙÀÌ¾ó·Î±× Ãâ·Â
+			// í”„ë¡œê·¸ë ˆìŠ¤ ë‹¤ì´ì–¼ë¡œê·¸ ì¶œë ¥
 			pd = new ProgressDialog(getActivity());
-			pd.setMessage("ÆÀ Á¤º¸¸¦ ºÒ·¯¿À´Â ÁßÀÔ´Ï´Ù...");
+			pd.setMessage("íŒ€ ì •ë³´ë¥¼ ë¶ˆëŸ¬ì˜¤ëŠ” ì¤‘ì…ë‹ˆë‹¤...");
 			pd.show();
 		}
 
@@ -100,14 +100,14 @@ public class TeamInfoFragment extends Fragment {
 				conn.setDoInput(true);
 				conn.setDoOutput(true);
 
-				// URL¿¡ ÆÄ¸®¹ÌÅÍ ³Ñ±â±â
+				// URLì— íŒŒë¦¬ë¯¸í„° ë„˜ê¸°ê¸°
 				OutputStreamWriter out = new OutputStreamWriter(
 						conn.getOutputStream(), "euc-kr");
 				out.write(param);
 				out.flush();
 				out.close();
 
-				// URL °á°ú °¡Á®¿À±â
+				// URL ê²°ê³¼ ê°€ì ¸ì˜¤ê¸°
 				String buffer = null;
 				BufferedReader in = new BufferedReader(new InputStreamReader(
 						conn.getInputStream(), "euc-kr"));
@@ -136,7 +136,7 @@ public class TeamInfoFragment extends Fragment {
 				tvLocation.setText(jsonObj.getString("LOCATION"));
 				tvHome.setText(jsonObj.getString("HOME"));
 				tvAges.setText(jsonObj.getString("AGES"));
-				tvNumOfPlayers.setText(jsonObj.getString("NUM_OF_PLAYERS") + "¸í");
+				tvNumOfPlayers.setText(jsonObj.getString("NUM_OF_PLAYERS") + "ëª…");
 				tvIntroduce.setText(jsonObj.getString("INTRODUCE").replace("__", "\n"));
 				
 			} catch(JSONException e) {

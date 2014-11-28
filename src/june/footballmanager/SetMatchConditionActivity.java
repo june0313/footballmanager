@@ -1,4 +1,4 @@
-package june.footballmanager;
+ï»¿package june.footballmanager;
 
 import java.text.SimpleDateFormat;
 
@@ -22,40 +22,40 @@ import android.widget.Toast;
 public class SetMatchConditionActivity extends Activity implements OnClickListener {
 	ListView searchConditionList;
 	
-	// Á¶°Ç ·¹ÀÌ¾Æ¿ô
+	// ì¡°ê±´ ë ˆì´ì•„ì›ƒ
 	RelativeLayout condLocation;
 	RelativeLayout condTime;
 	RelativeLayout condEndTime;
 	RelativeLayout condDays;
 	RelativeLayout condAges;
 	
-	// ¼³Á¤µÈ Á¶°ÇÀ» Ãâ·ÂÇÒ ÅØ½ºÆ®ºä
+	// ì„¤ì •ëœ ì¡°ê±´ì„ ì¶œë ¥í•  í…ìŠ¤íŠ¸ë·°
 	TextView txtLocation;
 	TextView txtTime;
 	TextView txtDays;
 	TextView txtAges;
 	
-	// ¼³Á¤ ¿Ï·á ¹öÆ°
+	// ì„¤ì • ì™„ë£Œ ë²„íŠ¼
 	Button btnComplete;
 	
-	// °Ë»ö Á¶°ÇµéÀ» ÀúÀåÇÏ±â À§ÇÑ ÇÁ¸®ÆÛ·±½º
+	// ê²€ìƒ‰ ì¡°ê±´ë“¤ì„ ì €ì¥í•˜ê¸° ìœ„í•œ í”„ë¦¬í¼ëŸ°ìŠ¤
 	SharedPreferences prefCondition;			
 	SharedPreferences.Editor prefConditionEditor;
 	
-	// ½Ã°£Á¶°Ç Ãâ·Â Æ÷¸Ë
+	// ì‹œê°„ì¡°ê±´ ì¶œë ¥ í¬ë§·
 	SimpleDateFormat originalFormat = new SimpleDateFormat("HH:mm");
 	SimpleDateFormat newFormat = new SimpleDateFormat("a h:mm");
 	
-	// ½Ã°£´ë ¹è¿­
+	// ì‹œê°„ëŒ€ ë°°ì—´
 	String[] arrTimes;
 	
-	// ½Ã°£ ¼³Á¤ Á¤º¸¸¦ ÀÓ½Ã·Î ÀúÀåÇÏ´Â Á¤¼ö
+	// ì‹œê°„ ì„¤ì • ì •ë³´ë¥¼ ì„ì‹œë¡œ ì €ì¥í•˜ëŠ” ì •ìˆ˜
 	int selectedTime;
 	
-	// ¿äÀÏ ¼³Á¤ ¿©ºÎ¸¦ ÀúÀåÇÒ ¹è¿­
+	// ìš”ì¼ ì„¤ì • ì—¬ë¶€ë¥¼ ì €ì¥í•  ë°°ì—´
 	boolean[] bDays;
 	
-	// ¿¬·É´ë ¼³Á¤ ¿©ºÎ¸¦ ÀúÀåÇÒ ¹è¿­
+	// ì—°ë ¹ëŒ€ ì„¤ì • ì—¬ë¶€ë¥¼ ì €ì¥í•  ë°°ì—´
 	boolean[] bAges;
 	
 	static final int LOCATION = 1;
@@ -66,19 +66,19 @@ public class SetMatchConditionActivity extends Activity implements OnClickListen
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_set_search_condition);
 		
-		// ¾×¼Ç¹Ù ¼³Á¤
+		// ì•¡ì…˜ë°” ì„¤ì •
 		ActionBar actionBar = getActionBar();
 	    actionBar.setDisplayHomeAsUpEnabled(true);
 	    actionBar.setIcon(R.drawable.search);
 	    
-	    // ÇÁ¸®ÆÛ·±½º ¿­±â
+	    // í”„ë¦¬í¼ëŸ°ìŠ¤ ì—´ê¸°
 	    prefCondition = getSharedPreferences("matchConditions", MODE_PRIVATE);
 	    prefConditionEditor = prefCondition.edit();
 	    
-	    // ½Ã°£´ë ¹è¿­ »ı¼º
+	    // ì‹œê°„ëŒ€ ë°°ì—´ ìƒì„±
 	    arrTimes = getResources().getStringArray(R.array.time);
 	    
-	    // °¢ Á¶°Çº° ·¹ÀÌ¾Æ¿ô °´Ã¼ »ı¼º
+	    // ê° ì¡°ê±´ë³„ ë ˆì´ì•„ì›ƒ ê°ì²´ ìƒì„±
 	    condLocation = (RelativeLayout) findViewById(R.id.cond_location);
 	    condLocation.setOnClickListener(this);
 	    
@@ -91,36 +91,36 @@ public class SetMatchConditionActivity extends Activity implements OnClickListen
 	    condAges = (RelativeLayout) findViewById(R.id.cond_ages);
 	    condAges.setOnClickListener(this);
 	    
-	    // ¼³Á¤ ¿Ï·á ¹öÆ° °´Ã¼ »ı¼º
+	    // ì„¤ì • ì™„ë£Œ ë²„íŠ¼ ê°ì²´ ìƒì„±
 	    btnComplete = (Button) findViewById(R.id.complete);
 	    btnComplete.setOnClickListener(this);
 	    
-	    // ÀúÀåµÇ¾îÀÖ´Â °Ë»ö Á¶°ÇÀ» °¢ ºä¿¡ Ãâ·ÂÇÑ´Ù.
+	    // ì €ì¥ë˜ì–´ìˆëŠ” ê²€ìƒ‰ ì¡°ê±´ì„ ê° ë·°ì— ì¶œë ¥í•œë‹¤.
 	    printStoredCondition();
 	}
 	
 	private void printStoredCondition() {
 		
-		// °¢ Á¶°ÇµéÀ» Ãâ·ÂÇÒ ÅØ½ºÆ®ºä »ı¼º ¹× ÅØ½ºÆ® Ãâ·Â
+		// ê° ì¡°ê±´ë“¤ì„ ì¶œë ¥í•  í…ìŠ¤íŠ¸ë·° ìƒì„± ë° í…ìŠ¤íŠ¸ ì¶œë ¥
 	    txtLocation = (TextView) findViewById(R.id.txt_location);
-	    txtLocation.setText(prefCondition.getString("location", "Àü±¹"));
+	    txtLocation.setText(prefCondition.getString("location", "ì „êµ­"));
 	    
-	    // ÇÁ¸®ÆÛ·±½º¿¡ ÀúÀåµÈ ½Ã°£ Á¤º¸ °¡Á®¿À±â
+	    // í”„ë¦¬í¼ëŸ°ìŠ¤ì— ì €ì¥ëœ ì‹œê°„ ì •ë³´ ê°€ì ¸ì˜¤ê¸°
 	    selectedTime = prefCondition.getInt("time", 0);
 		
-	    // °¡Á®¿Â ½Ã°£ Á¤º¸ Ãâ·ÂÇÏ±â
+	    // ê°€ì ¸ì˜¨ ì‹œê°„ ì •ë³´ ì¶œë ¥í•˜ê¸°
 	    txtTime = (TextView) findViewById(R.id.txt_start_time);
 	    txtTime.setText(arrTimes[selectedTime]);
 	    
 	    Resources res = getResources();
 	  
-	    // ÇÁ¸®ÆÛ·±½º¿¡ ÀúÀåµÈ ¿äÀÏ Á¤º¸ °¡Á®¿À±â
+	    // í”„ë¦¬í¼ëŸ°ìŠ¤ì— ì €ì¥ëœ ìš”ì¼ ì •ë³´ ê°€ì ¸ì˜¤ê¸°
 	    bDays = new boolean[7];
 	    for( int i = 0; i < 7; i++ ) {
 	    	bDays[i] = prefCondition.getBoolean("day" + i, true);
 	    }
 	    
-	    // °¡Á®¿Â ¿äÀÏ Ãâ·Â
+	    // ê°€ì ¸ì˜¨ ìš”ì¼ ì¶œë ¥
 	    String[] days = res.getStringArray(R.array.days_short);
 	    String daysForDisplay = "";
 	    for( int i = 0; i < 7; i++ ) {
@@ -130,13 +130,13 @@ public class SetMatchConditionActivity extends Activity implements OnClickListen
 	    txtDays = (TextView) findViewById(R.id.txt_days);
 	    txtDays.setText(daysForDisplay);
 	    
-	    // ÇÁ¸®ÆÛ·±½º¿¡ ÀúÀåµÈ ¿¬·É´ë Á¤º¸ °¡Á®¿À±â
+	    // í”„ë¦¬í¼ëŸ°ìŠ¤ì— ì €ì¥ëœ ì—°ë ¹ëŒ€ ì •ë³´ ê°€ì ¸ì˜¤ê¸°
 	    bAges = new boolean[6];
 	    for( int i = 0; i < 6; i++ ) {
 	    	bAges[i] = prefCondition.getBoolean("age" + i, true);
 	    }
 	    
-	    // °¡Á®¿Â ¿¬·É´ë Ãâ·Â
+	    // ê°€ì ¸ì˜¨ ì—°ë ¹ëŒ€ ì¶œë ¥
 	    String[] ages = res.getStringArray(R.array.ages);
 	    String agesForDisplay = "";
 	    for( int i = 0; i < 6; i++ ) {
@@ -157,7 +157,7 @@ public class SetMatchConditionActivity extends Activity implements OnClickListen
 	}
 	*/
 	
-	// ¸Ş´º ¼±ÅÃ½Ã Äİ¹é ¸Ş¼­µå
+	// ë©”ë‰´ ì„ íƒì‹œ ì½œë°± ë©”ì„œë“œ
 	@Override
     public boolean onOptionsItemSelected(MenuItem item) {
 		switch( item.getItemId()) {
@@ -169,18 +169,18 @@ public class SetMatchConditionActivity extends Activity implements OnClickListen
 		return false;
 	}
 
-	// °¢ Á¶°Çºä Å¬¸¯¿¡ ´ëÇÑ Äİ¹é ¸Ş¼­µå
+	// ê° ì¡°ê±´ë·° í´ë¦­ì— ëŒ€í•œ ì½œë°± ë©”ì„œë“œ
 	@Override
 	public void onClick(View v) {
 		int id = v.getId();
 		if( id == R.id.cond_location ) {
 			
-			// Áö¿ª ¼³Á¤ ¾×Æ¼ºñÆ¼ È£Ãâ
+			// ì§€ì—­ ì„¤ì • ì•¡í‹°ë¹„í‹° í˜¸ì¶œ
 			startActivityForResult( new Intent(this, LocationConditionActivity.class), LOCATION );
 			
 		} else if( id == R.id.cond_time ) {
 			
-			// ½Ã°£ ¼³Á¤
+			// ì‹œê°„ ì„¤ì •
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
 			builder.setItems(R.array.time, new DialogInterface.OnClickListener() {
 				
@@ -188,18 +188,18 @@ public class SetMatchConditionActivity extends Activity implements OnClickListen
 				public void onClick(DialogInterface dialog, int which) {
 					selectedTime = which;
 					
-					// ¼³Á¤µÈ ½Ã°£ Á¤º¸¸¦ Ãâ·ÂÇÑ´Ù.
+					// ì„¤ì •ëœ ì‹œê°„ ì •ë³´ë¥¼ ì¶œë ¥í•œë‹¤.
 					txtTime.setText(arrTimes[selectedTime]);
 				}
 			});
-			builder.setTitle("°æ±â ½Ã°£À» ¼±ÅÃÇÏ¼¼¿ä");
+			builder.setTitle("ê²½ê¸° ì‹œê°„ì„ ì„ íƒí•˜ì„¸ìš”");
 			builder.create().show();
 			
 		} else if( id == R.id.cond_days ) {
 			
-			// °æ±â ¿äÀÏ ¼³Á¤
+			// ê²½ê¸° ìš”ì¼ ì„¤ì •
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
-			builder.setTitle("¿äÀÏÀ» ¼±ÅÃÇÏ¼¼¿ä");
+			builder.setTitle("ìš”ì¼ì„ ì„ íƒí•˜ì„¸ìš”");
 			builder.setMultiChoiceItems(R.array.days, bDays, new DialogInterface.OnMultiChoiceClickListener() {
 
 				@Override
@@ -208,13 +208,13 @@ public class SetMatchConditionActivity extends Activity implements OnClickListen
 				}
 				
 			});
-			builder.setPositiveButton("È®ÀÎ", daySetListener);
+			builder.setPositiveButton("í™•ì¸", daySetListener);
 			builder.create().show();		
 		} else if ( id == R.id.cond_ages ) {
 			
-			// »ó´ëÆÀ ¿¬·É´ë ¼³Á¤
+			// ìƒëŒ€íŒ€ ì—°ë ¹ëŒ€ ì„¤ì •
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
-			builder.setTitle("¿¬·É´ë¸¦ ¼±ÅÃÇÏ¼¼¿ä");
+			builder.setTitle("ì—°ë ¹ëŒ€ë¥¼ ì„ íƒí•˜ì„¸ìš”");
 			builder.setMultiChoiceItems(R.array.ages, bAges, new DialogInterface.OnMultiChoiceClickListener() {
 				
 				@Override
@@ -222,57 +222,57 @@ public class SetMatchConditionActivity extends Activity implements OnClickListen
 					bAges[which] = isChecked;
 				}
 			} );
-			builder.setPositiveButton("È®ÀÎ", ageSetListener);
+			builder.setPositiveButton("í™•ì¸", ageSetListener);
 			builder.create().show();		
-		} else if ( id == R.id.complete ) {	// "¼³Á¤ ¿Ï·á" ¹öÆ° Å¬¸¯
-			// ÀÓ½Ã·Î ¼³Á¤µÈ Áö¿ªÁ¤º¸¸¦ ÇÁ¸®ÆÛ·±½º¿¡ ÀúÀåÇÑ´Ù.
+		} else if ( id == R.id.complete ) {	// "ì„¤ì • ì™„ë£Œ" ë²„íŠ¼ í´ë¦­
+			// ì„ì‹œë¡œ ì„¤ì •ëœ ì§€ì—­ì •ë³´ë¥¼ í”„ë¦¬í¼ëŸ°ìŠ¤ì— ì €ì¥í•œë‹¤.
 			prefConditionEditor.putString("location", txtLocation.getText().toString());
 			prefConditionEditor.commit();
 			
-			// ÀÓ½Ã·Î ¼³Á¤µÈ ½Ã°£ Á¤º¸¸¦ ÇÁ¸®ÆÛ·±½º¿¡ ÀúÀåÇÑ´Ù.
+			// ì„ì‹œë¡œ ì„¤ì •ëœ ì‹œê°„ ì •ë³´ë¥¼ í”„ë¦¬í¼ëŸ°ìŠ¤ì— ì €ì¥í•œë‹¤.
 			prefConditionEditor.putInt("time", selectedTime);
 			prefConditionEditor.commit();
 
-			// ÀÓ½Ã·Î ¼³Á¤µÈ ¿äÀÏ Á¤º¸¸¦ ÇÁ¸®ÆÛ·±½º¿¡ ÀúÀåÇÑ´Ù.
+			// ì„ì‹œë¡œ ì„¤ì •ëœ ìš”ì¼ ì •ë³´ë¥¼ í”„ë¦¬í¼ëŸ°ìŠ¤ì— ì €ì¥í•œë‹¤.
 			for (int i = 0; i < 7; i++) {
 				prefConditionEditor.putBoolean("day" + i, bDays[i]);
 				prefConditionEditor.commit();
 			}
 
-			// ÀÓ½Ã·Î ¼³Á¤µÈ ¿¬·É´ë Á¤º¸¸¦ ÇÁ¸®ÆÛ·±½º¿¡ ÀúÀåÇÑ´Ù.
+			// ì„ì‹œë¡œ ì„¤ì •ëœ ì—°ë ¹ëŒ€ ì •ë³´ë¥¼ í”„ë¦¬í¼ëŸ°ìŠ¤ì— ì €ì¥í•œë‹¤.
 			for (int i = 0; i < 6; i++) {
 				prefConditionEditor.putBoolean("age" + i, bAges[i]);
 				prefConditionEditor.commit();
 			}
 			
-			Toast.makeText(SetMatchConditionActivity.this, "°Ë»ö Á¶°ÇÀÌ ¼³Á¤µÇ¾ú½À´Ï´Ù", 0).show();
+			Toast.makeText(SetMatchConditionActivity.this, "ê²€ìƒ‰ ì¡°ê±´ì´ ì„¤ì •ë˜ì—ˆìŠµë‹ˆë‹¤", 0).show();
 			
-			// È£ÃâÇÑ ¾×Æ¼ºñÆ¼¿¡ Á¶°ÇÀÌ ¼³Á¤µÇ¾úÀ½À» ¾Ë¸°´Ù.
+			// í˜¸ì¶œí•œ ì•¡í‹°ë¹„í‹°ì— ì¡°ê±´ì´ ì„¤ì •ë˜ì—ˆìŒì„ ì•Œë¦°ë‹¤.
 			Intent intent = new Intent();
 			setResult(RESULT_OK, intent);
 			finish();
 		}
 	}
 	
-	// Áö¿ª Á¤º¸ ¹Ş¾Æ¿À±â
+	// ì§€ì—­ ì •ë³´ ë°›ì•„ì˜¤ê¸°
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent intent) {
 		switch (requestCode) {
 		case LOCATION:
 			if (resultCode == RESULT_OK) {
-				// ¹Ş¾Æ¿Â Áö¿ªÁ¤º¸¸¦ Ãâ·ÂÇÑ´Ù.
+				// ë°›ì•„ì˜¨ ì§€ì—­ì •ë³´ë¥¼ ì¶œë ¥í•œë‹¤.
 				txtLocation.setText(intent.getStringExtra("location"));
 			}
 		}
 	}
 	
-	// ¿äÀÏ ¼³Á¤ ´ÙÀÌ¾ó·Î±× ¸®½º³Ê
+	// ìš”ì¼ ì„¤ì • ë‹¤ì´ì–¼ë¡œê·¸ ë¦¬ìŠ¤ë„ˆ
 	private DialogInterface.OnClickListener daySetListener = new DialogInterface.OnClickListener() {
 		
 		@Override
 		public void onClick(DialogInterface dialog, int which) {
 			
-		    // ÀÓ½Ã·Î ¼³Á¤µÈ ¿äÀÏ Ãâ·Â
+		    // ì„ì‹œë¡œ ì„¤ì •ëœ ìš”ì¼ ì¶œë ¥
 		    Resources res = getResources();
 		    String[] days = res.getStringArray(R.array.days_short);
 		    String daysForDisplay = "";
@@ -285,13 +285,13 @@ public class SetMatchConditionActivity extends Activity implements OnClickListen
 		}
 	};
 	
-	// ¿¬·É´ë ¼³Á¤ ´ÙÀÌ¾ó·Î±× ¸®½º³Ê
+	// ì—°ë ¹ëŒ€ ì„¤ì • ë‹¤ì´ì–¼ë¡œê·¸ ë¦¬ìŠ¤ë„ˆ
 	private DialogInterface.OnClickListener ageSetListener = new DialogInterface.OnClickListener() {
 		
 		@Override
 		public void onClick(DialogInterface dialog, int which) {
 		    
-		    // ÀÓ½Ã·Î ¼³Á¤µÈ ¿¬·É´ë Ãâ·Â
+		    // ì„ì‹œë¡œ ì„¤ì •ëœ ì—°ë ¹ëŒ€ ì¶œë ¥
 		    Resources res = getResources();
 		    String[] ages = res.getStringArray(R.array.ages);
 		    String agesForDisplay = "";

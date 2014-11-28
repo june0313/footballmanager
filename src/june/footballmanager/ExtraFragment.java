@@ -1,4 +1,4 @@
-package june.footballmanager;
+ï»¿package june.footballmanager;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -39,13 +39,13 @@ public class ExtraFragment extends Fragment implements OnItemClickListener {
 	public void onResume() {
 		super.onResume();
 		
-		// ·Î±×ÀÎ °èÁ¤º° ¸Ş´º Ç×¸ñ(¸®½ºÆ®) »ı¼º
+		// ë¡œê·¸ì¸ ê³„ì •ë³„ ë©”ë‰´ í•­ëª©(ë¦¬ìŠ¤íŠ¸) ìƒì„±
 		int extraItems;
 		lm = new LoginManager(getActivity());
 
-		if (lm.isLogin() && lm.getMemberType().equals("¼±¼öÈ¸¿ø"))
+		if (lm.isLogin() && lm.getMemberType().equals("ì„ ìˆ˜íšŒì›"))
 			extraItems = R.array.extra_items_on_player;
-		else if (lm.isLogin() && lm.getMemberType().equals("ÆÀÈ¸¿ø"))
+		else if (lm.isLogin() && lm.getMemberType().equals("íŒ€íšŒì›"))
 			extraItems = R.array.extra_items_on_team;
 		else
 			extraItems = R.array.extra_items;
@@ -61,11 +61,11 @@ public class ExtraFragment extends Fragment implements OnItemClickListener {
 		
 		switch( position ) {
 		case 0:
-			// °èÁ¤°ü¸® ¼±ÅÃ
-			// ·Î±×ÀÎ ¿©ºÎ¸¦ È®ÀÎÇÏ¿© ÀûÀıÇÑ ¾×Æ¼ºñÆ¼ ½ÇÇà
-			if( lm.isLogin() && lm.getMemberType().equals("¼±¼öÈ¸¿ø") ) {
+			// ê³„ì •ê´€ë¦¬ ì„ íƒ
+			// ë¡œê·¸ì¸ ì—¬ë¶€ë¥¼ í™•ì¸í•˜ì—¬ ì ì ˆí•œ ì•¡í‹°ë¹„í‹° ì‹¤í–‰
+			if( lm.isLogin() && lm.getMemberType().equals("ì„ ìˆ˜íšŒì›") ) {
 				intent = new Intent(this.getActivity(), PlayerAccountActivity.class);
-			} else if(lm.isLogin() && lm.getMemberType().equals("ÆÀÈ¸¿ø") ) {
+			} else if(lm.isLogin() && lm.getMemberType().equals("íŒ€íšŒì›") ) {
 				intent = new Intent(this.getActivity(), TeamAccountActivity.class);
 			} else {
 				intent = new Intent(this.getActivity(), LoginActivity.class);
@@ -76,16 +76,16 @@ public class ExtraFragment extends Fragment implements OnItemClickListener {
 			
 		case 1:
 			if (lm.isLogin()) {
-				if(lm.getMemberType().equals("ÆÀÈ¸¿ø")) {
-					// ÆÀÈ¸¿ø : ³»°¡ µî·ÏÇÑ ¸ÅÄ¡
+				if(lm.getMemberType().equals("íŒ€íšŒì›")) {
+					// íŒ€íšŒì› : ë‚´ê°€ ë“±ë¡í•œ ë§¤ì¹˜
 					intent = new Intent(this.getActivity(), MyMatchActivity.class);
 					getActivity().startActivity(intent);
 				} else {
-					// ¼±¼öÈ¸¿ø : ³»°¡ ¾´ ±Û
-					Toast.makeText(getActivity(), "³»°¡ ¾´ ±Û", 0).show();
+					// ì„ ìˆ˜íšŒì› : ë‚´ê°€ ì“´ ê¸€
+					Toast.makeText(getActivity(), "ë‚´ê°€ ì“´ ê¸€", 0).show();
 				}
 			} else {
-				// ºñ·Î±×ÀÎ : ½ºÅ©·¦
+				// ë¹„ë¡œê·¸ì¸ : ìŠ¤í¬ë©
 				intent = new Intent(this.getActivity(), ScrapActivity.class);
 				startActivity(intent);
 			}
@@ -94,12 +94,12 @@ public class ExtraFragment extends Fragment implements OnItemClickListener {
 			
 		case 2:
 			if (lm.isLogin() ) {
-				if(lm.getMemberType().equals("ÆÀÈ¸¿ø")) {
-					// ³»°¡ ½ÅÃ»ÇÑ ¸ÅÄ¡
+				if(lm.getMemberType().equals("íŒ€íšŒì›")) {
+					// ë‚´ê°€ ì‹ ì²­í•œ ë§¤ì¹˜
 					intent = new Intent(this.getActivity(),MyApplicationActivity.class);
 					getActivity().startActivity(intent);
 				} else {
-					// ¼±¼öÈ¸¿ø : ½ºÅ©·¦
+					// ì„ ìˆ˜íšŒì› : ìŠ¤í¬ë©
 					intent = new Intent(this.getActivity(), ScrapActivity.class);
 					startActivity(intent);
 				}
@@ -107,8 +107,8 @@ public class ExtraFragment extends Fragment implements OnItemClickListener {
 			}
 			break;
 		case 3:
-			if (lm.isLogin() && lm.getMemberType().equals("ÆÀÈ¸¿ø")) {
-				// ½ºÅ©·¦
+			if (lm.isLogin() && lm.getMemberType().equals("íŒ€íšŒì›")) {
+				// ìŠ¤í¬ë©
 				intent = new Intent(this.getActivity(), ScrapActivity.class);
 				startActivity(intent);
 			}

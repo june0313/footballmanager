@@ -1,4 +1,4 @@
-package june.footballmanager;
+ï»¿package june.footballmanager;
 
 import java.util.ArrayList;
 
@@ -27,7 +27,7 @@ public class MyMatchConfirmedFragment extends Fragment implements OnItemClickLis
 	TextView count;
 	TextView empty;
 	
-	// ·¹ÀÌ¾Æ¿ô »ı¼º
+	// ë ˆì´ì•„ì›ƒ ìƒì„±
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -35,20 +35,20 @@ public class MyMatchConfirmedFragment extends Fragment implements OnItemClickLis
 		return view;
 	}
 	
-	// ºä ÂüÁ¶
+	// ë·° ì°¸ì¡°
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		
 		count = (TextView) getView().findViewById(R.id.count);
 
-		// ¸®½ºÆ® °´Ã¼ ÃÊ±âÈ­
+		// ë¦¬ìŠ¤íŠ¸ ê°ì²´ ì´ˆê¸°í™”
 		myMatchList = new ArrayList<MyMatchItem>();
 		
-	    // ¾î´ğÅÍ »ı¼º
+	    // ì–´ëŒ‘í„° ìƒì„±
 	    mmlAdapter = new MyMatchListAdapter( getActivity(), myMatchList );
 	    
-	    // ¸®½ºÆ®ºä »ı¼º ¹× ¼³Á¤
+	    // ë¦¬ìŠ¤íŠ¸ë·° ìƒì„± ë° ì„¤ì •
 	    list = (ListView) getView().findViewById(R.id.list);
 	    list.setEmptyView(getView().findViewById(R.id.empty));
 	    list.addHeaderView(new View(getActivity()), null, true);
@@ -56,21 +56,21 @@ public class MyMatchConfirmedFragment extends Fragment implements OnItemClickLis
 	    list.setAdapter(mmlAdapter);
 	    list.setOnItemClickListener(this);
 	    
-	    // ¿¥Æ¼ºä ÅØ½ºÆ® ¼³Á¤
+	    // ì— í‹°ë·° í…ìŠ¤íŠ¸ ì„¤ì •
 	    empty = (TextView)getView().findViewById(R.id.empty);
-	    empty.setText("¼º»çµÈ ¸ÅÄ¡°¡ ¾ø½À´Ï´Ù.");
+	    empty.setText("ì„±ì‚¬ëœ ë§¤ì¹˜ê°€ ì—†ìŠµë‹ˆë‹¤.");
 	}
 
 	@Override
 	public void onResume() {
 		super.onResume();
 		
-		// ¼­¹ö·ÎºÎÅÍ ¸ÅÄ¡ ¸®½ºÆ®¸¦ °¡Á®¿Â´Ù.
+		// ì„œë²„ë¡œë¶€í„° ë§¤ì¹˜ ë¦¬ìŠ¤íŠ¸ë¥¼ ê°€ì ¸ì˜¨ë‹¤.
 		getMyMatchConfirmed();
 	}
 	
-	// ¸ÅÄ¡ Å¬¸¯ ÀÌº¥Æ®
-	// ¸ÅÄ¡ Á¤º¸ Ãâ·Â
+	// ë§¤ì¹˜ í´ë¦­ ì´ë²¤íŠ¸
+	// ë§¤ì¹˜ ì •ë³´ ì¶œë ¥
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
@@ -124,7 +124,7 @@ public class MyMatchConfirmedFragment extends Fragment implements OnItemClickLis
 			TextView time = (TextView) convertView.findViewById(R.id.time);
 			time.setText(list.get(position).getSession());
 			
-			// ¸ÅÄ¡°¡ ¼º»çµÈ ÆÀ ÀÌ¸§ Ãâ·Â
+			// ë§¤ì¹˜ê°€ ì„±ì‚¬ëœ íŒ€ ì´ë¦„ ì¶œë ¥
 			TextView state = (TextView) convertView.findViewById(R.id.state);
 			state.setText(getItem(position).getTeamName());
 			state.setTextColor(getResources().getColor(android.R.color.holo_green_light));
@@ -133,41 +133,51 @@ public class MyMatchConfirmedFragment extends Fragment implements OnItemClickLis
 		
 	}
 	
-	// ¼­¹ö·ÎºÎÅÍ ³»°¡ µî·ÏÇÑ ¸ÅÄ¡ Áß ¼º»çµÈ ¸ÅÄ¡¸¦ °¡Á®¿À´Â ¸Ş¼­µå
+	// ì„œë²„ë¡œë¶€í„° ë‚´ê°€ ë“±ë¡í•œ ë§¤ì¹˜ ì¤‘ ì„±ì‚¬ëœ ë§¤ì¹˜ë¥¼ ê°€ì ¸ì˜¤ëŠ” ë©”ì„œë“œ
 	private void getMyMatchConfirmed() {
-		// ¿¬°áÇÒ ÆäÀÌÁöÀÇ URL
+		// ì—°ê²°í•  í˜ì´ì§€ì˜ URL
 		String url = getString(R.string.server) + getString(R.string.my_match_list_confirmed);
 		
-		// ÆÄ¶ó¹ÌÅÍ ±¸¼º
+		// íŒŒë¼ë¯¸í„° êµ¬ì„±
 		LoginManager lm = new LoginManager(getActivity());
 		String param = "email=" + lm.getEmail();
 		
-		// ¼­¹ö ¿¬°á
-		JSONObject json = new HttpTask(url, param).getJSONObject();
-		JSONArray jsonArr = null;
-		
-		try {
-			jsonArr = json.getJSONArray("list");
+		// ì„œë²„ ì—°ê²°
+		new HttpAsyncTask(url, param) {
 
-			JSONObject item;
+			@Override
+			protected void onPostExecute(String result) {
+				JSONObject json = null;
+				JSONArray jsonArr = null;
+				
+				try {
+					myMatchList.clear();
+					json = new JSONObject(result);
+					jsonArr = json.getJSONArray("list");
 
-			myMatchList.clear();
-			for (int i = 0; i < jsonArr.length(); i++) {
-				item = jsonArr.getJSONObject(i);
-				myMatchList.add(new MyMatchItem(item.getInt("MATCH_NO"), 
-						item.getString("LOCATION"), 
-						item.getString("GROUND"), 
-						item.getString("MATCH_DATE"), 
-						item.getString("MATCH_TIME"),
-						item.getString("MATCH_TIME2"), 
-						item.getString("TEAM_NAME")));
+					JSONObject item;
+
+					
+					for (int i = 0; i < jsonArr.length(); i++) {
+						item = jsonArr.getJSONObject(i);
+						myMatchList.add(new MyMatchItem(item.getInt("MATCH_NO"), 
+								item.getString("LOCATION"), 
+								item.getString("GROUND"), 
+								item.getString("MATCH_DATE"), 
+								item.getString("MATCH_TIME"),
+								item.getString("MATCH_TIME2"), 
+								item.getString("TEAM_NAME")));
+					}
+				} catch (JSONException e) {
+					myMatchList.clear();
+					Log.e("getMyMatchConfirmed", e.getMessage());
+				} finally {
+					mmlAdapter.notifyDataSetChanged();
+					count.setText("ì´ " + myMatchList.size() + "ê°œ");
+				}
+				
 			}
-		} catch (JSONException e) {
-			myMatchList.clear();
-			Log.e("getMyMatchConfirmed", e.getMessage());
-		} finally {
-			mmlAdapter.notifyDataSetChanged();
-			count.setText("ÃÑ " + myMatchList.size() + "°³");
-		}	
+			
+		}.execute();
 	}
 }

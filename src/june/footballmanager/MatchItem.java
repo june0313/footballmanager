@@ -1,4 +1,4 @@
-package june.footballmanager;
+ï»¿package june.footballmanager;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -136,7 +136,7 @@ public class MatchItem {
 	
 	public String getPostedDate() {
 		String[] s = _postedDate.substring(0, 10).split("-");
-		String postedDateKor = s[0] + "³â " + s[1] + "¿ù " + s[2] + "ÀÏ";
+		String postedDateKor = s[0] + "ë…„ " + s[1] + "ì›” " + s[2] + "ì¼";
 		return postedDateKor;
 	}
 }

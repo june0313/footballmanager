@@ -1,4 +1,4 @@
-package june.footballmanager;
+ï»¿package june.footballmanager;
 
 import java.util.ArrayList;
 
@@ -6,7 +6,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -32,13 +34,15 @@ import android.widget.Toast;
  * 
  */
 
-public class FindPlayerListFragment extends Fragment implements OnItemClickListener {
+public class FindPlayerListFragment extends Fragment implements OnItemClickListener, DialogInterface.OnClickListener {
 	ListView list;
 	TextView empty;
 	TextView count;
-	TextView txtSort;		// Á¤·Ä±âÁØ text
+	TextView txtSort;		// ì •ë ¬ê¸°ì¤€ text
 	ArrayList<FindPlayerItem> playerList;
 	FindPlayerListAdapter plAdapter;
+	
+	ArrayList<Integer> scrappedList;	// ìŠ¤í¬ë© ë¦¬ìŠ¤íŠ¸
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -61,10 +65,10 @@ public class FindPlayerListFragment extends Fragment implements OnItemClickListe
 		
 		count = (TextView) getView().findViewById(R.id.count);
 		
-		// ¸®½ºÆ® °´Ã¼ »ı¼º
+		// ë¦¬ìŠ¤íŠ¸ ê°ì²´ ìƒì„±
 		playerList = new ArrayList<FindPlayerItem>();
 		
-		// ¾î´ğÅÍ °´Ã¼ »ı¼º
+		// ì–´ëŒ‘í„° ê°ì²´ ìƒì„±
 		plAdapter = new FindPlayerListAdapter(getActivity(), playerList);
 		
 		list = (ListView) getView().findViewById(R.id.list);
@@ -74,17 +78,17 @@ public class FindPlayerListFragment extends Fragment implements OnItemClickListe
 	    list.setAdapter(plAdapter);
 	    list.setOnItemClickListener(this);
 	    
-	    // ¿¥Æ¼ºä ÅØ½ºÆ® ¼³Á¤
+	    // ì— í‹°ë·° í…ìŠ¤íŠ¸ ì„¤ì •
 	    empty = (TextView)getView().findViewById(R.id.empty);
-	    empty.setText("°Ô½Ã¹°ÀÌ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
+	    empty.setText("ê²Œì‹œë¬¼ì´ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
 	}
 	
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long arg3) {
 		Intent intent = new Intent(getActivity(), FindPlayerDetailActivity.class);
 		
-		// °Ô½Ã¹° ¹øÈ£¸¦ ³Ñ°ÜÁÜ
-		// Çì´õºä°¡ Ãß°¡µÇ¾ú±â ¶§¹®¿¡ ÀÎµ¦½º¸¦ 1 °¨¼Ò½ÃÅ²´Ù.
+		// ê²Œì‹œë¬¼ ë²ˆí˜¸ë¥¼ ë„˜ê²¨ì¤Œ
+		// í—¤ë”ë·°ê°€ ì¶”ê°€ë˜ì—ˆê¸° ë•Œë¬¸ì— ì¸ë±ìŠ¤ë¥¼ 1 ê°ì†Œì‹œí‚¨ë‹¤.
 		position--;
 		intent.putExtra("no", playerList.get(position).getNo());
 		startActivity(intent);
@@ -94,7 +98,11 @@ public class FindPlayerListFragment extends Fragment implements OnItemClickListe
 	public void onResume() {
 		super.onResume();
 		
-		// ¼­¹ö·ÎºÎÅÍ ¼±¼öÃ£±â ¸®½ºÆ®¸¦ °¡Á®¿Â´Ù.
+		// ë¡œì»¬DBì—ì„œ ìŠ¤í¬ë© ì •ë³´ ê°€ì ¸ì˜¤ê¸°
+		DatabaseHandler db = new DatabaseHandler(FindPlayerListFragment.this.getActivity());
+		scrappedList = db.getScrappedFindPlayer();
+		
+		// ì„œë²„ë¡œë¶€í„° ì„ ìˆ˜ì°¾ê¸° ë¦¬ìŠ¤íŠ¸ë¥¼ ê°€ì ¸ì˜¨ë‹¤.
 		getFindPlayerList();
 	}
 	
@@ -109,10 +117,13 @@ public class FindPlayerListFragment extends Fragment implements OnItemClickListe
 		switch(item.getItemId()) {
 		case R.id.add:
 			LoginManager lm = new LoginManager(getActivity());
-			if(lm.isLogin() && lm.getMemberType().equals("ÆÀÈ¸¿ø")) {
+			if(lm.isLogin() && lm.getMemberType().equals("íŒ€íšŒì›")) {
 	    		startActivity(new Intent(getActivity(), AddFindPlayerActivity.class));
+	    	} else if(lm.isLogin() && lm.getMemberType().equals("ì„ ìˆ˜íšŒì›")) {
+	    		Toast.makeText(getActivity(), "ì„ ìˆ˜ëª¨ì§‘ ê¸€ ì‘ì„±ì€ íŒ€ ê³„ì •ë§Œ ê°€ëŠ¥í•©ë‹ˆë‹¤", 0).show();
 	    	} else {
-	    		Toast.makeText(getActivity(), "¼±¼ö¸ğÁı °Ô½Ã¹°À» µî·ÏÇÏ·Á¸é ÆÀ °èÁ¤À¸·Î ·Î±×ÀÎ ÇØ¾ßÇÕ´Ï´Ù.", 0).show();
+	    		// ë¡œê·¸ì¸ í• ê²ƒì¸ì§€ ë¬»ëŠ” ë‹¤ì´ì–¼ë¡œê·¸ë¥¼ ë„ìš´ë‹¤.
+	    		showLoginAlert();
 	    	}
 			break;
 			
@@ -123,7 +134,7 @@ public class FindPlayerListFragment extends Fragment implements OnItemClickListe
 		return super.onOptionsItemSelected(item);
 	}
 
-	// ¾î´ğÅÍ Á¤ÀÇ
+	// ì–´ëŒ‘í„° ì •ì˜
 	public class FindPlayerListAdapter extends BaseAdapter {
 
 		private Context context;
@@ -160,7 +171,7 @@ public class FindPlayerListFragment extends Fragment implements OnItemClickListe
 			}
 			TextView dateHeader = (TextView)convertView.findViewById(R.id.date_header);
 			
-			// Ã¹¹øÂ° ¾ÆÀÌÅÛÀÌ°Å³ª, ÀÌÀü ¾ÆÀÌÅÛ°ú µî·Ï ³¯Â¥°¡ ´Ù¸¥°æ¿ì µî·Ï ³¯Â¥¸¦ Ãâ·ÂÇÑ´Ù.
+			// ì²«ë²ˆì§¸ ì•„ì´í…œì´ê±°ë‚˜, ì´ì „ ì•„ì´í…œê³¼ ë“±ë¡ ë‚ ì§œê°€ ë‹¤ë¥¸ê²½ìš° ë“±ë¡ ë‚ ì§œë¥¼ ì¶œë ¥í•œë‹¤.
 			if(position == 0 || !getItem(position-1).getPostedDate().equals(getItem(position).getPostedDate())) {
 				dateHeader.setText(getItem(position).getPostedDate());
 				dateHeader.setVisibility(View.VISIBLE);
@@ -178,7 +189,7 @@ public class FindPlayerListFragment extends Fragment implements OnItemClickListe
 			
 			String strPos = getItem(position).getPosition();
 			
-			// Æ÷Áö¼Çº° »ö»ó Ã³¸®
+			// í¬ì§€ì…˜ë³„ ìƒ‰ìƒ ì²˜ë¦¬
 			if(strPos.equals("GK"))
 				tvPosition.setTextColor(getResources().getColor(android.R.color.holo_orange_light));
 			else if(strPos.equals("LB") || strPos.equals("CB") || strPos.equals("RB") 
@@ -196,20 +207,18 @@ public class FindPlayerListFragment extends Fragment implements OnItemClickListe
 			TextView location = (TextView) convertView.findViewById(R.id.location);
 			location.setText(getItem(position).getLocation());
 			
-			// Áñ°ÜÃ£±â ¹öÆ°
-			ImageView scrap = (ImageView) convertView
-					.findViewById(R.id.img_scrap);
-			DatabaseHandler db = new DatabaseHandler(
-					FindPlayerListFragment.this.getActivity());
-			boolean isScrapped = db.selectScrapFindPlayer(getItem(position).getNo());
+			// ìŠ¤í¬ë© ë²„íŠ¼
+			ImageView scrap = (ImageView) convertView.findViewById(R.id.img_scrap);
+			Integer no = new Integer(getItem(position).getNo());
+			boolean isScrapped = scrappedList.contains(no);
 			
-			// Áñ°ÜÃ£±â ¿©ºÎ¿¡ µû¶ó ´Ù¸¥ ÀÌ¹ÌÁö¸¦ Ãâ·ÂÇÑ´Ù.
+			// ìŠ¤í¬ë© ì—¬ë¶€ì— ë”°ë¼ ë‹¤ë¥¸ ì´ë¯¸ì§€ë¥¼ ì¶œë ¥í•œë‹¤.
 			if (isScrapped)
 				scrap.setImageResource(R.drawable.scrapped);
 			else
 				scrap.setImageResource(R.drawable.scrap);
 
-			// Å¬¸¯ ÀÌº¥Æ® ¸®½º³Ê µî·Ï
+			// í´ë¦­ ì´ë²¤íŠ¸ ë¦¬ìŠ¤ë„ˆ ë“±ë¡
 			scrap.setOnClickListener(new OnClickListener() {
 
 				@Override
@@ -237,41 +246,66 @@ public class FindPlayerListFragment extends Fragment implements OnItemClickListe
 	}
 	
 	private void getFindPlayerList() {
-		// À¥ ¼­¹ö URL
+		// ì›¹ ì„œë²„ URL
 		String url = getString(R.string.server) + getString(R.string.find_player_list);
 		
-		// °Ë»ö Á¶°Ç ÇÁ¸®ÆÛ·±½º ¿­±â
+		// ê²€ìƒ‰ ì¡°ê±´ í”„ë¦¬í¼ëŸ°ìŠ¤ ì—´ê¸°
 		SharedPreferences prefCondition = getActivity().getSharedPreferences("findPlayer", Context.MODE_PRIVATE);
 					
-		// °Ë»ö Á¶°Ç ÆÄ¸®¹ÌÅÍ ±¸¼º
-		String param = "location=" + prefCondition.getString("location", "Àü±¹");
+		// ê²€ìƒ‰ ì¡°ê±´ íŒŒë¦¬ë¯¸í„° êµ¬ì„±
+		String param = "location=" + prefCondition.getString("location", "ì „êµ­");
 		for( int i = 0; i < 15; i++ )
 		param += "&pos" + i + "=" + prefCondition.getBoolean("pos" + i, true);
 		for( int i = 0; i < 6; i++ )
 		param += "&age" + i + "=" + prefCondition.getBoolean("age" + i, true);
 		
-		// ¼­¹ö ¿¬°á
-		JSONObject json = new HttpTask(url, param).getJSONObject();
-		JSONArray jsonArr = null;
-		
-		// ¸®½ºÆ® ¾÷µ¥ÀÌÆ®
-		try {
-			jsonArr = json.getJSONArray("list");
-			JSONObject item;
+		// ì„œë²„ ì—°ê²°
+		new HttpAsyncTask(url, param) {
 
-			playerList.clear();
-			for (int i = 0; i < jsonArr.length(); i++) {
-				item = jsonArr.getJSONObject(i);
-				playerList.add(new FindPlayerItem(item));
+			@Override
+			protected void onPostExecute(String result) {
+				JSONObject json = null;
+				JSONArray jsonArr = null;
+				
+				// ë¦¬ìŠ¤íŠ¸ ì—…ë°ì´íŠ¸
+				try {
+					json = new JSONObject(result);
+					jsonArr = json.getJSONArray("list");
+					JSONObject item;
+
+					playerList.clear();
+					for (int i = 0; i < jsonArr.length(); i++) {
+						item = jsonArr.getJSONObject(i);
+						playerList.add(new FindPlayerItem(item));
+					}
+					
+				} catch (JSONException e) {
+					playerList.clear();
+					Log.e("getFindPlayerList", e.getMessage());
+				} finally {
+					plAdapter.notifyDataSetChanged();
+					count.setText("ì´ " + playerList.size() + "ê°œ");
+				}
 			}
 			
-		} catch (JSONException e) {
-			playerList.clear();
-			Log.e("getFindPlayerList", e.getMessage());
-		} finally {
-			plAdapter.notifyDataSetChanged();
-			count.setText("ÃÑ " + playerList.size() + "°³");
-		}
+		}.execute();
+	}
+	
+	// ë¡œê·¸ì¸ ë‹¤ì´ì–¼ë¡œê·¸ë¥¼ ë„ìš´ë‹¤.
+	private void showLoginAlert() {
+		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+		builder.setMessage("ì„ ìˆ˜ëª¨ì§‘ ê¸€ì„ ì‘ì„±í•˜ë ¤ë©´ íŒ€ ê³„ì •ìœ¼ë¡œ ë¡œê·¸ì¸ í•´ì•¼í•©ë‹ˆë‹¤.\n\në¡œê·¸ì¸ í•˜ì‹œê² ìŠµë‹ˆê¹Œ?")
+		.setNegativeButton("ì•„ë‹ˆì˜¤", null)
+		.setPositiveButton("ì˜ˆ", this);
+		
+		AlertDialog ad = builder.create();
+		ad.show();
+	}
+	
+	// ë‹¤ì´ì–¼ë¡œê·¸ ì´ë²¤íŠ¸ ì½œë°± ë©”ì„œë“œ
+	@Override
+	public void onClick(DialogInterface dialog, int which) {
+		startActivity(new Intent(this.getActivity(), LoginActivity.class));
 	}
 }
 

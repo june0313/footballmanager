@@ -1,4 +1,4 @@
-package june.footballmanager;
+ï»¿package june.footballmanager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,20 +14,20 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	private static final int DATABASE_VERSION = 1;
 	private static final String DATABASE_NAME = "address.db";
 	
-	// Áö¿ªÁ¤º¸¸¦ ÀúÀåÇÏ´Â Å×ÀÌºí
+	// ì§€ì—­ì •ë³´ë¥¼ ì €ì¥í•˜ëŠ” í…Œì´ë¸”
 	private static final String TABLE_LOCATION = "location";
 	private static final String KEY_SIDO = "SIDO";
 	private static final String KEY_GUGUN = "GUGUN";
 	private static final String KEY_DONG = "DONG";
 	
-	// ¸ÅÄ¡ ½ºÅ©·¦ Á¤º¸¸¦ ÀúÀåÇÏ´Â Å×ÀÌºí
+	// ë§¤ì¹˜ ìŠ¤í¬ë© ì •ë³´ë¥¼ ì €ì¥í•˜ëŠ” í…Œì´ë¸”
 	private static final String TABLE_SCRAP_MATCH = "scrap_match";
 	private static final String KEY_MATCHNO = "match_no";
 	private static final String CREATE_TABLE_SCRAP_MATCH = "CREATE TABLE "
 			+ TABLE_SCRAP_MATCH + "(" + KEY_MATCHNO + " INTEGER PRIMARY KEY"
 			+ ");";
 
-	// ¼±¼ö¸ğÁı ½ºÅ©·¦ Á¤º¸¸¦ ÀúÀåÇÏ´Â Å×ÀÌºí
+	// ì„ ìˆ˜ëª¨ì§‘ ìŠ¤í¬ë© ì •ë³´ë¥¼ ì €ì¥í•˜ëŠ” í…Œì´ë¸”
 	private static final String TABLE_SCRAP_FIND_PLAYER = "scrap_find_player";
 	private static final String KEY_NO = "no";
 	private static final String CREATE_TABLE_SCRAP_FIND_PLAYER = "CREATE TABLE "
@@ -37,7 +37,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			+ " INTEGER PRIMARY KEY"
 			+ ");";
 
-	// ÆÀ±¸ÇÔ ½ºÅ©·¦ Á¤º¸¸¦ ÀúÀåÇÏ´Â Å×ÀÌºí
+	// íŒ€êµ¬í•¨ ìŠ¤í¬ë© ì •ë³´ë¥¼ ì €ì¥í•˜ëŠ” í…Œì´ë¸”
 	private static final String TABLE_SCRAP_FIND_TEAM = "scrap_find_team";
 	private static final String CREATE_TABLE_SCRAP_FIND_TEAM = "CREATE TABLE "
 			+ TABLE_SCRAP_FIND_TEAM
@@ -52,19 +52,19 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	}
 
 	/*
-	 * DB ÆÄÀÏ ÃÖÃÊ »ı¼º½Ã ´Ü ÇÑ¹ø¸¸ È£ÃâµÈ´Ù.
+	 * DB íŒŒì¼ ìµœì´ˆ ìƒì„±ì‹œ ë‹¨ í•œë²ˆë§Œ í˜¸ì¶œëœë‹¤.
 	 */
 	@Override
 	public void onCreate(SQLiteDatabase db) {
-		// ¸ÅÄ¡ ½ºÅ©·¦ Å×ÀÌºí »ı¼º
+		// ë§¤ì¹˜ ìŠ¤í¬ë© í…Œì´ë¸” ìƒì„±
 		db.execSQL(CREATE_TABLE_SCRAP_MATCH);
 		Log.i("SQLite", "Table is created.");
 		
-		// ¼±¼ö¸ğÁı ½ºÅ©·¦ Å×ÀÌºí »ı¼º
+		// ì„ ìˆ˜ëª¨ì§‘ ìŠ¤í¬ë© í…Œì´ë¸” ìƒì„±
 		db.execSQL(CREATE_TABLE_SCRAP_FIND_PLAYER);
 		Log.i("SQLite", "Table is created.");
 		
-		// ÆÀ±¸ÇÔ ½ºÅ©·¦ Å×ÀÌºí »ı¼º
+		// íŒ€êµ¬í•¨ ìŠ¤í¬ë© í…Œì´ë¸” ìƒì„±
 		db.execSQL(CREATE_TABLE_SCRAP_FIND_TEAM);
 		Log.i("SQLite", "Table is created.");
 	}
@@ -74,7 +74,23 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		
 	}
 	
-	// ½ºÅ©·¦ÇÑ ¸ğµç ¸ÅÄ¡¸¦ CSV Çü½ÄÀÇ ¹®ÀÚ¿­·Î ¸®ÅÏ
+	// ìŠ¤í¬ë©í•œ ëª¨ë“  ë§¤ì¹˜ë¥¼ ArrayList<Integer>ë¡œ ë¦¬í„´
+	public ArrayList<Integer> getScrappedMatchList() {
+		SQLiteDatabase db = this.getReadableDatabase();
+		String query = "SELECT " + KEY_MATCHNO + " FROM " + TABLE_SCRAP_MATCH;
+		Cursor c = db.rawQuery(query, null);
+		ArrayList<Integer> list = new ArrayList<Integer>();
+		
+		if(c.moveToFirst()) {
+			do {
+				list.add(c.getInt(0));
+			} while(c.moveToNext());
+		}
+		
+		return list;
+	}
+	
+	// ìŠ¤í¬ë©í•œ ëª¨ë“  ë§¤ì¹˜ë¥¼ CSV í˜•ì‹ì˜ ë¬¸ìì—´ë¡œ ë¦¬í„´
 	public String getAllScrapMatch() {
 		SQLiteDatabase db = this.getReadableDatabase();
 		String query = "SELECT " + KEY_MATCHNO + " FROM " + TABLE_SCRAP_MATCH;
@@ -100,7 +116,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		return result;
 	}
 	
-	// ½ºÅ©·¦ÇÑ ¸ÅÄ¡¸¦ DB¿¡ ÀúÀåÇÏ´Â ÇÔ¼ö
+	// ìŠ¤í¬ë©í•œ ë§¤ì¹˜ë¥¼ DBì— ì €ì¥í•˜ëŠ” í•¨ìˆ˜
 	public void insertScrapMatch(int matchNo) {
 		SQLiteDatabase db = this.getWritableDatabase();
 		ContentValues values = new ContentValues();
@@ -111,8 +127,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		db.close();
 	}
 	
-	// ¸ÅÄ¡°¡ ½ºÅ©·¦ µÇ¾ú´ÂÁö Á¶È¸ÇÏ´Â ÇÔ¼ö
-	// ¸ÅÄ¡ ¹øÈ£·Î Á¶È¸ ÈÄ ¿­ÀÇ °³¼ö¸¦ ¸®ÅÏÇÑ´Ù.
+	// ë§¤ì¹˜ê°€ ìŠ¤í¬ë© ë˜ì—ˆëŠ”ì§€ ì¡°íšŒí•˜ëŠ” í•¨ìˆ˜
+	// ë§¤ì¹˜ ë²ˆí˜¸ë¡œ ì¡°íšŒ í›„ ì—´ì˜ ê°œìˆ˜ë¥¼ ë¦¬í„´í•œë‹¤.
 	public boolean selectScrapMatch(int matchNo) {
 		SQLiteDatabase db = this.getReadableDatabase();
 		String query = "SELECT " + KEY_MATCHNO + " FROM " + TABLE_SCRAP_MATCH + " WHERE " + KEY_MATCHNO + " = " + matchNo;
@@ -129,14 +145,30 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			return false;
 	}
 	
-	// ½ºÅ©·¦µÈ ¸ÅÄ¡¸¦ »èÁ¦ÇÏ´Â ÇÔ¼ö
+	// ìŠ¤í¬ë©ëœ ë§¤ì¹˜ë¥¼ ì‚­ì œí•˜ëŠ” í•¨ìˆ˜
 	public void deleteScrapMatch(int matchNo) {
 		SQLiteDatabase db = this.getWritableDatabase();
 		db.delete(TABLE_SCRAP_MATCH, KEY_MATCHNO + " = ?", new String[] { String.valueOf(matchNo) });
 		db.close();
 	}
 	
-	// ½ºÅ©·¦ÇÑ ¸ğµç ¼±¼ö¸ğÁıÀ» CSV Çü½ÄÀÇ ¹®ÀÚ¿­·Î ¸®ÅÏ
+	// ìŠ¤í¬ë©í•œ ëª¨ë“  ì„ ìˆ˜ëª¨ì§‘ì„ ArrayList<Integer>ë¡œ ë¦¬í„´
+	public ArrayList<Integer> getScrappedFindPlayer() {
+		SQLiteDatabase db = this.getReadableDatabase();
+		String query = "SELECT " + KEY_NO + " FROM " + TABLE_SCRAP_FIND_PLAYER;
+		Cursor c = db.rawQuery(query, null);
+		ArrayList<Integer> list = new ArrayList<Integer>();
+
+		if (c.moveToFirst()) {
+			do {
+				list.add(c.getInt(0));
+			} while (c.moveToNext());
+		}
+		
+		return list;
+	}
+	
+	// ìŠ¤í¬ë©í•œ ëª¨ë“  ì„ ìˆ˜ëª¨ì§‘ì„ CSV í˜•ì‹ì˜ ë¬¸ìì—´ë¡œ ë¦¬í„´
 	public String getAllScrapFindPlayer() {
 		SQLiteDatabase db = this.getReadableDatabase();
 		String query = "SELECT " + KEY_NO + " FROM " + TABLE_SCRAP_FIND_PLAYER;
@@ -162,7 +194,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		return result;
 	}
 	
-	// ½ºÅ©·¦ÇÑ ¼±¼ö¸ğÁıÀ» DB¿¡ ÀúÀåÇÏ´Â ÇÔ¼ö
+	// ìŠ¤í¬ë©í•œ ì„ ìˆ˜ëª¨ì§‘ì„ DBì— ì €ì¥í•˜ëŠ” í•¨ìˆ˜
 	public void insertScrapFindPlayer(int no) {
 		SQLiteDatabase db = this.getWritableDatabase();
 		ContentValues values = new ContentValues();
@@ -173,8 +205,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		db.close();
 	}
 
-	// ¼±¼ö¸ğÁıÀÌ ½ºÅ©·¦ µÇ¾ú´ÂÁö Á¶È¸ÇÏ´Â ÇÔ¼ö
-	// °Ô½Ã¹° ¹øÈ£·Î Á¶È¸ ÈÄ ¿­ÀÇ °³¼ö¸¦ ¸®ÅÏÇÑ´Ù.
+	// ì„ ìˆ˜ëª¨ì§‘ì´ ìŠ¤í¬ë© ë˜ì—ˆëŠ”ì§€ ì¡°íšŒí•˜ëŠ” í•¨ìˆ˜
+	// ê²Œì‹œë¬¼ ë²ˆí˜¸ë¡œ ì¡°íšŒ í›„ ì—´ì˜ ê°œìˆ˜ë¥¼ ë¦¬í„´í•œë‹¤.
 	public boolean selectScrapFindPlayer(int no) {
 		SQLiteDatabase db = this.getReadableDatabase();
 		String query = "SELECT " + KEY_NO + " FROM " + TABLE_SCRAP_FIND_PLAYER
@@ -192,15 +224,31 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			return false;
 	}
 	
-	// ½ºÅ©·¦µÈ ¼±¼ö¸ğÁıÀ» »èÁ¦ÇÏ´Â ÇÔ¼ö
+	// ìŠ¤í¬ë©ëœ ì„ ìˆ˜ëª¨ì§‘ì„ ì‚­ì œí•˜ëŠ” í•¨ìˆ˜
 	public void deleteScrapFindPlayer(int no) {
 		SQLiteDatabase db = this.getWritableDatabase();
 		db.delete(TABLE_SCRAP_FIND_PLAYER, KEY_NO + " = ?",
 				new String[] { String.valueOf(no) });
 		db.close();
 	}
+	
+	// ìŠ¤í¬ë©í•œ ëª¨ë“  íŒ€êµ¬í•¨ì„ ArrayList<Integer>ë¡œ ë¦¬í„´
+	public ArrayList<Integer> getScrappedFindTeam() {
+		SQLiteDatabase db = this.getReadableDatabase();
+		String query = "SELECT " + KEY_NO + " FROM " + TABLE_SCRAP_FIND_TEAM;
+		Cursor c = db.rawQuery(query, null);
+		ArrayList<Integer> list = new ArrayList<Integer>();
 
-	// ½ºÅ©·¦ÇÑ ¸ğµç ÆÀ±¸ÇÔÀ» CSV Çü½ÄÀÇ ¹®ÀÚ¿­·Î ¸®ÅÏ
+		if (c.moveToFirst()) {
+			do {
+				list.add(c.getInt(0));
+			} while (c.moveToNext());
+		}
+		
+		return list;
+	}
+
+	// ìŠ¤í¬ë©í•œ ëª¨ë“  íŒ€êµ¬í•¨ì„ CSV í˜•ì‹ì˜ ë¬¸ìì—´ë¡œ ë¦¬í„´
 	public String getAllScrapFindTeam() {
 		SQLiteDatabase db = this.getReadableDatabase();
 		String query = "SELECT " + KEY_NO + " FROM " + TABLE_SCRAP_FIND_TEAM;
@@ -226,7 +274,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		return result;
 	}
 	
-	// ½ºÅ©·¦ÇÑ ÆÀ±¸ÇÔÀ» DB¿¡ ÀúÀåÇÏ´Â ÇÔ¼ö
+	// ìŠ¤í¬ë©í•œ íŒ€êµ¬í•¨ì„ DBì— ì €ì¥í•˜ëŠ” í•¨ìˆ˜
 	public void insertScrapFindTeam(int no) {
 		SQLiteDatabase db = this.getWritableDatabase();
 		ContentValues values = new ContentValues();
@@ -237,8 +285,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		db.close();
 	}
 	
-	// ÆÀ±¸ÇÔÀÌ ½ºÅ©·¦ µÇ¾ú´ÂÁö Á¶È¸ÇÏ´Â ÇÔ¼ö
-	// °Ô½Ã¹° ¹øÈ£·Î Á¶È¸ ÈÄ ¿­ÀÇ °³¼ö¸¦ ¸®ÅÏÇÑ´Ù.
+	// íŒ€êµ¬í•¨ì´ ìŠ¤í¬ë© ë˜ì—ˆëŠ”ì§€ ì¡°íšŒí•˜ëŠ” í•¨ìˆ˜
+	// ê²Œì‹œë¬¼ ë²ˆí˜¸ë¡œ ì¡°íšŒ í›„ ì—´ì˜ ê°œìˆ˜ë¥¼ ë¦¬í„´í•œë‹¤.
 	public boolean selectScrapFindTeam(int no) {
 		SQLiteDatabase db = this.getReadableDatabase();
 		String query = "SELECT " + KEY_NO + " FROM " + TABLE_SCRAP_FIND_TEAM
@@ -256,7 +304,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			return false;
 	}
 	
-	// ½ºÅ©·¦µÈ ÆÀ±¸ÇÔÀ» »èÁ¦ÇÏ´Â ÇÔ¼ö
+	// ìŠ¤í¬ë©ëœ íŒ€êµ¬í•¨ì„ ì‚­ì œí•˜ëŠ” í•¨ìˆ˜
 	public void deleteScrapFindTeam(int no) {
 		SQLiteDatabase db = this.getWritableDatabase();
 		db.delete(TABLE_SCRAP_FIND_TEAM, KEY_NO + " = ?",
@@ -264,7 +312,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		db.close();
 	}
 	
-	// Àü±¹ÀÇ ½Ã/µµ ¸®½ºÆ®¸¦ ¸®ÅÏÇÑ´Ù.
+	// ì „êµ­ì˜ ì‹œ/ë„ ë¦¬ìŠ¤íŠ¸ë¥¼ ë¦¬í„´í•œë‹¤.
 	public List<String> getSIDOList() {
 		List<String> SIDOList = new ArrayList<String>();
 		

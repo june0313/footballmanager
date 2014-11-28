@@ -1,4 +1,4 @@
-package june.footballmanager;
+Ôªøpackage june.footballmanager;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -22,19 +22,19 @@ public class PlayerRegisterActivity extends Activity implements OnClickListener{
 	
 	static final int LOCATION = 1;
 	
-	// ∞Ë¡§¡§∫∏ ∫‰
+	// Í≥ÑÏ†ïÏ†ïÎ≥¥ Î∑∞
 	EditText email;
 	EditText password;
 	EditText passwordChk;
 
-	// º±ºˆ¡§∫∏ ∫‰
+	// ÏÑ†ÏàòÏ†ïÎ≥¥ Î∑∞
 	EditText nickname;
 	TextView position;
 	EditText age;
 	TextView location;
 	EditText phone;
 
-	// µÓ∑œ πˆ∆∞
+	// Îì±Î°ù Î≤ÑÌäº
 	Button btnRegister;
 
 	/** Called when the activity is first created. */
@@ -46,12 +46,12 @@ public class PlayerRegisterActivity extends Activity implements OnClickListener{
 	    ActionBar actionBar = getActionBar();
 	    actionBar.setDisplayHomeAsUpEnabled(true);
 	    
-		// ∞Ë¡§¡§∫∏
+		// Í≥ÑÏ†ïÏ†ïÎ≥¥
 	    email = (EditText)findViewById(R.id.p_email);
 	    password = (EditText)findViewById(R.id.p_password);
 	    passwordChk = (EditText)findViewById(R.id.p_password_chk);
 	    
-	    // º±ºˆ¡§∫∏
+	    // ÏÑ†ÏàòÏ†ïÎ≥¥
 	    nickname = (EditText)findViewById(R.id.p_nickname);
 	    
 	    position = (TextView)findViewById(R.id.p_position);
@@ -84,32 +84,32 @@ public class PlayerRegisterActivity extends Activity implements OnClickListener{
 		int id = v.getId();
 		if (id == R.id.btn_register) {
 			if( email.getText().length() <= 0 ) {
-				Toast.makeText(getApplicationContext(), "¿Ã∏ﬁ¿œ¿ª ¿‘∑¬«ÿ¡÷ººø‰.", 0).show();
+				Toast.makeText(this, "Ïù¥Î©îÏùºÏùÑ ÏûÖÎ†•Ìï¥Ï£ºÏÑ∏Ïöî.", 0).show();
 			} else if( password.getText().length() <= 0 ) {
-				Toast.makeText(getApplicationContext(), "∫Òπ–π¯»£∏¶ ¿‘∑¬«ÿ¡÷ººø‰.", 0).show();
+				Toast.makeText(this, "ÎπÑÎ∞ÄÎ≤àÌò∏Î•º ÏûÖÎ†•Ìï¥Ï£ºÏÑ∏Ïöî.", 0).show();
 			} else if( nickname.getText().toString().length() <= 0 ) {
-				Toast.makeText(getApplicationContext(), "¥–≥◊¿”¿ª ¿‘∑¬«ÿ¡÷ººø‰.", 0).show();
+				Toast.makeText(this, "ÎãâÎÑ§ÏûÑÏùÑ ÏûÖÎ†•Ìï¥Ï£ºÏÑ∏Ïöî.", 0).show();
 			} else if( position.getText().toString().length() <= 0 ) {
-				Toast.makeText(getApplicationContext(), "∆˜¡ˆº«¿ª º±≈√«ÿ¡÷ººø‰.", 0).show();
+				Toast.makeText(this, "Ìè¨ÏßÄÏÖòÏùÑ ÏÑ†ÌÉùÌï¥Ï£ºÏÑ∏Ïöî.", 0).show();
 			} else if( age.getText().toString().length() <= 0 ) {
-				Toast.makeText(getApplicationContext(), "≥™¿Ã∏¶ ¿‘∑¬«ÿ¡÷ººø‰.", 0).show();
+				Toast.makeText(this, "ÎÇòÏù¥Î•º ÏûÖÎ†•Ìï¥Ï£ºÏÑ∏Ïöî.", 0).show();
 			} else if( location.getText().toString().length() <= 0 ) {
-				Toast.makeText(getApplicationContext(), "¡ˆø™¿ª º±≈√«ÿ¡÷ººø‰.", 0).show();
+				Toast.makeText(getApplicationContext(), "ÏßÄÏó≠ÏùÑ ÏÑ†ÌÉùÌï¥Ï£ºÏÑ∏Ïöî.", 0).show();
 			} else if( phone.getText().toString().length() <= 0 ) {
-				Toast.makeText(getApplicationContext(), "ø¨∂Ù√≥∏¶ ¿‘∑¬«ÿ¡÷ººø‰.", 0).show();
+				Toast.makeText(this, "Ïó∞ÎùΩÏ≤òÎ•º ÏûÖÎ†•Ìï¥Ï£ºÏÑ∏Ïöî.", 0).show();
 			} else if( password.getText().length() < 6 ) {
-				Toast.makeText(getApplicationContext(), "∫Òπ–π¯»£¥¬ √÷º“ 6¿⁄∏Æ ¿ÃªÛ ¿‘∑¬«ÿ¡÷ººø‰.", 0).show();
+				Toast.makeText(this, "ÎπÑÎ∞ÄÎ≤àÌò∏Îäî ÏµúÏÜå 6ÏûêÎ¶¨ Ïù¥ÏÉÅ ÏûÖÎ†•Ìï¥Ï£ºÏÑ∏Ïöî.", 0).show();
 			} else if( !password.getText().toString().equals(passwordChk.getText().toString()) ) {
-				Toast.makeText(getApplicationContext(), "∫Òπ–π¯»£∞° ¿œƒ°«œ¡ˆ æ Ω¿¥œ¥Ÿ.", 0).show();
+				Toast.makeText(this, "ÎπÑÎ∞ÄÎ≤àÌò∏Í∞Ä ÏùºÏπòÌïòÏßÄ ÏïäÏäµÎãàÎã§.", 0).show();
 			} else if( !email.getText().toString().matches("^[_a-zA-Z0-9-\\.]+@[\\.a-zA-Z0-9-]+\\.[a-zA-Z]+$") ) {
-				Toast.makeText(getApplicationContext(), "¿Ã∏ﬁ¿œ ¡÷º“∞° ¿ﬂ∏¯µ«æ˙Ω¿¥œ¥Ÿ.", 0).show();
+				Toast.makeText(this, "Ïù¥Î©îÏùº Ï£ºÏÜåÍ∞Ä ÏûòÎ™ªÎêòÏóàÏäµÎãàÎã§.", 0).show();
 			} else {
-				// »∏ø¯∞°¿‘ Ω««‡
+				// ÌöåÏõêÍ∞ÄÏûÖ Ïã§Ìñâ
 				registerPlayerAccount();
 			}
 		} else if( id == R.id.p_position ) {
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
-			builder.setTitle("∆˜¡ˆº«¿ª º±≈√«œººø‰");
+			builder.setTitle("Ìè¨ÏßÄÏÖòÏùÑ ÏÑ†ÌÉùÌïòÏÑ∏Ïöî");
 			builder.setItems(R.array.positions_long, new DialogInterface.OnClickListener(){
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
@@ -123,7 +123,7 @@ public class PlayerRegisterActivity extends Activity implements OnClickListener{
 		}
 	}
 
-	// ¡÷º“ πﬁæ∆ø¿±‚
+	// Ï£ºÏÜå Î∞õÏïÑÏò§Í∏∞
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent intent) {
 		switch (requestCode) {
@@ -135,10 +135,10 @@ public class PlayerRegisterActivity extends Activity implements OnClickListener{
 	}
 	
 	private void registerPlayerAccount() {
-		// ø¨∞·«“ ∆‰¿Ã¡ˆ¿« URL
+		// Ïó∞Í≤∞Ìï† ÌéòÏù¥ÏßÄÏùò URL
 		String url = getString(R.string.server)+ getString(R.string.regi_player);
 		
-		// ∆ƒ∂ÛπÃ≈Õ ±∏º∫
+		// ÌååÎùºÎØ∏ÌÑ∞ Íµ¨ÏÑ±
 		String param = "email=" + email.getText().toString();
 		param += "&password=" + password.getText().toString();
 		param += "&nickname=" + nickname.getText().toString();
@@ -147,27 +147,36 @@ public class PlayerRegisterActivity extends Activity implements OnClickListener{
 		param += "&location=" + location.getText().toString();
 		param += "&phone=" + phone.getText().toString();
 		
-		// º≠πˆ ø¨∞·
-		JSONObject json = new HttpTask(url, param).getJSONObject();
-		
-		// check the success of registration
-		try {
-			if (json.getInt("success") == 1) {
-				Toast.makeText(getApplicationContext(), "»∏ø¯ ∞°¿‘¿Ã øœ∑·µ«æ˙Ω¿¥œ¥Ÿ.", 0).show();
-				finish();
-			} else {
-				int errorcode = json.getInt("errorcode");
-				String errormsg = json.getString("errormsg");
+		// ÏÑúÎ≤Ñ Ïó∞Í≤∞
+		new HttpAsyncTask(url, param, this, "Ïû†ÏãúÎßå Í∏∞Îã§Î†§ Ï£ºÏÑ∏Ïöî...") {
+
+			@Override
+			protected void onPostExecute(String result) {
+				JSONObject json = null;
 				
-				if (errorcode == 1062 && errormsg.contains("EMAIL"))
-					Toast.makeText(getApplicationContext(), "¿ÃπÃ ∞°¿‘µ» ¿Ã∏ﬁ¿œ ¡÷º“¿‘¥œ¥Ÿ.", 0).show();
-				else if(errorcode == 1062 && errormsg.contains("NICKNAME")) 
-					Toast.makeText(getApplicationContext(), "¡ﬂ∫πµ«¥¬ ¥–≥◊¿”¿Ã ¡∏¿Á«’¥œ¥Ÿ.", 0).show();
-				else
-					Toast.makeText(getApplicationContext(), "»∏ø¯∞°¿‘ø° Ω«∆–«œø¥Ω¿¥œ¥Ÿ.", 0).show();
+				// check the success of registration
+				try {
+					json = new JSONObject(result);
+					if (json.getInt("success") == 1) {
+						Toast.makeText(PlayerRegisterActivity.this, "ÏÑ†Ïàò Í≥ÑÏ†ï Îì±Î°ùÏù¥ ÏôÑÎ£åÎêòÏóàÏäµÎãàÎã§!", 0).show();
+						finish();
+					} else {
+						int errorcode = json.getInt("errorcode");
+						String errormsg = json.getString("errormsg");
+						
+						if (errorcode == 1062 && errormsg.contains("EMAIL"))
+							Toast.makeText(PlayerRegisterActivity.this, "Ïù¥ÎØ∏ Îì±Î°ùÎêú Ïù¥Î©îÏùº Ï£ºÏÜåÏûÖÎãàÎã§.", 0).show();
+						else if(errorcode == 1062 && errormsg.contains("NICKNAME")) 
+							Toast.makeText(PlayerRegisterActivity.this, "Ï§ëÎ≥µÎêòÎäî ÎãâÎÑ§ÏûÑÏù¥ Ï°¥Ïû¨Ìï©ÎãàÎã§.", 0).show();
+						else
+							Toast.makeText(PlayerRegisterActivity.this, "ÏÑ†Ïàò Í≥ÑÏ†ï Îì±Î°ùÏóê Ïã§Ìå®ÌïòÏòÄÏäµÎãàÎã§.", 0).show();
+					}
+				} catch (JSONException e) {
+					Log.e("registerPlayerAccount", e.getMessage());
+				}
 			}
-		} catch (JSONException e) {
-			Log.e("registerPlayerAccount", e.getMessage());
-		}
+			
+		}.execute();
+		
 	}
 }

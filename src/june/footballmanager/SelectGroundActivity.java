@@ -1,4 +1,4 @@
-package june.footballmanager;
+ï»¿package june.footballmanager;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -30,7 +30,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-// °æ±âÀå ¼±ÅÃ(°Ë»ö) È­¸é
+// ê²½ê¸°ì¥ ì„ íƒ(ê²€ìƒ‰) í™”ë©´
 public class SelectGroundActivity extends Activity implements OnClickListener{
 	EditText searchBox;
 	
@@ -41,11 +41,11 @@ public class SelectGroundActivity extends Activity implements OnClickListener{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_select_ground);
 		
-		// ¾×¼Ç¹Ù ¼³Á¤(µÚ·Î°¡±â È°¼ºÈ­)
+		// ì•¡ì…˜ë°” ì„¤ì •(ë’¤ë¡œê°€ê¸° í™œì„±í™”)
 		ActionBar actionBar = getActionBar();
 	    actionBar.setDisplayHomeAsUpEnabled(true);
 		
-		// °Ë»ö¹öÆ°
+		// ê²€ìƒ‰ë²„íŠ¼
 		ImageButton btnSearch = (ImageButton)findViewById(R.id.btn_search);
 		btnSearch.setOnClickListener(this);
 		
@@ -53,7 +53,7 @@ public class SelectGroundActivity extends Activity implements OnClickListener{
 		tvTemp = (TextView)findViewById(R.id.textView1);
 	}
 
-	// Å¬¸¯ ÀÌº¥Æ®
+	// í´ë¦­ ì´ë²¤íŠ¸
 	@Override
 	public void onClick(View v) {
 		int id = v.getId();
@@ -88,7 +88,7 @@ public class SelectGroundActivity extends Activity implements OnClickListener{
 				String paramTarget = "local";
 				String paramQuery = searchBox.getText().toString();
 				
-				// ÆÄ¶ó¹ÌÅÍ Á¶ÇÕ
+				// íŒŒë¼ë¯¸í„° ì¡°í•©
 				String parameters = String.format("key=%s&target=%s&query=%s", 
 						URLEncoder.encode( paramKey, charset ), 
 						URLEncoder.encode( paramTarget, charset ), 
@@ -117,7 +117,7 @@ public class SelectGroundActivity extends Activity implements OnClickListener{
 					
 					int eventType = xpp.getEventType();
 					
-					// xmlÀÇ ³¡±îÁö µ¹¸é¼­ ¿øÇÏ´Â µ¥ÀÌÅÍ¸¦ ¾ò¾î¿È
+					// xmlì˜ ëê¹Œì§€ ëŒë©´ì„œ ì›í•˜ëŠ” ë°ì´í„°ë¥¼ ì–»ì–´ì˜´
 					while( eventType != XmlPullParser.END_DOCUMENT ) {
 						
 					}
@@ -141,7 +141,7 @@ public class SelectGroundActivity extends Activity implements OnClickListener{
 		
 		@Override
 		public void onPostExecute( Boolean isSuccess ) {
-			// ÀÓ½Ã ÅØ½ºÆ® Ãâ·Â
+			// ì„ì‹œ í…ìŠ¤íŠ¸ ì¶œë ¥
 			tvTemp.setText( xmlString );
 		}
 		

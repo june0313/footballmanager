@@ -1,4 +1,4 @@
-package june.footballmanager;
+ï»¿package june.footballmanager;
 
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
@@ -12,7 +12,7 @@ import android.util.Log;
 
 public class MainActivity extends FragmentActivity implements ActionBar.TabListener {
 
-	// GCM °ü¸®ÀÚ °´Ã¼
+	// GCM ê´€ë¦¬ì ê°ì²´
 	GCMManager gm;
 	/**
 	 * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -34,11 +34,11 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		
-		// GCM °ü¸®ÀÚ »ı¼º
+		// GCM ê´€ë¦¬ì ìƒì„±
 		gm = new GCMManager(this);
 		
-		// µğ¹ÙÀÌ½º°¡ Play Service¸¦ Áö¿øÇÏ´ÂÁö Ã¼Å©ÇÑ´Ù.
-		// Áö¿øÇÒ °æ¿ì GCM µî·ÏÀ» ÁøÇàÇÑ´Ù.
+		// ë””ë°”ì´ìŠ¤ê°€ Play Serviceë¥¼ ì§€ì›í•˜ëŠ”ì§€ ì²´í¬í•œë‹¤.
+		// ì§€ì›í•  ê²½ìš° GCM ë“±ë¡ì„ ì§„í–‰í•œë‹¤.
 		gm.checkAndRegister();
 		
 		// Set up the action bar.
@@ -78,7 +78,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 					.setTabListener(this));
 		}
 		
-		// DB°¡ Á¸ÀçÇÏÁö ¾Ê´Â °æ¿ì assetsÀÇ µ¥ÀÌÅÍº£ÀÌ½º¸¦ º¹»çÇÑ´Ù.
+		// DBê°€ ì¡´ì¬í•˜ì§€ ì•ŠëŠ” ê²½ìš° assetsì˜ ë°ì´í„°ë² ì´ìŠ¤ë¥¼ ë³µì‚¬í•œë‹¤.
 		AddressDBManager adm = new AddressDBManager(this);
 		if(!adm.isDBExists())
 			adm.copyDB();
@@ -142,7 +142,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 			// args.putInt(DummySectionFragment.ARG_SECTION_NUMBER, position + 1);
 			// fragment.setArguments(args);
 			
-			// ¼±ÅÃµÈ position¿¡ µû¶ó °¢ fragment¸¦ ¸®ÅÏÇÑ´Ù.
+			// ì„ íƒëœ positionì— ë”°ë¼ ê° fragmentë¥¼ ë¦¬í„´í•œë‹¤.
 			Fragment fragment = null;
 			if( position == 0 )
 				fragment = new MatchListFragment();

@@ -1,25 +1,11 @@
-package june.footballmanager;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-
-import org.json.JSONException;
-import org.json.JSONObject;
+ï»¿package june.footballmanager;
 
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -56,16 +42,20 @@ public class PlayerAccountActivity extends Activity implements OnClickListener {
 	    location = (TextView) findViewById(R.id.location);
 	    phone = (TextView)findViewById(R.id.phone);
 	    
-	    // Á¤º¸¼öÁ¤ ¹öÆ°
+	    // ì •ë³´ìˆ˜ì • ë²„íŠ¼
 	    Button btnEditInfo = (Button) findViewById(R.id.btn_editinfo);
 	    btnEditInfo.setOnClickListener(this);
+	    
+	    // ë¹„ë°€ë²ˆí˜¸ ë³€ê²½ ë²„íŠ¼
+	    Button btnUpdatePW = (Button) findViewById(R.id.btn_change_pw);
+	    btnUpdatePW.setOnClickListener(this);
 	}
 	
 	public void onResume() {
 		super.onResume();
 		nickname.setText(lm.getNickname());
 		position.setText(lm.getPosition());
-		age.setText(lm.getAge() + "¼¼");
+		age.setText(lm.getAge() + "ì„¸");
 		location.setText(lm.getLocation());
 		phone.setText(lm.getPhone());
 	}
@@ -75,37 +65,41 @@ public class PlayerAccountActivity extends Activity implements OnClickListener {
 		int id = v.getId();
 		
 		if(id == R.id.btn_editinfo)
-			// Á¤º¸ ¼öÁ¤ ¹öÆ° Å¬¸¯½Ã
+			// ì •ë³´ ìˆ˜ì • ë²„íŠ¼ í´ë¦­ì‹œ
 			startActivity( new Intent(PlayerAccountActivity.this, UpdatePlayerInfoActivity.class));
+		else if(id == R.id.btn_change_pw) {
+			// ë¹„ë°€ë²ˆí˜¸ ë³€ê²½ ë²„íŠ¼ í´ë¦­ì‹œ
+			startActivity( new Intent(PlayerAccountActivity.this, UpdatePasswordActivity.class));
+		}
 	}
 		
-	// ¸Ş´º Ãâ·Â
+	// ë©”ë‰´ ì¶œë ¥
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.account_menu, menu);
 		return super.onCreateOptionsMenu(menu);
 	}
 	
-	// ¸Ş´º ¼±ÅÃ
+	// ë©”ë‰´ ì„ íƒ
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-		// È¨¹öÆ° Å¬¸¯½Ã
+		// í™ˆë²„íŠ¼ í´ë¦­ì‹œ
 		case android.R.id.home:
 			finish();
 			return true;
 			
 		case R.id.logout:
-			// ·Î±×¾Æ¿ô Å¬¸¯½Ã
+			// ë¡œê·¸ì•„ì›ƒ í´ë¦­ì‹œ
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
-			builder.setMessage("·Î±×¾Æ¿ô ÇÏ½Ã°Ú½À´Ï±î?")
-			.setNegativeButton("¾Æ´Ï¿À", null)
-			.setPositiveButton("¿¹", new DialogInterface.OnClickListener() {
+			builder.setMessage("ë¡œê·¸ì•„ì›ƒ í•˜ì‹œê² ìŠµë‹ˆê¹Œ?")
+			.setNegativeButton("ì•„ë‹ˆì˜¤", null)
+			.setPositiveButton("ì˜ˆ", new DialogInterface.OnClickListener() {
 				
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					lm.removeLoginInfo();
-					Toast.makeText(PlayerAccountActivity.this, "·Î±×¾Æ¿ô µÇ¾ú½À´Ï´Ù", 0).show();
+					Toast.makeText(PlayerAccountActivity.this, "ë¡œê·¸ì•„ì›ƒ ë˜ì—ˆìŠµë‹ˆë‹¤", 0).show();
 					finish();
 				}
 			});

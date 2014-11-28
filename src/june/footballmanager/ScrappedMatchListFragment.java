@@ -1,4 +1,4 @@
-package june.footballmanager;
+ï»¿package june.footballmanager;
 
 import java.util.ArrayList;
 
@@ -29,7 +29,7 @@ public class ScrappedMatchListFragment extends Fragment implements OnItemClickLi
 	TextView count;
 	TextView empty;
 	
-	// ½ºÅ©·¦ÇÑ ¸ÅÄ¡ ¹øÈ£ ½ºÆ®¸µ
+	// ìŠ¤í¬ë©í•œ ë§¤ì¹˜ ë²ˆí˜¸ ìŠ¤íŠ¸ë§
 	String scrappedItems;
 
 	@Override
@@ -40,20 +40,20 @@ public class ScrappedMatchListFragment extends Fragment implements OnItemClickLi
 				container, false);
 	}
 
-	// ºä ÂüÁ¶
+	// ë·° ì°¸ì¡°
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		
 		count = (TextView) getView().findViewById(R.id.count);
 		
-		// ¸®½ºÆ® °´Ã¼ »ı¼º ¹× ÃÊ±âÈ­
+		// ë¦¬ìŠ¤íŠ¸ ê°ì²´ ìƒì„± ë° ì´ˆê¸°í™”
 		scrappedMatchList = new ArrayList<MatchItem>();
 		
-		// ¾î´ğÅÍ »ı¼º
+		// ì–´ëŒ‘í„° ìƒì„±
 		malAdapter = new ScrappedMatchListAdapter( getActivity(), scrappedMatchList );
 		
-		// ¸®½ºÆ®ºä »ı¼º ¹× ¼³Á¤
+		// ë¦¬ìŠ¤íŠ¸ë·° ìƒì„± ë° ì„¤ì •
 	    list = (ListView) getView().findViewById(R.id.list);
 	    list.setEmptyView(getView().findViewById(R.id.empty));
 	    list.addHeaderView(new View(getActivity()), null, true);
@@ -61,11 +61,11 @@ public class ScrappedMatchListFragment extends Fragment implements OnItemClickLi
 	    list.setAdapter(malAdapter);
 	    list.setOnItemClickListener(this);
 	    
-	    // ¿¥Æ¼ºä ÅØ½ºÆ® ¼³Á¤
+	    // ì— í‹°ë·° í…ìŠ¤íŠ¸ ì„¤ì •
 	    empty = (TextView)getView().findViewById(R.id.empty);
-	    empty.setText("½ºÅ©·¦ÇÑ ¸ÅÄ¡°¡ ¾ø½À´Ï´Ù.");
+	    empty.setText("ìŠ¤í¬ë©í•œ ë§¤ì¹˜ê°€ ì—†ìŠµë‹ˆë‹¤.");
 	    
-	    // DB·ÎºÎÅÍ ½ºÅ©·¦ ¸ñ·Ï °¡Á®¿À±â
+	    // DBë¡œë¶€í„° ìŠ¤í¬ë© ëª©ë¡ ê°€ì ¸ì˜¤ê¸°
 	    DatabaseHandler db = new DatabaseHandler(getActivity());
 		scrappedItems = db.getAllScrapMatch();
 		Log.i("Scrapped Match List", scrappedItems);
@@ -79,16 +79,16 @@ public class ScrappedMatchListFragment extends Fragment implements OnItemClickLi
 	
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long arg3) {
-		// ¸ÅÄ¡ »ó¼¼ ¾×Æ¼ºñÆ¼ ½ÇÇà
+		// ë§¤ì¹˜ ìƒì„¸ ì•¡í‹°ë¹„í‹° ì‹¤í–‰
 		Intent intent = new Intent(getActivity(), MatchDetailActivity.class);
-		// ¸ÅÄ¡ ¹øÈ£¸¦ ³Ñ°ÜÁÜ
-		// Çì´õºä°¡ Ãß°¡µÇ¾ú±â ¶§¹®¿¡ ÀÎµ¦½º¸¦ 1 °¨¼Ò½ÃÅ²´Ù.
+		// ë§¤ì¹˜ ë²ˆí˜¸ë¥¼ ë„˜ê²¨ì¤Œ
+		// í—¤ë”ë·°ê°€ ì¶”ê°€ë˜ì—ˆê¸° ë•Œë¬¸ì— ì¸ë±ìŠ¤ë¥¼ 1 ê°ì†Œì‹œí‚¨ë‹¤.
 		position--;
 		intent.putExtra("matchNo", scrappedMatchList.get(position).getMatchNo());
 		startActivity(intent);
 	}
 	
-	// ¾î´ğÅÍ Á¤ÀÇ
+	// ì–´ëŒ‘í„° ì •ì˜
 	public class ScrappedMatchListAdapter extends BaseAdapter {
 
 		private Context context;
@@ -146,39 +146,39 @@ public class ScrappedMatchListFragment extends Fragment implements OnItemClickLi
 			time.setText(getItem(position).getSession());
 			
 			TextView state = (TextView) convertView.findViewById(R.id.state);
-			// ¸ÅÄ¡ »óÅÂ¿¡ µû¶ó ´Ù¸¥ text Ãâ·Â
-			// 0 : »ó´ëÆÀ ½ÅÃ» ´ë±âÁß
-			// 1 : ¸ÅÄ¡°¡ ¼º»çµÊ
-			// 2 : ¸ÅÄ¡°¡ Á¾·áµÊ
+			// ë§¤ì¹˜ ìƒíƒœì— ë”°ë¼ ë‹¤ë¥¸ text ì¶œë ¥
+			// 0 : ìƒëŒ€íŒ€ ì‹ ì²­ ëŒ€ê¸°ì¤‘
+			// 1 : ë§¤ì¹˜ê°€ ì„±ì‚¬ë¨
+			// 2 : ë§¤ì¹˜ê°€ ì¢…ë£Œë¨
 			switch(getItem(position).getState()) {
 			case 0:
-				state.setText(getItem(position).getApplyCnt() + "ÆÀ ½ÅÃ»");
+				state.setText(getItem(position).getApplyCnt() + "íŒ€ ì‹ ì²­");
 				state.setTextColor(getResources().getColor(android.R.color.holo_blue_light));
 				break;
 			case 1:
-				state.setText("¸ÅÄª ¿Ï·á");
+				state.setText("ë§¤ì¹­ ì™„ë£Œ");
 				state.setTextColor(getResources().getColor(android.R.color.holo_green_light));
 				break;
 			case 2:
-				state.setText("Á¾·áµÊ");
+				state.setText("ì¢…ë£Œë¨");
 				state.setTextColor(getResources().getColor(R.color.gray));
 				break;
 			}
 			
-			// Áñ°ÜÃ£±â ¹öÆ°
+			// ì¦ê²¨ì°¾ê¸° ë²„íŠ¼
 			ImageView scrap = (ImageView) convertView
 					.findViewById(R.id.img_scrap);
 			DatabaseHandler db = new DatabaseHandler(
 					ScrappedMatchListFragment.this.getActivity());
 			boolean isScrapped = db.selectScrapMatch(getItem(position)
 					.getMatchNo());
-			// Áñ°ÜÃ£±â ¿©ºÎ¿¡ µû¶ó ´Ù¸¥ ÀÌ¹ÌÁö¸¦ Ãâ·ÂÇÑ´Ù.
+			// ì¦ê²¨ì°¾ê¸° ì—¬ë¶€ì— ë”°ë¼ ë‹¤ë¥¸ ì´ë¯¸ì§€ë¥¼ ì¶œë ¥í•œë‹¤.
 			if (isScrapped)
 				scrap.setImageResource(R.drawable.scrapped);
 			else
 				scrap.setImageResource(R.drawable.scrap);
 
-			// Å¬¸¯ ÀÌº¥Æ® ¸®½º³Ê µî·Ï
+			// í´ë¦­ ì´ë²¤íŠ¸ ë¦¬ìŠ¤ë„ˆ ë“±ë¡
 			scrap.setOnClickListener(new OnClickListener() {
 
 				@Override
@@ -204,34 +204,45 @@ public class ScrappedMatchListFragment extends Fragment implements OnItemClickLi
 		}
 	}
 	
-	// ¼­¹ö·ÎºÎÅÍ ½ºÅ©·¦ÇÑ ¸ÅÄ¡ ¸®½ºÆ®¸¦ °¡Á®¿À´Â ¸Ş¼­µå
+	// ì„œë²„ë¡œë¶€í„° ìŠ¤í¬ë©í•œ ë§¤ì¹˜ ë¦¬ìŠ¤íŠ¸ë¥¼ ê°€ì ¸ì˜¤ëŠ” ë©”ì„œë“œ
 	private void getScrappedMatchList() {
-		// ¿¬°áÇÒ ÆäÀÌÁöÀÇ URL
+		// ì—°ê²°í•  í˜ì´ì§€ì˜ URL
 		String url = getString(R.string.server) + getString(R.string.scrapped_match_list);
 		
-		// ÆÄ¶ó¹ÌÅÍ ±¸¼º
+		// íŒŒë¼ë¯¸í„° êµ¬ì„±
 		String param = "matchNos=" + scrappedItems;
 		
-		// ¼­¹ö ¿¬°á
-		JSONObject json = new HttpTask(url, param).getJSONObject();
-		JSONArray jsonArr = null;
-		
-		try {
-			jsonArr = json.getJSONArray("list");
+		// ì„œë²„ ì—°ê²°
+		new HttpAsyncTask(url, param) {
 
-			JSONObject item;
+			@Override
+			protected void onPostExecute(String result) {
+				JSONObject json = null;
+				JSONArray jsonArr = null;
+				
+				try {
+					json = new JSONObject(result);
+					jsonArr = json.getJSONArray("list");
 
-			scrappedMatchList.clear();
-			for (int i = 0; i < jsonArr.length(); i++) {
-				item = jsonArr.getJSONObject(i);
-				scrappedMatchList.add(new MatchItem(item));
+					JSONObject item;
+
+					scrappedMatchList.clear();
+					for (int i = 0; i < jsonArr.length(); i++) {
+						item = jsonArr.getJSONObject(i);
+						scrappedMatchList.add(new MatchItem(item));
+					}
+				} catch (JSONException e) {
+					scrappedMatchList.clear();
+					Log.e("getScrappedMatchList", e.getMessage());
+				} finally {
+					malAdapter.notifyDataSetChanged();
+					count.setText("ì´ " + scrappedMatchList.size() + "ê°œ");
+				}
+				
 			}
-		} catch (JSONException e) {
-			scrappedMatchList.clear();
-			Log.e("getScrappedMatchList", e.getMessage());
-		} finally {
-			malAdapter.notifyDataSetChanged();
-			count.setText("ÃÑ " + scrappedMatchList.size() + "°³");
-		}
+			
+		}.execute();
+		
+		
 	}
 }

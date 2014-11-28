@@ -1,4 +1,4 @@
-package june.footballmanager;
+ï»¿package june.footballmanager;
 
 import java.util.ArrayList;
 
@@ -6,7 +6,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -28,13 +30,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class FindTeamListFragment extends Fragment implements
-		OnItemClickListener {
+		OnItemClickListener, DialogInterface.OnClickListener {
 	ListView list;
 	TextView count;
 	TextView empty;
-	TextView txtSort; // Á¤·Ä±âÁØ text
+	TextView txtSort; // ì •ë ¬ê¸°ì¤€ text
 	ArrayList<FindTeamItem> findTeamList;
 	FindTeamListAdapter tlAdapter;
+	
+	ArrayList<Integer> scrappedList;	// ìŠ¤í¬ë© ë¦¬ìŠ¤íŠ¸
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -53,10 +57,10 @@ public class FindTeamListFragment extends Fragment implements
 
 		count = (TextView) getView().findViewById(R.id.count);
 
-		// ¸®½ºÆ® °´Ã¼ »ı¼º
+		// ë¦¬ìŠ¤íŠ¸ ê°ì²´ ìƒì„±
 		findTeamList = new ArrayList<FindTeamItem>();
 
-		// ¾î´ğÅÍ °´Ã¼ »ı¼º
+		// ì–´ëŒ‘í„° ê°ì²´ ìƒì„±
 		tlAdapter = new FindTeamListAdapter(getActivity(), findTeamList);
 
 		list = (ListView) getView().findViewById(R.id.list);
@@ -66,16 +70,20 @@ public class FindTeamListFragment extends Fragment implements
 		list.setAdapter(tlAdapter);
 		list.setOnItemClickListener(this);
 
-		// ¿¥Æ¼ºä ÅØ½ºÆ® ¼³Á¤
+		// ì— í‹°ë·° í…ìŠ¤íŠ¸ ì„¤ì •
 		empty = (TextView) getView().findViewById(R.id.empty);
-		empty.setText("°Ô½Ã¹°ÀÌ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
+		empty.setText("ê²Œì‹œë¬¼ì´ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
 	}
 
 	@Override
 	public void onResume() {
 		super.onResume();
 		
-		// ¼­¹ö·ÎºÎÅÍ ÆÀ±¸ÇÔ °Ô½Ã¹°ÀÇ ¸®½ºÆ®¸¦ °¡Á®¿Â´Ù.
+		// ë¡œì»¬DBì—ì„œ ìŠ¤í¬ë© ì •ë³´ ê°€ì ¸ì˜¤ê¸°
+		DatabaseHandler db = new DatabaseHandler(FindTeamListFragment.this.getActivity());
+		scrappedList = db.getScrappedFindTeam();
+		
+		// ì„œë²„ë¡œë¶€í„° íŒ€êµ¬í•¨ ê²Œì‹œë¬¼ì˜ ë¦¬ìŠ¤íŠ¸ë¥¼ ê°€ì ¸ì˜¨ë‹¤.
 		getFindTeamList();
 	}
 
@@ -85,8 +93,8 @@ public class FindTeamListFragment extends Fragment implements
 		
 		Intent intent = new Intent(getActivity(), FindTeamDetailActivity.class);
 
-		// ±Û ¹øÈ£¸¦ ³Ñ°ÜÁÜ
-		// Çì´õºä°¡ Ãß°¡µÇ¾ú±â ¶§¹®¿¡ ÀÎµ¦½º¸¦ 1 °¨¼Ò½ÃÅ²´Ù.
+		// ê¸€ ë²ˆí˜¸ë¥¼ ë„˜ê²¨ì¤Œ
+		// í—¤ë”ë·°ê°€ ì¶”ê°€ë˜ì—ˆê¸° ë•Œë¬¸ì— ì¸ë±ìŠ¤ë¥¼ 1 ê°ì†Œì‹œí‚¨ë‹¤.
 		intent.putExtra("no", findTeamList.get(position - 1).getNo());
 		startActivity(intent);
 	}
@@ -105,12 +113,14 @@ public class FindTeamListFragment extends Fragment implements
 		case R.id.add:
 			LoginManager lm = new LoginManager(getActivity());
 
-			if (lm.isLogin() && lm.getMemberType().equals("¼±¼öÈ¸¿ø")) {
+			if (lm.isLogin() && lm.getMemberType().equals("ì„ ìˆ˜íšŒì›")) {
 				startActivity(new Intent(getActivity(),
 						AddFindTeamActivity.class));
+			} else if(lm.isLogin() && lm.getMemberType().equals("íŒ€íšŒì›")) {
+				Toast.makeText(getActivity(),"íŒ€ êµ¬í•¨ ê¸€ ì‘ì„±ì€ ì„ ìˆ˜íšŒì›ë§Œ ê°€ëŠ¥í•©ë‹ˆë‹¤", 0).show();
 			} else {
-				Toast.makeText(getActivity(),
-						"ÆÀ ±¸ÇÔ °Ô½Ã¹°À» µî·ÏÇÏ·Á¸é ¼±¼ö °èÁ¤À¸·Î ·Î±×ÀÎ ÇØ¾ßÇÕ´Ï´Ù.", 0).show();
+				// ë¡œê·¸ì¸ í• ê²ƒì¸ì§€ ë¬»ëŠ” ë‹¤ì´ì–¼ë¡œê·¸ë¥¼ ë„ìš´ë‹¤.
+	    		showLoginAlert();
 			}
 			break;
 
@@ -121,7 +131,7 @@ public class FindTeamListFragment extends Fragment implements
 		return super.onOptionsItemSelected(item);
 	}
 
-	// ¾î´ğÅÍ Á¤ÀÇ
+	// ì–´ëŒ‘í„° ì •ì˜
 	public class FindTeamListAdapter extends BaseAdapter {
 
 		private Context context;
@@ -158,28 +168,28 @@ public class FindTeamListFragment extends Fragment implements
 			}
 			TextView dateHeader = (TextView)convertView.findViewById(R.id.date_header);
 			
-			// Ã¹¹øÂ° ¾ÆÀÌÅÛÀÌ°Å³ª, ÀÌÀü ¾ÆÀÌÅÛ°ú µî·Ï ³¯Â¥°¡ ´Ù¸¥°æ¿ì µî·Ï ³¯Â¥¸¦ Ãâ·ÂÇÑ´Ù.
+			// ì²«ë²ˆì§¸ ì•„ì´í…œì´ê±°ë‚˜, ì´ì „ ì•„ì´í…œê³¼ ë“±ë¡ ë‚ ì§œê°€ ë‹¤ë¥¸ê²½ìš° ë“±ë¡ ë‚ ì§œë¥¼ ì¶œë ¥í•œë‹¤.
 			if(position == 0 || !getItem(position-1).getPostedDate().equals(getItem(position).getPostedDate())) {
 				dateHeader.setText(getItem(position).getPostedDate());
 				dateHeader.setVisibility(View.VISIBLE);
 			} else
 				dateHeader.setVisibility(View.GONE);
 			
-			// ¼±¼ö ´Ğ³×ÀÓ Ãâ·Â
+			// ì„ ìˆ˜ ë‹‰ë„¤ì„ ì¶œë ¥
 			TextView nickname = (TextView)convertView.findViewById(R.id.nickname);
 			nickname.setText(getItem(position).getNickName());
 			
-			// Á¦¸ñ Ãâ·Â
+			// ì œëª© ì¶œë ¥
 			TextView title = (TextView)convertView.findViewById(R.id.title);
 			title.setText(getItem(position).getTitle());
 			
-			// Æ÷Áö¼Ç Ãâ·Â
+			// í¬ì§€ì…˜ ì¶œë ¥
 			TextView tvPosition = (TextView)convertView.findViewById(R.id.position);
 			tvPosition.setText(getItem(position).getPosition());
 			
 			String strPos = getItem(position).getPosition();
 			
-			// Æ÷Áö¼Çº° »ö»ó Ã³¸®
+			// í¬ì§€ì…˜ë³„ ìƒ‰ìƒ ì²˜ë¦¬
 			if(strPos.equals("GK"))
 				tvPosition.setTextColor(getResources().getColor(android.R.color.holo_orange_light));
 			else if(strPos.equals("LB") || strPos.equals("CB") || strPos.equals("RB") 
@@ -191,29 +201,26 @@ public class FindTeamListFragment extends Fragment implements
 			else
 				tvPosition.setTextColor(getResources().getColor(android.R.color.holo_red_light));
 			
-			// ³ªÀÌ Ãâ·Â
+			// ë‚˜ì´ ì¶œë ¥
 			TextView age = (TextView)convertView.findViewById(R.id.age);
-			age.setText(getItem(position).getAge() + "¼¼");
+			age.setText(getItem(position).getAge() + "ì„¸");
 			
-			// Áö¿ª Ãâ·Â
+			// ì§€ì—­ ì¶œë ¥
 			TextView location = (TextView) convertView.findViewById(R.id.location);
 			location.setText(getItem(position).getLocation());
 			
-			// Áñ°ÜÃ£±â ¹öÆ°
-			ImageView scrap = (ImageView) convertView
-					.findViewById(R.id.img_scrap);
-			DatabaseHandler db = new DatabaseHandler(
-					FindTeamListFragment.this.getActivity());
-			boolean isScrapped = db.selectScrapFindTeam(getItem(position)
-					.getNo());
+			// ì¦ê²¨ì°¾ê¸° ë²„íŠ¼
+			ImageView scrap = (ImageView) convertView.findViewById(R.id.img_scrap);
+			Integer no = new Integer(getItem(position).getNo());
+			boolean isScrapped = scrappedList.contains(no);
 
-			// Áñ°ÜÃ£±â ¿©ºÎ¿¡ µû¶ó ´Ù¸¥ ÀÌ¹ÌÁö¸¦ Ãâ·ÂÇÑ´Ù.
+			// ì¦ê²¨ì°¾ê¸° ì—¬ë¶€ì— ë”°ë¼ ë‹¤ë¥¸ ì´ë¯¸ì§€ë¥¼ ì¶œë ¥í•œë‹¤.
 			if (isScrapped)
 				scrap.setImageResource(R.drawable.scrapped);
 			else
 				scrap.setImageResource(R.drawable.scrap);
 
-			// Å¬¸¯ ÀÌº¥Æ® ¸®½º³Ê µî·Ï
+			// í´ë¦­ ì´ë²¤íŠ¸ ë¦¬ìŠ¤ë„ˆ ë“±ë¡
 			scrap.setOnClickListener(new OnClickListener() {
 
 				@Override
@@ -239,41 +246,65 @@ public class FindTeamListFragment extends Fragment implements
 		}
 	}
 
-	// ¼­¹ö·ÎºÎÅÍ ÆÀ±¸ÇÔ ¸®½ºÆ®¸¦ °¡Á®¿À´Â ¸Ş¼­µå
+	// ì„œë²„ë¡œë¶€í„° íŒ€êµ¬í•¨ ë¦¬ìŠ¤íŠ¸ë¥¼ ê°€ì ¸ì˜¤ëŠ” ë©”ì„œë“œ
 	private void getFindTeamList() {
-		// ¿¬°áÇÒ ÆäÀÌÁöÀÇ URL
+		// ì—°ê²°í•  í˜ì´ì§€ì˜ URL
 		String url = getString(R.string.server) + getString(R.string.find_team_list);
 
-		// °Ë»ö Á¶°Ç ÇÁ¸®ÆÛ·±½º ¿­±â
+		// ê²€ìƒ‰ ì¡°ê±´ í”„ë¦¬í¼ëŸ°ìŠ¤ ì—´ê¸°
 		SharedPreferences prefCondition = getActivity().getSharedPreferences(
 				"findTeam", Context.MODE_PRIVATE);
 
-		// °Ë»ö Á¶°Ç ÆÄ¸®¹ÌÅÍ ±¸¼º
-		String param = "location=" + prefCondition.getString("location", "Àü±¹");
+		// ê²€ìƒ‰ ì¡°ê±´ íŒŒë¦¬ë¯¸í„° êµ¬ì„±
+		String param = "location=" + prefCondition.getString("location", "ì „êµ­");
 		for (int i = 0; i < 15; i++)
 			param += "&pos" + i + "="
 					+ prefCondition.getBoolean("pos" + i, true);
 		param += "&startAge=" + prefCondition.getInt("startAge", 0);
 		param += "&endAge=" + prefCondition.getInt("endAge", 99);
 		
-		// ¼­¹ö ¿¬°á
-		JSONObject json = new HttpTask(url, param).getJSONObject();
-		JSONArray jsonArr = null;
-		try {
-			jsonArr = json.getJSONArray("list");
-			JSONObject item;
+		// ì„œë²„ ì—°ê²°
+		new HttpAsyncTask(url, param) {
 
-			findTeamList.clear();
-			for (int i = 0; i < jsonArr.length(); i++) {
-				item = jsonArr.getJSONObject(i);
-				findTeamList.add(new FindTeamItem(item));
+			@Override
+			protected void onPostExecute(String result) {
+				JSONObject json = null;
+				JSONArray jsonArr = null;
+				try {
+					json = new JSONObject(result);
+					jsonArr = json.getJSONArray("list");
+					JSONObject item;
+
+					findTeamList.clear();
+					for (int i = 0; i < jsonArr.length(); i++) {
+						item = jsonArr.getJSONObject(i);
+						findTeamList.add(new FindTeamItem(item));
+					}
+				} catch (JSONException e) {
+					findTeamList.clear();
+					Log.e("getFindTeamList", e.getMessage());
+				} finally {
+					tlAdapter.notifyDataSetChanged();
+					count.setText("ì´ " + findTeamList.size() + "ê°œ");
+				}
 			}
-		} catch (JSONException e) {
-			findTeamList.clear();
-			Log.e("getFindTeamList", e.getMessage());
-		} finally {
-			tlAdapter.notifyDataSetChanged();
-			count.setText("ÃÑ " + findTeamList.size() + "°³");
-		}
+		}.execute();
+	}
+	
+	// ë¡œê·¸ì¸ ë‹¤ì´ì–¼ë¡œê·¸ë¥¼ ë„ìš´ë‹¤.
+	private void showLoginAlert() {
+		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+		builder.setMessage("íŒ€ êµ¬í•¨ ê¸€ì„ ì‘ì„±í•˜ë ¤ë©´ ì„ ìˆ˜ ê³„ì •ìœ¼ë¡œ ë¡œê·¸ì¸ í•´ì•¼í•©ë‹ˆë‹¤.\n\në¡œê·¸ì¸ í•˜ì‹œê² ìŠµë‹ˆê¹Œ?")
+		.setNegativeButton("ì•„ë‹ˆì˜¤", null)
+		.setPositiveButton("ì˜ˆ", this);
+		
+		AlertDialog ad = builder.create();
+		ad.show();
+	}
+	
+	// ë‹¤ì´ì–¼ë¡œê·¸ ì´ë²¤íŠ¸ ì½œë°± ë©”ì„œë“œ
+	@Override
+	public void onClick(DialogInterface dialog, int which) {
+		startActivity(new Intent(this.getActivity(), LoginActivity.class));
 	}
 }

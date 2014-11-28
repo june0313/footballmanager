@@ -1,4 +1,4 @@
-package june.footballmanager;
+ï»¿package june.footballmanager;
 
 import java.util.ArrayList;
 
@@ -26,20 +26,21 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 /*
- * ³»°¡ µî·ÏÇÑ ¸ÅÄ¡¿¡ ½ÅÃ»ÇÑ ÆÀ ¸®½ºÆ®¸¦ Ãâ·ÂÇÏ´Â ¾×Æ¼ºñÆ¼
+ * ë‚´ê°€ ë“±ë¡í•œ ë§¤ì¹˜ì— ì‹ ì²­í•œ íŒ€ ë¦¬ìŠ¤íŠ¸ë¥¼ ì¶œë ¥í•˜ëŠ” ì•¡í‹°ë¹„í‹°
  * 
  */
 public class AppliedTeamActivity extends Activity {
 	int matchNo;
 	int memberNo;
+	String regid;
 	
-	// ½ÅÃ»ÇÑ ÆÀ ¸®½ºÆ®
+	// ì‹ ì²­í•œ íŒ€ ë¦¬ìŠ¤íŠ¸
 	ArrayList<TeamItem> appliedTeamList;
 	
-	// ¸®½ºÆ® ¾î´ğÅÍ
+	// ë¦¬ìŠ¤íŠ¸ ì–´ëŒ‘í„°
 	AppliedTeamListAdapter atlAdapter;
 	
-	// ½ÅÃ»ÇÑ ÆÀ ¸®½ºÆ®ºä
+	// ì‹ ì²­í•œ íŒ€ ë¦¬ìŠ¤íŠ¸ë·°
 	ListView list;
 
 	@Override
@@ -47,29 +48,29 @@ public class AppliedTeamActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_applied_team);
 		
-		// ¾×¼Ç¹Ù ¼³Á¤
+		// ì•¡ì…˜ë°” ì„¤ì •
 		ActionBar actionBar = getActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
 		actionBar.setDisplayShowHomeEnabled(false);
 		
-		// ¸ÅÄ¡ ¹øÈ£ °¡Á®¿À±â
+		// ë§¤ì¹˜ ë²ˆí˜¸ ê°€ì ¸ì˜¤ê¸°
 		Intent intent = getIntent();
 		matchNo = intent.getIntExtra("matchNo", -1);
 		
-		// ¸®½ºÆ® °´Ã¼ ÃÊ±âÈ­
+		// ë¦¬ìŠ¤íŠ¸ ê°ì²´ ì´ˆê¸°í™”
 		appliedTeamList = new ArrayList<TeamItem>();
 		
-		// ¾î´ğÅÍ »ı¼º
+		// ì–´ëŒ‘í„° ìƒì„±
 		atlAdapter = new AppliedTeamListAdapter( this, appliedTeamList );
 		
-		// ¸®½ºÆ®ºä »ı¼º ¹× ¼³Á¤
+		// ë¦¬ìŠ¤íŠ¸ë·° ìƒì„± ë° ì„¤ì •
 		list = (ListView) findViewById(R.id.list);
 		list.addHeaderView(new View(this), null, true);
 	    list.addFooterView(new View(this), null, true);
 		list.setAdapter(atlAdapter);
 		// list.setOnItemClickListener(this);
 		
-		// ¼­¹ö·ÎºÎÅÍ ½ÅÃ»ÇÑ ÆÀÀÇ ¸®½ºÆ®¸£ °¡Á®¿Â´Ù.
+		// ì„œë²„ë¡œë¶€í„° ì‹ ì²­í•œ íŒ€ì˜ ë¦¬ìŠ¤íŠ¸ë¥´ ê°€ì ¸ì˜¨ë‹¤.
 		getAppliedTeamList();
 	}
 
@@ -80,7 +81,7 @@ public class AppliedTeamActivity extends Activity {
 		return true;
 	}
 
-	// ¸Ş´º ¼±ÅÃ½Ã Äİ¹é ¸Ş¼­µå
+	// ë©”ë‰´ ì„ íƒì‹œ ì½œë°± ë©”ì„œë“œ
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
@@ -134,7 +135,7 @@ public class AppliedTeamActivity extends Activity {
 			ages.setText(getItem(position).getAges());
 			
 			TextView numOfPlayers = (TextView) convertView.findViewById(R.id.num_of_players);
-			numOfPlayers.setText(getItem(position).getNumOfPlayers() + "¸í");
+			numOfPlayers.setText(getItem(position).getNumOfPlayers() + "ëª…");
 			
 			TextView location = (TextView) convertView.findViewById(R.id.location);
 			location.setText(list.get(position).getLocation());
@@ -145,7 +146,7 @@ public class AppliedTeamActivity extends Activity {
 			
 			TextView teamInfo = (TextView) convertView.findViewById(R.id.team_info);
 			teamInfo.setOnClickListener(new OnClickListener() {
-				// "ÆÀ Á¤º¸" ¹öÆ° Å¬¸¯½Ã
+				// "íŒ€ ì •ë³´" ë²„íŠ¼ í´ë¦­ì‹œ
 				@Override
 				public void onClick(View v) {
 					Intent intent = new Intent(AppliedTeamActivity.this, TeamInfoActivity.class);
@@ -158,22 +159,22 @@ public class AppliedTeamActivity extends Activity {
 			TextView btnAccept = (TextView) convertView.findViewById(R.id.accept);
 			btnAccept.setOnClickListener(new OnClickListener() {
 
-				// "¼ö¶ô" ¹öÆ° Å¬¸¯½Ã
+				// "ìˆ˜ë½" ë²„íŠ¼ í´ë¦­ì‹œ
 				@Override
 				public void onClick(View v) {
 					AlertDialog.Builder builder = new AlertDialog.Builder(AppliedTeamActivity.this);
-					builder.setMessage(getItem(pos).getTeamName() + "ÀÇ ½ÅÃ»À» ¼ö¶ôÇÏ½Ã°Ú½À´Ï±î?")
-					.setPositiveButton("¿¹", new DialogInterface.OnClickListener() {
-						// "¿¹" ¹öÆ° Å¬¸¯½Ã
+					builder.setMessage(getItem(pos).getTeamName() + "ì˜ ì‹ ì²­ì„ ìˆ˜ë½í•˜ì‹œê² ìŠµë‹ˆê¹Œ?")
+					.setPositiveButton("ì˜ˆ", new DialogInterface.OnClickListener() {
+						// "ì˜ˆ" ë²„íŠ¼ í´ë¦­ì‹œ
 						@Override
 						public void onClick(DialogInterface dialog, int which) {
 							memberNo = getItem(pos).getMemberNo();
-							
-							// ½ÅÃ»À» ¼ö¶ôÇÑ´Ù.
+							regid = getItem(pos).getRegid();
+							// ì‹ ì²­ì„ ìˆ˜ë½í•œë‹¤.
 							acceptOpposingTeam();
 						}
 					})
-					.setNegativeButton("¾Æ´Ï¿À", null);
+					.setNegativeButton("ì•„ë‹ˆì˜¤", null);
 					
 					builder.create().show();
 				}
@@ -184,67 +185,89 @@ public class AppliedTeamActivity extends Activity {
 		
 	}
 	
-	// ¼­¹ö·ÎºÎÅÍ ½ÅÃ»ÇÑ ÆÀ ¸®½ºÆ®¸¦ °¡Á®¿À´Â ¸Ş¼­µå
+	// ì„œë²„ë¡œë¶€í„° ì‹ ì²­í•œ íŒ€ ë¦¬ìŠ¤íŠ¸ë¥¼ ê°€ì ¸ì˜¤ëŠ” ë©”ì„œë“œ
 	private void getAppliedTeamList() {
-		// ¿¬°áÇÒ ÆäÀÌÁöÀÇ URL
+		// ì—°ê²°í•  í˜ì´ì§€ì˜ URL
 		String url = getString(R.string.server) + getString(R.string.applied_team);
 		
-		// ÆÄ¶ó¹ÌÅÍ ±¸¼º
+		// íŒŒë¼ë¯¸í„° êµ¬ì„±
 		String param = "matchNo=" + matchNo;
 		
-		// ¼­¹ö ¿¬°á
-		JSONObject json = new HttpTask(url, param).getJSONObject();
-		JSONArray jsonArr = null;
-		
-		try {
-			jsonArr = json.getJSONArray("list");
-			
-			JSONObject item;
-			appliedTeamList.clear();
-			
-			for( int i = 0; i < jsonArr.length(); i++ ) {
-				item = jsonArr.getJSONObject(i);
-				appliedTeamList.add( new TeamItem(
-						item.getInt("MEMBER_NO"),
-						item.getString("TEAM_NAME"),
-						item.getString("AGES"),
-						item.getInt("NUM_OF_PLAYERS"),
-						item.getString("LOCATION"),
-						null,
-						item.getString("PHONE"),
-						item.getString("MSG")
-						) 
-				);
+		// ì„œë²„ ì—°ê²°
+		new HttpAsyncTask(url, param) {
+
+			@Override
+			protected void onPostExecute(String result) {
+				JSONObject json = null;
+				JSONArray jsonArr = null;
+				
+				try {
+					json = new JSONObject(result);
+					
+					jsonArr = json.getJSONArray("list");
+					
+					JSONObject item;
+					appliedTeamList.clear();
+					
+					for( int i = 0; i < jsonArr.length(); i++ ) {
+						item = jsonArr.getJSONObject(i);
+						appliedTeamList.add( new TeamItem(
+								item.getInt("MEMBER_NO"),
+								item.getString("TEAM_NAME"),
+								item.getString("AGES"),
+								item.getInt("NUM_OF_PLAYERS"),
+								item.getString("LOCATION"),
+								null,
+								item.getString("PHONE"),
+								item.getString("MSG"),
+								item.getString("REGID")
+								) 
+						);
+					}
+				} catch (JSONException e) {
+					appliedTeamList.clear();
+					Log.e("getAppliedTeamList", e.getMessage());
+				} finally {
+					atlAdapter.notifyDataSetChanged();
+				}
 			}
-		} catch (JSONException e) {
-			appliedTeamList.clear();
-			Log.e("getAppliedTeamList", e.getMessage());
-		} finally {
-			atlAdapter.notifyDataSetChanged();
-		}
+			
+		}.execute();
 	}
 	
-	// ½ÅÃ»À» ¼ö¶ôÇÏ´Â ¸Ş¼­µå
+	// ì‹ ì²­ì„ ìˆ˜ë½í•˜ëŠ” ë©”ì„œë“œ
 	private void acceptOpposingTeam() {
-		// ¿¬°áÇÒ ÆäÀÌÁöÀÇ URL
+		// ì—°ê²°í•  í˜ì´ì§€ì˜ URL
 		String url = getString(R.string.server) + getString(R.string.accept_opposing_team);
 		
-		// ÆÄ¶ó¹ÌÅÍ ±¸¼º
+		// íŒŒë¼ë¯¸í„° êµ¬ì„±
 		String param = "matchNo=" + matchNo;
 		param +="&memberNo=" + memberNo; 
 		
-		// ¼­¹ö ¿¬°á
-		JSONObject json = new HttpTask(url, param).getJSONObject();
-		
-		try {
-			if( json.getInt("success") == 1 ) {
-				Toast.makeText(AppliedTeamActivity.this, "¸ÅÄ¡°¡ ¼º»çµÇ¾ú½À´Ï´Ù!", 0).show();
-				finish();
+		// ì„œë²„ ì—°ê²°
+		new HttpAsyncTask(url, param, this, "ì ì‹œë§Œ ê¸°ë‹¤ë ¤ ì£¼ì„¸ìš”...") {
+
+			@Override
+			protected void onPostExecute(String result) {
+				JSONObject json = null;
+				
+				try {
+					json = new JSONObject(result);
+					
+					if( json.getInt("success") == 1 ) {
+						Toast.makeText(AppliedTeamActivity.this, "ë§¤ì¹˜ê°€ ì„±ì‚¬ë˜ì—ˆìŠµë‹ˆë‹¤!", 0).show();
+						
+						// Push ì•Œë¦¼ì„ ë³´ë‚¸ë‹¤. ë§ˆì§€ë§‰ ì¸ì 1ì€ ì‹ ì²­ì— ëŒ€í•œ 'ìˆ˜ë½'ì„ ì˜ë¯¸í•œë‹¤.
+						LoginManager lm = new LoginManager(AppliedTeamActivity.this);
+						new GCMManager(AppliedTeamActivity.this).sendMessage(regid, lm.getTeamName() + "íŒ€ê³¼ì˜ ë§¤ì¹˜ê°€ ì„±ì‚¬ë˜ì—ˆìŠµë‹ˆë‹¤!", matchNo, 1);
+						finish();
+					}
+					else
+						Toast.makeText(AppliedTeamActivity.this, "ì‹ ì²­ ìˆ˜ë½ì„ ì‹¤íŒ¨í•˜ì˜€ìŠµë‹ˆë‹¤.", 0).show();
+				} catch (JSONException e) {
+					Log.e("acceptOpposingTeam", e.getMessage());
+				}
 			}
-			else
-				Toast.makeText(AppliedTeamActivity.this, "½ÅÃ» ¼ö¶ôÀ» ½ÇÆĞÇÏ¿´½À´Ï´Ù.", 0).show();
-		} catch (JSONException e) {
-			Log.e("acceptOpposingTeam", e.getMessage());
-		}
+		}.execute();
 	}
 }

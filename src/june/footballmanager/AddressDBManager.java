@@ -1,4 +1,4 @@
-package june.footballmanager;
+﻿package june.footballmanager;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -9,7 +9,6 @@ import java.io.InputStream;
 
 import android.content.Context;
 import android.content.res.AssetManager;
-import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 public class AddressDBManager {

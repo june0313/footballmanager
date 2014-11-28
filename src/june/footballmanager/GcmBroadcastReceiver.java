@@ -1,4 +1,4 @@
-package june.footballmanager;
+﻿package june.footballmanager;
 
 import android.app.Activity;
 import android.content.ComponentName;

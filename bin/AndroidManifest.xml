@@ -6,7 +6,7 @@
 
     <uses-sdk
         android:minSdkVersion="11"
-        android:targetSdkVersion="19" />
+        android:targetSdkVersion="18" />
 
     <uses-feature
         android:glEsVersion="0x00020000"
@@ -187,6 +187,10 @@
         <activity
             android:name=".ScrapActivity"
             android:label="@string/title_activity_scrap" >
+        </activity>
+        <activity
+            android:name=".UpdatePasswordActivity"
+            android:label="@string/title_activity_update_password" >
         </activity>
     </application>
 

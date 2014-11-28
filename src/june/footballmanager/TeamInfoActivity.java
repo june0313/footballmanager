@@ -1,4 +1,4 @@
-package june.footballmanager;
+ï»¿package june.footballmanager;
 
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
@@ -32,10 +32,10 @@ public class TeamInfoActivity extends FragmentActivity implements
 	 */
 	ViewPager mViewPager;
 	
-	// ÆÀ ¹øÈ£
+	// íŒ€ ë²ˆí˜¸
 	int memberNo;
 	
-	// ÆÀ ÀÌ¸§
+	// íŒ€ ì´ë¦„
 	String teamName;
 
 	@Override
@@ -43,7 +43,7 @@ public class TeamInfoActivity extends FragmentActivity implements
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_team_info);
 		
-		// ÆÀ ¹øÈ£ ¹× ÆÀ ÀÌ¸§ °¡Á®¿À±â
+		// íŒ€ ë²ˆí˜¸ ë° íŒ€ ì´ë¦„ ê°€ì ¸ì˜¤ê¸°
 		Intent intent = getIntent();
 		memberNo = intent.getIntExtra("memberNo", -1);
 		teamName = intent.getStringExtra("teamName");

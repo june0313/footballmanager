@@ -1,4 +1,4 @@
-package june.footballmanager;
+ï»¿package june.footballmanager;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -18,13 +18,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class FindTeamDetailActivity extends Activity {
-	// ±Û ¹øÈ£
+	// ê¸€ ë²ˆí˜¸
 	int no;
 
 	int memberNo;
 	String phone;
 	
-	// ºä
+	// ë·°
 	TextView nickname;
 	TextView playerInfo;
 	ImageButton call;
@@ -33,7 +33,7 @@ public class FindTeamDetailActivity extends Activity {
 	
 	TextView content;
 	
-	// ½ºÅ©·¦ ¿©ºÎ¸¦ ÀúÀåÇÏ´Â º¯¼ö
+	// ìŠ¤í¬ë© ì—¬ë¶€ë¥¼ ì €ì¥í•˜ëŠ” ë³€ìˆ˜
 	boolean isScrapped = false;
 	
 	@Override
@@ -41,20 +41,20 @@ public class FindTeamDetailActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_find_team_detail);
 		
-		// ¾×¼Ç¹Ù ¼³Á¤
+		// ì•¡ì…˜ë°” ì„¤ì •
 		ActionBar actionBar = getActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
 		actionBar.setDisplayShowHomeEnabled(false);
 		// actionBar.setIcon(R.drawable.player);
 
-		// °Ô½Ã¹° ¹øÈ£ °¡Á®¿À±â
+		// ê²Œì‹œë¬¼ ë²ˆí˜¸ ê°€ì ¸ì˜¤ê¸°
 		no = getIntent().getIntExtra("no", -1);
 		
-		// ½ºÅ©·¦ ¿©ºÎ È®ÀÎ
+		// ìŠ¤í¬ë© ì—¬ë¶€ í™•ì¸
 	    DatabaseHandler db = new DatabaseHandler(this);
 	    isScrapped = db.selectScrapFindTeam(no);
 		
-		// ºä ·¹ÆÛ·±½Ì
+		// ë·° ë ˆí¼ëŸ°ì‹±
 		nickname = (TextView)findViewById(R.id.nickname);
 		playerInfo = (TextView)findViewById(R.id.player_info);
 		call = (ImageButton)findViewById(R.id.call);
@@ -63,7 +63,7 @@ public class FindTeamDetailActivity extends Activity {
 			public void onClick(View v) {
 				
 				if ( phone.isEmpty() ) {
-					Toast.makeText(FindTeamDetailActivity.this, "¿¬¶ôÃ³°¡ µî·ÏµÇÁö ¾Ê¾Ò½À´Ï´Ù", 0).show();
+					Toast.makeText(FindTeamDetailActivity.this, "ì—°ë½ì²˜ê°€ ë“±ë¡ë˜ì§€ ì•Šì•˜ìŠµë‹ˆë‹¤", 0).show();
 				} else {
 					Intent i = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + phone));
 					startActivity(i);
@@ -76,7 +76,7 @@ public class FindTeamDetailActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				if ( phone.isEmpty() ) {
-					Toast.makeText(FindTeamDetailActivity.this, "¿¬¶ôÃ³°¡ µî·ÏµÇÁö ¾Ê¾Ò½À´Ï´Ù", 0).show();
+					Toast.makeText(FindTeamDetailActivity.this, "ì—°ë½ì²˜ê°€ ë“±ë¡ë˜ì§€ ì•Šì•˜ìŠµë‹ˆë‹¤", 0).show();
 				} else {
 					Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse("smsto:" + phone));
 					startActivity(i);
@@ -108,7 +108,7 @@ public class FindTeamDetailActivity extends Activity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.find_team_detail, menu);
 		MenuItem scrap = menu.findItem(R.id.scrap);
-		// ½ºÅ©·¦ ¿©ºÎ¿¡ µû¶ó ´Ù¸¥ ¾ÆÀÌÄÜÀ» Ãâ·ÂÇÑ´Ù.
+		// ìŠ¤í¬ë© ì—¬ë¶€ì— ë”°ë¼ ë‹¤ë¥¸ ì•„ì´ì½˜ì„ ì¶œë ¥í•œë‹¤.
 		if (isScrapped)
 			scrap.setIcon(R.drawable.scrapped);
 		else
@@ -123,61 +123,69 @@ public class FindTeamDetailActivity extends Activity {
 			finish();
 			return true;
 		} else if(id == R.id.scrap){
-			// Áñ°ÜÃ£±â
+			// ì¦ê²¨ì°¾ê¸°
 			DatabaseHandler db = new DatabaseHandler(this);
 			isScrapped = db.selectScrapFindTeam(no);
 
 			if (isScrapped) {
 				db.deleteScrapFindTeam(no);
 				item.setIcon(R.drawable.scrap);
-				Log.i("ÆÀ±¸ÇÔ ½ºÅ©·¦ »èÁ¦", "±Û ¹øÈ£ : " + no);
+				Log.i("íŒ€êµ¬í•¨ ìŠ¤í¬ë© ì‚­ì œ", "ê¸€ ë²ˆí˜¸ : " + no);
 
 			} else {
 				db.insertScrapFindTeam(no);
 				item.setIcon(R.drawable.scrapped);
-				Log.i("ÆÀ±¸ÇÔ ½ºÅ©·¦", "±Û ¹øÈ£ : " + no);
+				Log.i("íŒ€êµ¬í•¨ ìŠ¤í¬ë©", "ê¸€ ë²ˆí˜¸ : " + no);
 			}
 		}
 
 		return super.onOptionsItemSelected(item);
 	}
 	
-	// ¼­¹ö·ÎºÎÅÍ ÆÀ±¸ÇÔ °Ô½Ã¹°ÀÇ »ó¼¼ Á¤º¸¸¦ °¡Á®¿À´Â ¸Ş¼­µå
+	// ì„œë²„ë¡œë¶€í„° íŒ€êµ¬í•¨ ê²Œì‹œë¬¼ì˜ ìƒì„¸ ì •ë³´ë¥¼ ê°€ì ¸ì˜¤ëŠ” ë©”ì„œë“œ
 	private void getFindTeamDetail() {
-		// ¿¬°áÇÒ ÆäÀÌÁöÀÇ URL
+		// ì—°ê²°í•  í˜ì´ì§€ì˜ URL
 		String url = getString(R.string.server)
 				+ getString(R.string.find_team_detail);
 		
-		// ÆÄ¶ó¹ÌÅÍ ±¸¼º
+		// íŒŒë¼ë¯¸í„° êµ¬ì„±
 		String param = "no=" + no;
 		
-		// ¼­¹ö ¿¬°á
-		JSONObject json = new HttpTask(url, param).getJSONObject();
-		
-		// check the success of getting information
-		try {
-			if (json.getInt("success") == 1) {
+		// ì„œë²„ ì—°ê²°
+		new HttpAsyncTask(url, param) {
 
-				// °Ô½Ã¹°À» µî·ÏÇÑ ¼±¼ö ¹øÈ£ ÀúÀå
-				memberNo = json.getInt("MEMBER_NO");
-
-				// ¿¬¶ôÃ³ ÀúÀå
-				phone = json.getString("PHONE");
+			@Override
+			protected void onPostExecute(String result) {
+				JSONObject json = null;
 				
-				// Á¦¸ñ Ãâ·Â
-				getActionBar().setSubtitle(json.getString("TITLE"));
+				// check the success of getting information
+				try {
+					json = new JSONObject(result);
+					if (json.getInt("success") == 1) {
 
-				// ¼±¼ö Á¤º¸¸¦ ºä¿¡ Ãâ·Â
-				nickname.setText(json.getString("NICKNAME"));
-				playerInfo.setText(json.getString("LOCATION") 
-						+ " / " + json.getString("POSITION") 
-						+ " / " + json.getString("AGE") );
-					
-				// ³»¿ë Ãâ·Â
-				content.setText(json.getString("CONTENT").replace("__", "\n"));
+						// ê²Œì‹œë¬¼ì„ ë“±ë¡í•œ ì„ ìˆ˜ ë²ˆí˜¸ ì €ì¥
+						memberNo = json.getInt("MEMBER_NO");
+
+						// ì—°ë½ì²˜ ì €ì¥
+						phone = json.getString("PHONE");
+						
+						// ì œëª© ì¶œë ¥
+						getActionBar().setSubtitle(json.getString("TITLE"));
+
+						// ì„ ìˆ˜ ì •ë³´ë¥¼ ë·°ì— ì¶œë ¥
+						nickname.setText(json.getString("NICKNAME"));
+						playerInfo.setText(json.getString("LOCATION") 
+								+ " / " + json.getString("POSITION") 
+								+ " / " + json.getString("AGE") );
+							
+						// ë‚´ìš© ì¶œë ¥
+						content.setText(json.getString("CONTENT").replace("__", "\n"));
+					}
+				} catch (JSONException e) {
+					Log.e("getFindTeamDetail", e.getMessage());
+				}
 			}
-		} catch (JSONException e) {
-			Log.e("getFindTeamDetail", e.getMessage());
-		}
+			
+		}.execute();
 	}
 }

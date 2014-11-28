@@ -1,5 +1,5 @@
-/*
- * ³»°¡ ½ÅÃ»ÇÑ ¸ÅÄ¡ ¾ÆÀÌÅÛ
+ï»¿/*
+ * ë‚´ê°€ ì‹ ì²­í•œ ë§¤ì¹˜ ì•„ì´í…œ
  */
 
 package june.footballmanager;
@@ -135,7 +135,7 @@ public class ApplicationItem {
 	
 	public String getPostedDate() {
 		String[] s = _postedDate.substring(0, 10).split("-");
-		String postedDateKor = s[0] + "³â " + s[1] + "¿ù " + s[2] + "ÀÏ";
+		String postedDateKor = s[0] + "ë…„ " + s[1] + "ì›” " + s[2] + "ì¼";
 		return postedDateKor;
 	}
 }

@@ -27,8 +27,7 @@
             android:background="@drawable/round_button2"
             android:text="비밀번호 변경"
             android:textColor="@android:color/white"
-            android:textSize="17sp"
-            android:visibility="gone" />
+            android:textSize="17sp" />
         
         <Button
             android:id="@+id/btn_logout"

@@ -1,4 +1,4 @@
-package june.footballmanager;
+ï»¿package june.footballmanager;
 
 import java.util.ArrayList;
 
@@ -38,23 +38,23 @@ public class MyApplicationListFragment extends Fragment implements OnItemClickLi
 				container, false);
 	}
 
-	// ºä ÂüÁ¶
+	// ë·° ì°¸ì¡°
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		// ¸ÅÄ¡ »óÅÂ ÀúÀå
+		// ë§¤ì¹˜ ìƒíƒœ ì €ì¥
 		Bundle extra = getArguments();
 		isAccepted = extra.getInt("ISACCEPTED");
 		
 		count = (TextView) getView().findViewById(R.id.count);
 		
-		// ¸®½ºÆ® °´Ã¼ »ı¼º ¹× ÃÊ±âÈ­
+		// ë¦¬ìŠ¤íŠ¸ ê°ì²´ ìƒì„± ë° ì´ˆê¸°í™”
 		myApplicationList = new ArrayList<ApplicationItem>();
 		
-		// ¾î´ğÅÍ »ı¼º
+		// ì–´ëŒ‘í„° ìƒì„±
 		malAdapter = new MyApplicationListAdapter( getActivity(), myApplicationList );
 		
-		// ¸®½ºÆ®ºä »ı¼º ¹× ¼³Á¤
+		// ë¦¬ìŠ¤íŠ¸ë·° ìƒì„± ë° ì„¤ì •
 	    list = (ListView) getView().findViewById(R.id.list);
 	    list.setEmptyView(getView().findViewById(R.id.empty));
 	    list.addHeaderView(new View(getActivity()), null, true);
@@ -62,37 +62,37 @@ public class MyApplicationListFragment extends Fragment implements OnItemClickLi
 	    list.setAdapter(malAdapter);
 	    list.setOnItemClickListener(this);
 	    
-	    // ¿¥Æ¼ºä ÅØ½ºÆ® ¼³Á¤
+	    // ì— í‹°ë·° í…ìŠ¤íŠ¸ ì„¤ì •
 	    empty = (TextView)getView().findViewById(R.id.empty);
 	    
 	    if(isAccepted == 0)
-	    	empty.setText("½ÅÃ»ÇÑ ¸ÅÄ¡°¡ ¾ø½À´Ï´Ù.");
+	    	empty.setText("ì‹ ì²­í•œ ë§¤ì¹˜ê°€ ì—†ìŠµë‹ˆë‹¤.");
 	    else if(isAccepted == 0)
-	    	empty.setText("¼ö¶ôµÈ ¸ÅÄ¡°¡ ¾ø½À´Ï´Ù.");
+	    	empty.setText("ìˆ˜ë½ëœ ë§¤ì¹˜ê°€ ì—†ìŠµë‹ˆë‹¤.");
 	    else
-	    	empty.setText("°ÅÀıµÈ ¸ÅÄ¡°¡ ¾ø½À´Ï´Ù.");
+	    	empty.setText("ê±°ì ˆëœ ë§¤ì¹˜ê°€ ì—†ìŠµë‹ˆë‹¤.");
 	}
 
 	@Override
 	public void onResume() {
 		super.onResume();
 		
-		// ¼­¹ö·ÎºÎÅÍ ½ÅÃ» ¸ñ·ÏÀ» °¡Á®¿Â´Ù.
+		// ì„œë²„ë¡œë¶€í„° ì‹ ì²­ ëª©ë¡ì„ ê°€ì ¸ì˜¨ë‹¤.
 		getMyApplicationList();
 	}
 	
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long arg3) {
-		// ¸ÅÄ¡ »ó¼¼ ¾×Æ¼ºñÆ¼ ½ÇÇà
+		// ë§¤ì¹˜ ìƒì„¸ ì•¡í‹°ë¹„í‹° ì‹¤í–‰
 		Intent intent = new Intent(getActivity(), MatchDetailActivity.class);
-		// ¸ÅÄ¡ ¹øÈ£¸¦ ³Ñ°ÜÁÜ
-		// Çì´õºä°¡ Ãß°¡µÇ¾ú±â ¶§¹®¿¡ ÀÎµ¦½º¸¦ 1 °¨¼Ò½ÃÅ²´Ù.
+		// ë§¤ì¹˜ ë²ˆí˜¸ë¥¼ ë„˜ê²¨ì¤Œ
+		// í—¤ë”ë·°ê°€ ì¶”ê°€ë˜ì—ˆê¸° ë•Œë¬¸ì— ì¸ë±ìŠ¤ë¥¼ 1 ê°ì†Œì‹œí‚¨ë‹¤.
 		position--;
 		intent.putExtra("matchNo", myApplicationList.get(position).getMatchNo());
 		startActivity(intent);
 	}
 	
-	// ¾î´ğÅÍ Á¤ÀÇ
+	// ì–´ëŒ‘í„° ì •ì˜
 	public class MyApplicationListAdapter extends BaseAdapter {
 
 		private Context context;
@@ -129,7 +129,7 @@ public class MyApplicationListFragment extends Fragment implements OnItemClickLi
 			}
 			
 			TextView dateHeader = (TextView)convertView.findViewById(R.id.date_header);
-			// Ã¹¹øÂ° ¾ÆÀÌÅÛÀÌ°Å³ª, ÀÌÀü ¾ÆÀÌÅÛ°ú µî·Ï ³¯Â¥°¡ ´Ù¸¥°æ¿ì µî·Ï ³¯Â¥¸¦ Ãâ·ÂÇÑ´Ù.
+			// ì²«ë²ˆì§¸ ì•„ì´í…œì´ê±°ë‚˜, ì´ì „ ì•„ì´í…œê³¼ ë“±ë¡ ë‚ ì§œê°€ ë‹¤ë¥¸ê²½ìš° ë“±ë¡ ë‚ ì§œë¥¼ ì¶œë ¥í•œë‹¤.
 			if (position == 0
 					|| !getItem(position - 1).getPostedDate().equals(
 							getItem(position).getPostedDate())) {
@@ -159,26 +159,26 @@ public class MyApplicationListFragment extends Fragment implements OnItemClickLi
 			TextView time = (TextView) convertView.findViewById(R.id.time);
 			time.setText(getItem(position).getSession());
 			
-			// ½ºÅ©·¦ ¹öÆ° disable
+			// ìŠ¤í¬ë© ë²„íŠ¼ disable
 			ImageView scrap = (ImageView) convertView.findViewById(R.id.img_scrap);
 			scrap.setVisibility(View.INVISIBLE);
 			
 			TextView state = (TextView) convertView.findViewById(R.id.state);
-			// ¸ÅÄ¡ ¼ö¶ô »óÅÂ¿¡ µû¶ó ´Ù¸¥ text Ãâ·Â
-			// 0 : ¼ö¶ô ´ë±âÁß
-			// 1 : ½ÅÃ»ÀÌ ¼ö¶ôµÊ
-			// 2 : ´Ù¸¥ÆÀÀÇ ½ÅÃ»À» ¼ö¶ôÇÔ(¿ì¸®ÆÀÀÇ ½ÅÃ»ÀÌ °ÅÀı´çÇÔ)
+			// ë§¤ì¹˜ ìˆ˜ë½ ìƒíƒœì— ë”°ë¼ ë‹¤ë¥¸ text ì¶œë ¥
+			// 0 : ìˆ˜ë½ ëŒ€ê¸°ì¤‘
+			// 1 : ì‹ ì²­ì´ ìˆ˜ë½ë¨
+			// 2 : ë‹¤ë¥¸íŒ€ì˜ ì‹ ì²­ì„ ìˆ˜ë½í•¨(ìš°ë¦¬íŒ€ì˜ ì‹ ì²­ì´ ê±°ì ˆë‹¹í•¨)
 			switch(getItem(position).getAcceptState()) {
 			case 0:
-				state.setText("¼ö¶ô ´ë±âÁß");
+				state.setText("ìˆ˜ë½ ëŒ€ê¸°ì¤‘");
 				state.setTextColor(getResources().getColor(android.R.color.holo_blue_light));
 				break;
 			case 1:
-				state.setText("¸ÅÄª ¿Ï·á");
+				state.setText("ë§¤ì¹­ ì™„ë£Œ");
 				state.setTextColor(getResources().getColor(android.R.color.holo_green_light));
 				break;
 			case 2:
-				state.setText("´Ù¸¥ÆÀ°ú ¸ÅÄªµÇ¾ú½À´Ï´Ù");
+				state.setText("ë‹¤ë¥¸íŒ€ê³¼ ë§¤ì¹­ë˜ì—ˆìŠµë‹ˆë‹¤");
 				state.setTextColor(getResources().getColor(R.color.gray));
 				break;
 			}
@@ -187,36 +187,45 @@ public class MyApplicationListFragment extends Fragment implements OnItemClickLi
 		}
 	}
 	
-	// ¼­¹ö·ÎºÎÅÍ ½ÅÃ»ÇÑ ¸ÅÄ¡ ¸®½ºÆ®¸¦ °¡Á®¿À´Â ¸Ş¼­µå
+	// ì„œë²„ë¡œë¶€í„° ì‹ ì²­í•œ ë§¤ì¹˜ ë¦¬ìŠ¤íŠ¸ë¥¼ ê°€ì ¸ì˜¤ëŠ” ë©”ì„œë“œ
 	private void getMyApplicationList() {
-		// ¿¬°áÇÒ ÆäÀÌÁöÀÇ URL
+		// ì—°ê²°í•  í˜ì´ì§€ì˜ URL
 		String url = getString(R.string.server) + getString(R.string.my_application_list);
 		
-		// ÆÄ¶ó¹ÌÅÍ ±¸¼º
+		// íŒŒë¼ë¯¸í„° êµ¬ì„±
 		LoginManager lm = new LoginManager(getActivity());
 		String param = "memberNo=" + lm.getMemberNo();
 		param += "&isAccepted=" + isAccepted;
 		
-		// ¼­¹ö ¿¬°á
-		JSONObject json = new HttpTask(url, param).getJSONObject();
-		JSONArray jsonArr = null;
-		
-		try {
-			jsonArr = json.getJSONArray("list");
+		// ì„œë²„ ì—°ê²°
+		new HttpAsyncTask(url ,param) {
 
-			JSONObject item;
+			@Override
+			protected void onPostExecute(String result) {
+				JSONObject json = null;
+				JSONArray jsonArr = null;
+				
+				try {
+					json = new JSONObject(result);
+					jsonArr = json.getJSONArray("list");
 
-			myApplicationList.clear();
-			for (int i = 0; i < jsonArr.length(); i++) {
-				item = jsonArr.getJSONObject(i);
-				myApplicationList.add(new ApplicationItem(item));
+					JSONObject item;
+
+					myApplicationList.clear();
+					for (int i = 0; i < jsonArr.length(); i++) {
+						item = jsonArr.getJSONObject(i);
+						myApplicationList.add(new ApplicationItem(item));
+					}
+				} catch (JSONException e) {
+					myApplicationList.clear();
+					Log.e("getMyApplicationList", e.getMessage());
+				} finally {
+					malAdapter.notifyDataSetChanged();
+					count.setText("ì´ " + myApplicationList.size() + "ê°œ");
+				}
+				
 			}
-		} catch (JSONException e) {
-			myApplicationList.clear();
-			Log.e("getMyApplicationList", e.getMessage());
-		} finally {
-			malAdapter.notifyDataSetChanged();
-			count.setText("ÃÑ " + myApplicationList.size() + "°³");
-		}
+			
+		}.execute();
 	}
 }

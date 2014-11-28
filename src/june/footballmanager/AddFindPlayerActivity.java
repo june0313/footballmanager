@@ -1,4 +1,4 @@
-package june.footballmanager;
+ï»¿package june.footballmanager;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -6,6 +6,7 @@ import org.json.JSONObject;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -29,7 +30,7 @@ public class AddFindPlayerActivity extends Activity implements OnClickListener {
 	EditText content;
 	Button ok;
 	
-	// ÇöÀç ·Î±×ÀÎ Á¤º¸
+	// í˜„ì¬ ë¡œê·¸ì¸ ì •ë³´
 	LoginManager lm;
 
 	@Override
@@ -37,13 +38,13 @@ public class AddFindPlayerActivity extends Activity implements OnClickListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_add_find_player);
 		
-		// ¾×¼Ç¹Ù ¼³Á¤
+		// ì•¡ì…˜ë°” ì„¤ì •
 		ActionBar actionBar = getActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
 		actionBar.setDisplayShowHomeEnabled(false);
-		actionBar.setSubtitle("±Û¾²±â");
+		actionBar.setSubtitle("ê¸€ì“°ê¸°");
 		
-		// ºä ·¹ÆÛ·±½Ì
+		// ë·° ë ˆí¼ëŸ°ì‹±
 		title = (EditText)findViewById(R.id.title);
 		location = (TextView)findViewById(R.id.location);
 		location.setOnClickListener(this);
@@ -55,7 +56,7 @@ public class AddFindPlayerActivity extends Activity implements OnClickListener {
 		ok = (Button)findViewById(R.id.btnOK);
 		ok.setOnClickListener(this);
 		
-		// ·Î±×ÀÎ Á¤º¸ °´Ã¼ »ı¼º
+		// ë¡œê·¸ì¸ ì •ë³´ ê°ì²´ ìƒì„±
 		lm = new LoginManager(this);
 	}
 
@@ -69,7 +70,7 @@ public class AddFindPlayerActivity extends Activity implements OnClickListener {
 			break;
 		case R.id.position:
 			builder = new AlertDialog.Builder(this);
-			builder.setTitle("Æ÷Áö¼ÇÀ» ¼±ÅÃÇÏ¼¼¿ä");
+			builder.setTitle("í¬ì§€ì…˜ì„ ì„ íƒí•˜ì„¸ìš”");
 			builder.setItems(R.array.positions_long, new DialogInterface.OnClickListener(){
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
@@ -80,7 +81,7 @@ public class AddFindPlayerActivity extends Activity implements OnClickListener {
 			break;
 		case R.id.ages:
 			builder = new AlertDialog.Builder(this);
-			builder.setTitle("¿¬·ÉÃşÀ» ¼±ÅÃÇÏ¼¼¿ä");
+			builder.setTitle("ì—°ë ¹ì¸µì„ ì„ íƒí•˜ì„¸ìš”");
 			builder.setItems(R.array.ages, new DialogInterface.OnClickListener(){
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
@@ -92,17 +93,17 @@ public class AddFindPlayerActivity extends Activity implements OnClickListener {
 		case R.id.btnOK:
 			
 			if(title.getText().toString().isEmpty())
-				Toast.makeText(this, "±Û Á¦¸ñÀ» ÀÔ·ÂÇØÁÖ¼¼¿ä", 0).show();
+				Toast.makeText(this, "ê¸€ ì œëª©ì„ ì…ë ¥í•´ì£¼ì„¸ìš”", 0).show();
 			else if(location.getText().toString().isEmpty())
-				Toast.makeText(this, "È°µ¿ Áö¿ªÀ» ¼³Á¤ÇØÁÖ¼¼¿ä", 0).show();
+				Toast.makeText(this, "í™œë™ ì§€ì—­ì„ ì„¤ì •í•´ì£¼ì„¸ìš”", 0).show();
 			else if(position.getText().toString().isEmpty())
-				Toast.makeText(this, "Æ÷Áö¼ÇÀ» ¼³Á¤ÇØÁÖ¼¼¿ä", 0).show();
+				Toast.makeText(this, "í¬ì§€ì…˜ì„ ì„¤ì •í•´ì£¼ì„¸ìš”", 0).show();
 			else if(ages.getText().toString().isEmpty())
-				Toast.makeText(this, "¿¬·É´ë¸¦ ¼³Á¤ÇØÁÖ¼¼¿ä", 0).show();
+				Toast.makeText(this, "ì—°ë ¹ëŒ€ë¥¼ ì„¤ì •í•´ì£¼ì„¸ìš”", 0).show();
 			else if(content.getText().toString().isEmpty())
-				Toast.makeText(this, "³»¿ëÀ» ÀÔ·ÂÇØÁÖ¼¼¿ä", 0).show();
+				Toast.makeText(this, "ë‚´ìš©ì„ ì…ë ¥í•´ì£¼ì„¸ìš”", 0).show();
 			else
-				// °Ô½Ã¹° µî·Ï
+				// ê²Œì‹œë¬¼ ë“±ë¡
 				addFindPlayer();
 			
 			break;
@@ -127,7 +128,7 @@ public class AddFindPlayerActivity extends Activity implements OnClickListener {
 		return super.onOptionsItemSelected(item);
 	}
 	
-	// ÁÖ¼Ò ¹Ş¾Æ¿À±â
+	// ì£¼ì†Œ ë°›ì•„ì˜¤ê¸°
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent intent) {
 		switch (requestCode) {
@@ -138,12 +139,12 @@ public class AddFindPlayerActivity extends Activity implements OnClickListener {
 		}
 	}
 	
-	// ¼±¼ö ¸ğÁı °Ô½Ã¹°À» ¼­¹ö·Î µî·ÏÇÏ´Â ¸Ş¼­µå
+	// ì„ ìˆ˜ ëª¨ì§‘ ê²Œì‹œë¬¼ì„ ì„œë²„ë¡œ ë“±ë¡í•˜ëŠ” ë©”ì„œë“œ
 	private void addFindPlayer() {
-		// ¿¬°áÇÒ ÆäÀÌÁöÀÇ URL
+		// ì—°ê²°í•  í˜ì´ì§€ì˜ URL
 		String url = getString(R.string.server) + getString(R.string.add_find_player);
 		
-		// ÆÄ¶ó¹ÌÅÍ ±¸¼º
+		// íŒŒë¼ë¯¸í„° êµ¬ì„±
 		String param = "memberNo=" + lm.getMemberNo()
 				+ "&title=" + title.getText().toString()
 				+ "&location=" + location.getText().toString()
@@ -151,16 +152,25 @@ public class AddFindPlayerActivity extends Activity implements OnClickListener {
 				+ "&ages=" + ages.getText().toString()
 				+ "&content=" + content.getText().toString().replace("\n", "__");
 		
-		// ¼­¹ö ¿¬°á
-		JSONObject json = new HttpTask(url, param).getJSONObject();
-		
-		try {
-			if(json.getInt("success") == 1) {
-				Toast.makeText(getApplicationContext(), "°Ô½Ã¹°ÀÌ µî·ÏµÇ¾ú½À´Ï´Ù.", 0).show();
-				finish();
+		// ì„œë²„ ì—°ê²°
+		new HttpAsyncTask(url, param, this, "ê²Œì‹œë¬¼ì„ ë“±ë¡í•˜ëŠ” ì¤‘ ì…ë‹ˆë‹¤...") {
+
+			@Override
+			protected void onPostExecute(String result) {
+				
+				JSONObject json = null;
+				
+				try {
+					json = new JSONObject(result);
+					if(json.getInt("success") == 1) {
+						Toast.makeText(AddFindPlayerActivity.this, "ê²Œì‹œë¬¼ì´ ë“±ë¡ë˜ì—ˆìŠµë‹ˆë‹¤.", 0).show();
+						finish();
+					}
+				} catch (JSONException e) {
+					Log.e("addFildPlayer", e.getMessage());
+				}
 			}
-		} catch (JSONException e) {
-			Log.e("addFildPlayer", e.getMessage());
-		}
+			
+		}.execute();
 	}
 }

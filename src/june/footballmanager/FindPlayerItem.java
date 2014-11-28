@@ -1,4 +1,4 @@
-package june.footballmanager;
+ï»¿package june.footballmanager;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -57,7 +57,7 @@ public class FindPlayerItem {
 	
 	public String getPostedDate() {
 		String[] s = _postedDate.substring(0, 10).split("-");
-		String postedDateKor = s[0] + "³â " + s[1] + "¿ù " + s[2] + "ÀÏ";
+		String postedDateKor = s[0] + "ë…„ " + s[1] + "ì›” " + s[2] + "ì¼";
 		return postedDateKor;
 	}
 }

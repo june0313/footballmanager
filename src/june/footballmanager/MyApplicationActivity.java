@@ -1,5 +1,5 @@
-/*
- * ³»°¡ ½ÅÃ»ÇÑ ¸ÅÄ¡
+ï»¿/*
+ * ë‚´ê°€ ì‹ ì²­í•œ ë§¤ì¹˜
  */
 
 package june.footballmanager;
@@ -84,7 +84,7 @@ public class MyApplicationActivity extends FragmentActivity implements
 		return true;
 	}
 	
-	// ¸Ş´º ¼±ÅÃ½Ã Äİ¹é ¸Ş¼­µå
+	// ë©”ë‰´ ì„ íƒì‹œ ì½œë°± ë©”ì„œë“œ
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {

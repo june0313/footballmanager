@@ -1,13 +1,4 @@
-package june.footballmanager;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
-import java.net.URL;
+ï»¿package june.footballmanager;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -18,7 +9,6 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -29,7 +19,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-// ÆÀÈ¸¿ø °¡ÀÔ ¾×Æ¼ºñÆ¼
+// íŒ€íšŒì› ê°€ì… ì•¡í‹°ë¹„í‹°
 public class TeamRegisterActivity extends Activity implements OnClickListener {
 
 	EditText email;
@@ -44,7 +34,7 @@ public class TeamRegisterActivity extends Activity implements OnClickListener {
 	EditText phone;
 	EditText introduce;
 	
-	// À¯´ÏÆû
+	// ìœ ë‹ˆí¼
 	View uniformTop;
 	
 	Button btnRegister;
@@ -62,36 +52,36 @@ public class TeamRegisterActivity extends Activity implements OnClickListener {
 		ActionBar actionBar = getActionBar();
 	    actionBar.setDisplayHomeAsUpEnabled(true);
 	    
-	    // ÇÊ¼ö °èÁ¤ Á¤º¸
+	    // í•„ìˆ˜ ê³„ì • ì •ë³´
 	    email = (EditText)findViewById(R.id.t_email);
 	    password = (EditText)findViewById(R.id.t_password);
 	    passwordChk = (EditText)findViewById(R.id.t_password_chk);
 	    
-	    // ÆÀÁ¤º¸
+	    // íŒ€ì •ë³´
 	    teamName = (EditText)findViewById(R.id.t_team_name);
 	    location = (TextView)findViewById(R.id.t_location);
 	    location.setOnClickListener(this);
 	    
-	    // È¨±¸Àå
+	    // í™ˆêµ¬ì¥
 	    homeGround = (EditText)findViewById(R.id.t_homeground);
-	    // °æ±âÀåÀ» °Ë»öÇØ¼­ ¼±ÅÃÇÒ ¼ö ÀÖµµ·Ï ¼öÁ¤ÇÒ ¿¹Á¤
+	    // ê²½ê¸°ì¥ì„ ê²€ìƒ‰í•´ì„œ ì„ íƒí•  ìˆ˜ ìˆë„ë¡ ìˆ˜ì •í•  ì˜ˆì •
 	    // homeGround.setOnClickListener(this);
 	    
 	    numOfPlayer = (EditText)findViewById(R.id.t_num_of_player);
 	    ages = (TextView) findViewById(R.id.t_ages);
 	    ages.setOnClickListener(this);
 	    
-	    // ¿¬¶ôÃ³
+	    // ì—°ë½ì²˜
 	    phone = (EditText)findViewById(R.id.t_phone);
 	    
-	    // ÆÀ ¼Ò°³
+	    // íŒ€ ì†Œê°œ
 	    introduce = (EditText)findViewById(R.id.t_introduce);
 	    
-	    // °¡ÀÔ¹öÆ°
+	    // ê°€ì…ë²„íŠ¼
 	    btnRegister = (Button)findViewById(R.id.btn_register);
 	    btnRegister.setOnClickListener(this);
 	    
-	    // À¯´ÏÆû
+	    // ìœ ë‹ˆí¼
 	    /*
 	    uniformTop = findViewById(R.id.t_uniform_top);
 	    uniformTop.setOnClickListener(this);
@@ -103,7 +93,7 @@ public class TeamRegisterActivity extends Activity implements OnClickListener {
 		int id = v.getId();
 		if (id == R.id.t_ages) {
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
-			builder.setTitle("¿¬·ÉÃşÀ» ¼±ÅÃÇÏ¼¼¿ä");
+			builder.setTitle("ì—°ë ¹ì¸µì„ ì„ íƒí•˜ì„¸ìš”");
 			builder.setItems(R.array.ages, new DialogInterface.OnClickListener(){
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
@@ -136,35 +126,35 @@ public class TeamRegisterActivity extends Activity implements OnClickListener {
 
 		}*/else if (id == R.id.btn_register) {
 			if( email.getText().length() <= 0 ) {
-				Toast.makeText(TeamRegisterActivity.this, "ÀÌ¸ŞÀÏÀ» ÀÔ·ÂÇØÁÖ¼¼¿ä", 0).show();
+				Toast.makeText(TeamRegisterActivity.this, "ì´ë©”ì¼ì„ ì…ë ¥í•´ì£¼ì„¸ìš”", 0).show();
 			} else if( password.getText().length() <= 0 ) {
-				Toast.makeText(TeamRegisterActivity.this, "ºñ¹Ğ¹øÈ£¸¦ ÀÔ·ÂÇØÁÖ¼¼¿ä", 0).show();
+				Toast.makeText(TeamRegisterActivity.this, "ë¹„ë°€ë²ˆí˜¸ë¥¼ ì…ë ¥í•´ì£¼ì„¸ìš”", 0).show();
 			} else if ( password.getText().length() < 6 ) {
-				Toast.makeText(TeamRegisterActivity.this, "ºñ¹Ğ¹øÈ£´Â ÃÖ¼Ò 6ÀÚ¸® ÀÌ»ó ÀÔ·ÂÇØÁÖ¼¼¿ä", 0).show();
+				Toast.makeText(TeamRegisterActivity.this, "ë¹„ë°€ë²ˆí˜¸ëŠ” ìµœì†Œ 6ìë¦¬ ì´ìƒ ì…ë ¥í•´ì£¼ì„¸ìš”", 0).show();
 			} else if( !password.getText().toString().equals(passwordChk.getText().toString()) ) {
-				Toast.makeText(TeamRegisterActivity.this, "ºñ¹Ğ¹øÈ£°¡ ÀÏÄ¡ÇÏÁö ¾Ê½À´Ï´Ù", 0).show();
+				Toast.makeText(TeamRegisterActivity.this, "ë¹„ë°€ë²ˆí˜¸ê°€ ì¼ì¹˜í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤", 0).show();
 			} else if ( !email.getText().toString().matches("^[_a-zA-Z0-9-\\.]+@[\\.a-zA-Z0-9-]+\\.[a-zA-Z]+$") ) {
-				Toast.makeText(TeamRegisterActivity.this, "ÀÌ¸ŞÀÏ ÁÖ¼Ò°¡ Àß¸øµÇ¾ú½À´Ï´Ù", 0).show();
+				Toast.makeText(TeamRegisterActivity.this, "ì´ë©”ì¼ ì£¼ì†Œê°€ ì˜ëª»ë˜ì—ˆìŠµë‹ˆë‹¤", 0).show();
 			} else if( teamName.getText().length() <= 0 ) {
-				Toast.makeText(TeamRegisterActivity.this, "ÆÀ ÀÌ¸§À» ÀÔ·ÂÇØÁÖ¼¼¿ä", 0).show();
+				Toast.makeText(TeamRegisterActivity.this, "íŒ€ ì´ë¦„ì„ ì…ë ¥í•´ì£¼ì„¸ìš”", 0).show();
 			} else if( location.getText().length() <= 0 ) {
-				Toast.makeText(TeamRegisterActivity.this, "Áö¿ªÀ» ÀÔ·ÂÇØÁÖ¼¼¿ä", 0).show();
+				Toast.makeText(TeamRegisterActivity.this, "ì§€ì—­ì„ ì…ë ¥í•´ì£¼ì„¸ìš”", 0).show();
 			} else if( homeGround.getText().length() <= 0 ) {
-				Toast.makeText(TeamRegisterActivity.this, "È¨ ±¸ÀåÀ» ÀÔ·ÂÇØÁÖ¼¼¿ä", 0).show();
+				Toast.makeText(TeamRegisterActivity.this, "í™ˆ êµ¬ì¥ì„ ì…ë ¥í•´ì£¼ì„¸ìš”", 0).show();
 			} else if( numOfPlayer.getText().length() <= 0 ) {
-				Toast.makeText(TeamRegisterActivity.this, "ÀÎ¿ø¼ö¸¦ ÀÔ·ÂÇØÁÖ¼¼¿ä", 0).show();
+				Toast.makeText(TeamRegisterActivity.this, "ì¸ì›ìˆ˜ë¥¼ ì…ë ¥í•´ì£¼ì„¸ìš”", 0).show();
 			} else if( ages.getText().length() <= 0 ) {
-				Toast.makeText(TeamRegisterActivity.this, "¿¬·ÉÃşÀ» ÀÔ·ÂÇØÁÖ¼¼¿ä", 0).show();
+				Toast.makeText(TeamRegisterActivity.this, "ì—°ë ¹ì¸µì„ ì…ë ¥í•´ì£¼ì„¸ìš”", 0).show();
 			} else if( phone.getText().length() <= 0 ) {
-				Toast.makeText(TeamRegisterActivity.this, "¿¬¶ôÃ³¸¦ ÀÔ·ÂÇØÁÖ¼¼¿ä", 0).show();
+				Toast.makeText(TeamRegisterActivity.this, "ì—°ë½ì²˜ë¥¼ ì…ë ¥í•´ì£¼ì„¸ìš”", 0).show();
 			} else {
-				// À§ÀÇ ¸ğµç Á¶°ÇÀ» ¸¸Á·ÇÏ¸é ÆÀ È¸¿ø °¡ÀÔ ½Ãµµ
+				// ìœ„ì˜ ëª¨ë“  ì¡°ê±´ì„ ë§Œì¡±í•˜ë©´ íŒ€ íšŒì› ê°€ì… ì‹œë„
 				registerTeamAccount();
 			}
 		}
 	}
 	
-	// ÁÖ¼Ò ¹Ş¾Æ¿À±â
+	// ì£¼ì†Œ ë°›ì•„ì˜¤ê¸°
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent intent) {
 		switch(requestCode) {
@@ -175,7 +165,7 @@ public class TeamRegisterActivity extends Activity implements OnClickListener {
 		}
 	}
 	
-	// ¸Ş´º ¼±ÅÃ
+	// ë©”ë‰´ ì„ íƒ
 	@Override
     public boolean onOptionsItemSelected(MenuItem item) {
 		switch( item.getItemId()) {
@@ -188,10 +178,10 @@ public class TeamRegisterActivity extends Activity implements OnClickListener {
 	}
 	
 	private void registerTeamAccount() {
-		// ¿¬°áÇÒ ÆäÀÌÁöÀÇ URL
+		// ì—°ê²°í•  í˜ì´ì§€ì˜ URL
 		String url = getString(R.string.server)+ getString(R.string.regi_team);
 		
-		// ÆÄ¶ó¹ÌÅÍ ±¸¼º
+		// íŒŒë¼ë¯¸í„° êµ¬ì„±
 		String param = "email=" + email.getText().toString();
 		param += "&password=" + password.getText().toString();
 		param += "&name=" + teamName.getText().toString();
@@ -202,114 +192,32 @@ public class TeamRegisterActivity extends Activity implements OnClickListener {
 		param += "&phone=" + phone.getText().toString();
 		param += "&introduce=" + introduce.getText().toString().replace("\n", "__");
 		
-		// ¼­¹ö ¿¬°á
-		JSONObject json = new HttpTask(url, param).getJSONObject();
-		
-		try {
-			if(json.getInt("success") == 1) {
-				Toast.makeText(getApplicationContext(), "È¸¿ø °¡ÀÔÀÌ ¿Ï·áµÇ¾ú½À´Ï´Ù!", 0).show();
-				finish();
-			} else {
-				int errno = json.getInt("errorcode");
-				String errorMsg = json.getString("message");
-				Log.e("registerTeamAccount", errorMsg);
-				
-				if( errno == 1062)
-					Toast.makeText(getApplicationContext(), "ÀÌ¹Ì °¡ÀÔµÈ ÀÌ¸ŞÀÏ ÁÖ¼ÒÀÔ´Ï´Ù", 0).show();
-			}
-		} catch (JSONException e) {
-			Log.e("registerTeamAccount", e.getMessage());
-		}
-	}
-	
-	public class AttemptTeamRegistration extends AsyncTask<Void, Void, Boolean> {
+		// ì„œë²„ ì—°ê²°
+		new HttpAsyncTask(url, param, this, "ì ì‹œë§Œ ê¸°ë‹¤ë ¤ ì£¼ì„¸ìš”...") {
 
-		String param = "";
-		String jsonString = "";
-		JSONObject jsonObj;
-		int errno;
-		String errorMsg;
-		
-		@Override
-		public void onPreExecute() {
-			pd = new ProgressDialog(TeamRegisterActivity.this);
-			pd.setMessage("Àá½Ã¸¸ ±â´Ù·Á ÁÖ¼¼¿ä...");
-			pd.show();
-			
-			// ÆÄ¸®¹ÌÅÍ ¼³Á¤
-			param = "email=" + email.getText().toString();
-			param += "&password=" + password.getText().toString();
-			param += "&name=" + teamName.getText().toString();
-			param += "&location=" + location.getText().toString();
-			param += "&home=" + homeGround.getText().toString();
-			param += "&numOfPlayer=" + numOfPlayer.getText().toString();
-			param += "&ages=" + ages.getText().toString();
-			param += "&phone=" + phone.getText().toString();
-			param += "&introduce=" + introduce.getText().toString().replace("\n", "__");
-			
-			// ÆÄ¶ó¹ÌÅÍ È®ÀÎ¿ë ·Î±× Ãâ·Â
-			Log.i("FM", "param : " + param);
-		}
-
-		@Override
-		protected Boolean doInBackground(Void... params) {
-			
-			Boolean isRegiSuccess = false;
-			
-			try {
-				URL url = new URL(getString(R.string.server)+ getString(R.string.regi_team));
-				HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-				conn.setRequestMethod("POST");
-				conn.setDoInput(true);
-				conn.setDoOutput(true);
+			@Override
+			protected void onPostExecute(String result) {
+				JSONObject json = null;
 				
-				OutputStreamWriter out = new OutputStreamWriter( conn.getOutputStream(), "euc-kr" );
-				out.write(param);
-				out.flush();
-				out.close();
-				
-				String buffer = null;
-				BufferedReader in = new BufferedReader( new InputStreamReader( conn.getInputStream(), "euc-kr"));
-				while( (buffer = in.readLine()) != null ) {
-					jsonString += buffer;
+				try {
+					json = new JSONObject(result);
+					if(json.getInt("success") == 1) {
+						Toast.makeText(TeamRegisterActivity.this, "íŒ€ ê³„ì • ë“±ë¡ì´ ì™„ë£Œë˜ì—ˆìŠµë‹ˆë‹¤!", 0).show();
+						finish();
+					} else {
+						int errno = json.getInt("errorcode");
+						String errorMsg = json.getString("message");
+						Log.e("registerTeamAccount", errorMsg);
+						
+						if( errno == 1062)
+							Toast.makeText(TeamRegisterActivity.this, "ì´ë¯¸ ë“±ë¡ëœ ì´ë©”ì¼ ì£¼ì†Œì…ë‹ˆë‹¤", 0).show();
+					}
+				} catch (JSONException e) {
+					Log.e("registerTeamAccount", e.getMessage());
 				}
-				in.close();
-				
-				jsonObj = new JSONObject(jsonString);
-				
-				// check the success of registration
-				if(jsonObj.getInt("success") == 1)
-					isRegiSuccess = true;
-				else {
-					errno = jsonObj.getInt("errorcode");
-					errorMsg = jsonObj.getString("message");
-				}
-					
-			} catch (ProtocolException e) {
-				Log.e("FM", "AttemptTeamRegistratioin : " + e.getMessage());
-			} catch (MalformedURLException e) {
-				Log.e("FM", "AttemptTeamRegistratioin : " + e.getMessage());
-			} catch (IOException e) {
-				Log.e("FM", "AttemptTeamRegistratioin : " + e.getMessage());
-			} catch (JSONException e) {
-				Log.e("FM", "AttemptTeamRegistratioin : " + e.getMessage());;
 			}
-				
-			return isRegiSuccess;
-		}
-		
-		@Override
-		public void onPostExecute(Boolean isRegiSuccess) {
-			pd.dismiss();
 			
-			if( isRegiSuccess ) {
-				Toast.makeText(getApplicationContext(), "È¸¿ø °¡ÀÔÀÌ ¿Ï·áµÇ¾ú½À´Ï´Ù!", 0).show();
-				finish();
-			} else {
-				Log.e("FM", "RegistrationFail : " + errorMsg);
-				if( errno == 1062)
-					Toast.makeText(getApplicationContext(), "ÀÌ¹Ì °¡ÀÔµÈ ÀÌ¸ŞÀÏ ÁÖ¼ÒÀÔ´Ï´Ù", 0).show();
-			}
-		}
+		}.execute();
+		
 	}
 }

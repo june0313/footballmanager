@@ -104,7 +104,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="40dp"
             android:background="@drawable/round_button2"
-            android:text="선수 회원 가입"
+            android:text="선수 계정 등록"
             android:textColor="@android:color/white"
             android:textSize="17sp" />
 

@@ -1,6 +1,6 @@
-
+ï»¿
 /*
- * ÆÀ ±¸ÇÔ ±Û¾²±â ¾×Æ¼ºñÆ¼
+ * íŒ€ êµ¬í•¨ ê¸€ì“°ê¸° ì•¡í‹°ë¹„í‹°
  */
 
 package june.footballmanager;
@@ -25,7 +25,7 @@ public class AddFindTeamActivity extends Activity implements OnClickListener {
 	EditText content;
 	Button ok;
 	
-	// ÇöÀç ·Î±×ÀÎ Á¤º¸
+	// í˜„ì¬ ë¡œê·¸ì¸ ì •ë³´
 	LoginManager lm;
 	
 	@Override
@@ -33,19 +33,19 @@ public class AddFindTeamActivity extends Activity implements OnClickListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_add_find_team);
 		
-		// ¾×¼Ç¹Ù ¼³Á¤
+		// ì•¡ì…˜ë°” ì„¤ì •
 		ActionBar actionBar = getActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
 		actionBar.setDisplayShowHomeEnabled(false);
-		actionBar.setSubtitle("±Û¾²±â");
+		actionBar.setSubtitle("ê¸€ì“°ê¸°");
 		
-		// ºä ·¹ÆÛ·±½Ì
+		// ë·° ë ˆí¼ëŸ°ì‹±
 		title = (EditText)findViewById(R.id.title);
 		content = (EditText)findViewById(R.id.content);
 		ok = (Button)findViewById(R.id.btnOK);
 		ok.setOnClickListener(this);
 		
-		// ·Î±×ÀÎ Á¤º¸ °´Ã¼ »ı¼º
+		// ë¡œê·¸ì¸ ì •ë³´ ê°ì²´ ìƒì„±
 		lm = new LoginManager(this);
 	}
 	
@@ -55,11 +55,11 @@ public class AddFindTeamActivity extends Activity implements OnClickListener {
 		case R.id.btnOK:
 			
 			if(title.getText().toString().isEmpty())
-				Toast.makeText(this, "±Û Á¦¸ñÀ» ÀÔ·ÂÇØÁÖ¼¼¿ä", 0).show();
+				Toast.makeText(this, "ê¸€ ì œëª©ì„ ì…ë ¥í•´ì£¼ì„¸ìš”", 0).show();
 			else if(content.getText().toString().isEmpty())
-				Toast.makeText(this, "³»¿ëÀ» ÀÔ·ÂÇØÁÖ¼¼¿ä", 0).show();
+				Toast.makeText(this, "ë‚´ìš©ì„ ì…ë ¥í•´ì£¼ì„¸ìš”", 0).show();
 			else
-				// °Ô½Ã¹° µî·Ï
+				// ê²Œì‹œë¬¼ ë“±ë¡
 				addFindTeam();
 			break;
 		}
@@ -75,28 +75,34 @@ public class AddFindTeamActivity extends Activity implements OnClickListener {
 		return super.onOptionsItemSelected(item);
 	}
 	
-	// ¼­¹ö·Î ÆÀ±¸ÇÔ °Ô½Ã¹°À» µî·ÏÇÏ´Â ¸Ş¼­µå
+	// ì„œë²„ë¡œ íŒ€êµ¬í•¨ ê²Œì‹œë¬¼ì„ ë“±ë¡í•˜ëŠ” ë©”ì„œë“œ
 	private void addFindTeam() {
-		// ¿¬°áÇÒ ÆäÀÌÁöÀÇ URL
+		// ì—°ê²°í•  í˜ì´ì§€ì˜ URL
 		String url = getString(R.string.server)
 				+ getString(R.string.add_find_team);
 
-		// ÆÄ¶ó¹ÌÅÍ ±¸¼º
+		// íŒŒë¼ë¯¸í„° êµ¬ì„±
 		String param = "memberNo=" + lm.getMemberNo() + "&title="
 				+ title.getText().toString() + "&content="
 				+ content.getText().toString().replace("\n", "__");
 		
-		// ¼­¹ö ¿¬°á
-		JSONObject json = new HttpTask(url, param).getJSONObject();
-		
-		try {
-			
-			if(json.getInt("success") == 1) {
-				Toast.makeText(getApplicationContext(), "°Ô½Ã¹°ÀÌ µî·ÏµÇ¾ú½À´Ï´Ù.", 0).show();
-				finish();
+		// ì„œë²„ ì—°ê²°
+		new HttpAsyncTask(url, param, this, "ê²Œì‹œë¬¼ì„ ë“±ë¡í•˜ëŠ” ì¤‘ ì…ë‹ˆë‹¤..."){
+
+			@Override
+			protected void onPostExecute(String result) {
+				JSONObject json = null;
+				try {
+					json = new JSONObject(result);
+					if(json.getInt("success") == 1) {
+						Toast.makeText(AddFindTeamActivity.this, "ê²Œì‹œë¬¼ì´ ë“±ë¡ë˜ì—ˆìŠµë‹ˆë‹¤.", 0).show();
+						finish();
+					}
+				} catch (JSONException e) {
+					Log.e("getFindTeam", e.getMessage());
+				}	
 			}
-		} catch (JSONException e) {
-			Log.e("getFindTeam", e.getMessage());
-		}	
+			
+		}.execute();
 	}
 }

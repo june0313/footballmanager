@@ -1,4 +1,4 @@
-package june.footballmanager;
+ï»¿package june.footballmanager;
 
 import java.util.List;
 
@@ -35,40 +35,40 @@ public class LocationConditionActivity extends Activity implements OnItemSelecte
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_location_condition);
 		
-		// ¾×¼Ç¹Ù ¼³Á¤
+		// ì•¡ì…˜ë°” ì„¤ì •
 	    ActionBar actionBar = getActionBar();
 	    actionBar.setDisplayHomeAsUpEnabled(true);
 	    
-	    // ½Ã, µµ ½ºÇÇ³Ê
+	    // ì‹œ, ë„ ìŠ¤í”¼ë„ˆ
 	    spnrSIDO = (Spinner)findViewById(R.id.sido);
 	    spnrSIDO.setOnItemSelectedListener(this);
 	    
-	    // ±¸, ±º ½ºÇÇ³Ê
+	    // êµ¬, êµ° ìŠ¤í”¼ë„ˆ
 	    spnrGUGUN = (Spinner)findViewById(R.id.gugun);
 	    spnrGUGUN.setOnItemSelectedListener(this);
 	    
-	    // µ¿(¸é¸®) ½ºÇÇ³Ê
+	    // ë™(ë©´ë¦¬) ìŠ¤í”¼ë„ˆ
 	    spnrDONG = (Spinner)findViewById(R.id.dong);
 	    spnrDONG.setOnItemSelectedListener(this);
 	    
-	    // ¼³Á¤ ¿Ï·á ¹öÆ°
+	    // ì„¤ì • ì™„ë£Œ ë²„íŠ¼
 	    complete = (Button)findViewById(R.id.complete);
 	    complete.setOnClickListener(this);
 	    
-	    // ½ºÇÇ³Ê ÃÊ±â µ¥ÀÌÅÍ ·Îµå
+	    // ìŠ¤í”¼ë„ˆ ì´ˆê¸° ë°ì´í„° ë¡œë“œ
 	    loadSIDOData();
 	    loadGUGUNData(spnrSIDO.getSelectedItem().toString());
 	    loadDONGData(spnrSIDO.getSelectedItem().toString(), spnrGUGUN.getSelectedItem().toString());
 	    
-	    // Àü±¹ Ã¼Å©¹Ú½º
+	    // ì „êµ­ ì²´í¬ë°•ìŠ¤
 	    cbCountry = (CheckBox)findViewById(R.id.checkBox1);
 	    cbCountry.setOnCheckedChangeListener(this);
 	    
-	    // ½Ã/µµ ÀüÃ¼ Ã¼Å©¹Ú½º
+	    // ì‹œ/ë„ ì „ì²´ ì²´í¬ë°•ìŠ¤
 	    cbCity = (CheckBox)findViewById(R.id.checkBox2);
 	    cbCity.setOnCheckedChangeListener(this);
 	    
-	    // ±¸/±º ÀüÃ¼ Ã¼Å© ¹Ú½º
+	    // êµ¬/êµ° ì „ì²´ ì²´í¬ ë°•ìŠ¤
 	    cbDistrict = (CheckBox)findViewById(R.id.checkBox3);
 	    cbDistrict.setOnCheckedChangeListener(this);
 	}
@@ -101,13 +101,13 @@ public class LocationConditionActivity extends Activity implements OnItemSelecte
 		if (id == R.id.complete) {
 			
 			if( cbCountry.isChecked() ) {
-				// "Àü±¹"À¸·Î ¼³Á¤µÈ °æ¿ì
-				location = "Àü±¹";
+				// "ì „êµ­"ìœ¼ë¡œ ì„¤ì •ëœ ê²½ìš°
+				location = "ì „êµ­";
 			} else if( cbCity.isChecked() ) {
-				// "½Ã/µµ ÀüÃ¼"
+				// "ì‹œ/ë„ ì „ì²´"
 				location = spnrSIDO.getSelectedItem().toString();
 			} else if( cbDistrict.isChecked() ) {
-				// "±¸/±º ÀüÃ¼"
+				// "êµ¬/êµ° ì „ì²´"
 				location = spnrSIDO.getSelectedItem().toString() + " "
 						+ spnrGUGUN.getSelectedItem().toString();
 			} else {
@@ -116,7 +116,7 @@ public class LocationConditionActivity extends Activity implements OnItemSelecte
 						+ spnrDONG.getSelectedItem().toString();
 			}
 			
-			// ÁÖ¼Ò Àü´Ş : ÀÚ½ÅÀ» È£ÃâÇÑ Activity·Î °á°ú°ªÀ» ³Ñ±ä´Ù.
+			// ì£¼ì†Œ ì „ë‹¬ : ìì‹ ì„ í˜¸ì¶œí•œ Activityë¡œ ê²°ê³¼ê°’ì„ ë„˜ê¸´ë‹¤.
 			Intent intent = new Intent();
 			intent.putExtra("location", location);
 			setResult(RESULT_OK, intent);
@@ -196,7 +196,7 @@ public class LocationConditionActivity extends Activity implements OnItemSelecte
 	}
 
 	
-	// Ã¼Å©¹Ú½º ÀÌº¥Æ® ¸®½º³Ê
+	// ì²´í¬ë°•ìŠ¤ ì´ë²¤íŠ¸ ë¦¬ìŠ¤ë„ˆ
 	@Override
 	public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 		switch(buttonView.getId()) {

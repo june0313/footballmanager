@@ -1,4 +1,4 @@
-package june.footballmanager;
+ï»¿package june.footballmanager;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -34,19 +34,19 @@ public class LoginActivity extends Activity implements OnClickListener {
 	    ActionBar actionBar = getActionBar();
 	    actionBar.setDisplayHomeAsUpEnabled(true);
 	    
-	    // ·Î±×ÀÎ ¹öÆ°
+	    // ë¡œê·¸ì¸ ë²„íŠ¼
 	    Button btnLogin = (Button)findViewById(R.id.btn_login);
 	    btnLogin.setOnClickListener( this );
 	    
-	    // ¼±¼öÈ¸¿ø °¡ÀÔ ¹öÆ°
+	    // ì„ ìˆ˜íšŒì› ê°€ì… ë²„íŠ¼
 	    Button btnPlayerRegister = (Button)findViewById(R.id.btn_player_register);
 	    btnPlayerRegister.setOnClickListener( this );
 	    
-	    // ÆÀÈ¸¿ø °¡ÀÔ ¹öÆ°
+	    // íŒ€íšŒì› ê°€ì… ë²„íŠ¼
 	    Button btnTeamRegister = (Button)findViewById(R.id.btn_team_register);
 	    btnTeamRegister.setOnClickListener( this );
 	    
-	    // ºñ¹Ğ¹øÈ£ Ã£±â ÅØ½ºÆ®
+	    // ë¹„ë°€ë²ˆí˜¸ ì°¾ê¸° í…ìŠ¤íŠ¸
 	    TextView txtFindPassword = (TextView)findViewById(R.id.txt_find_pw);
 	    txtFindPassword.setOnClickListener( this );
 	}
@@ -59,18 +59,18 @@ public class LoginActivity extends Activity implements OnClickListener {
 			email = (EditText)findViewById(R.id.p_email);
 			password = (EditText)findViewById(R.id.p_password);
 			if( memberGroup.getCheckedRadioButtonId() == -1 ) {
-				Toast.makeText(getApplicationContext(), "È¸¿ø À¯ÇüÀ» ¼±ÅÃÇØÁÖ¼¼¿ä.", 0).show();
+				Toast.makeText(this, "íšŒì› ìœ í˜•ì„ ì„ íƒí•´ì£¼ì„¸ìš”.", 0).show();
 			}
 			else if( email.getText().length() <= 0 ) {
-				Toast.makeText(getApplicationContext(), "ÀÌ¸ŞÀÏÀ» ÀÔ·ÂÇØÁÖ¼¼¿ä.", 0).show();
+				Toast.makeText(this, "ì´ë©”ì¼ì„ ì…ë ¥í•´ì£¼ì„¸ìš”.", 0).show();
 			} 
 			else if( password.getText().length() <= 0 ) {
-				Toast.makeText(getApplicationContext(), "ºñ¹Ğ¹øÈ£¸¦ ÀÔ·ÂÇØÁÖ¼¼¿ä.", 0).show();
+				Toast.makeText(this, "ë¹„ë°€ë²ˆí˜¸ë¥¼ ì…ë ¥í•´ì£¼ì„¸ìš”.", 0).show();
 			}
 			else {
-				// À§ÀÇ ¸ğµç Á¶°ÇÀ» ¸¸Á·ÇÏ¸é ·Î±×ÀÎ ½Ãµµ
+				// ìœ„ì˜ ëª¨ë“  ì¡°ê±´ì„ ë§Œì¡±í•˜ë©´ ë¡œê·¸ì¸ ì‹œë„
 				ProgressDialog pd = new ProgressDialog(this);
-				pd.setMessage("·Î±×ÀÎ Áß ÀÔ´Ï´Ù...");
+				pd.setMessage("ë¡œê·¸ì¸ ì¤‘ ì…ë‹ˆë‹¤...");
 				pd.show();
 				
 				attemptLogin();
@@ -79,7 +79,6 @@ public class LoginActivity extends Activity implements OnClickListener {
 			}
 		} else if (id == R.id.btn_player_register) {
 			startActivity( new Intent(LoginActivity.this, PlayerRegisterActivity.class));
-			//Toast.makeText(getApplicationContext(), "¼­ºñ½º ÁØºñÁß ÀÔ´Ï´Ù.", 0).show();
 		} else if (id == R.id.btn_team_register) {
 			startActivity( new Intent(LoginActivity.this, TeamRegisterActivity.class));
 		} else if (id == R.id.txt_find_pw) {
@@ -100,54 +99,65 @@ public class LoginActivity extends Activity implements OnClickListener {
 	}
 	
 	private void attemptLogin() {
-		// ¿¬°áÇÒ ÆäÀÌÁöÀÇ URL
+		// ì—°ê²°í•  í˜ì´ì§€ì˜ URL
 		String url = getString(R.string.server)+ getString(R.string.login);
 		
-		// ÆÄ¶ó¹ÌÅÍ ±¸¼º
+		// íŒŒë¼ë¯¸í„° êµ¬ì„±
 		RadioButton btnMemberType = (RadioButton)findViewById(memberGroup.getCheckedRadioButtonId());
-		String memberType = btnMemberType.getText().toString();
-		String email = LoginActivity.this.email.getText().toString();
-		String password = LoginActivity.this.password.getText().toString();
-		String param = "memberType=" + memberType + "&email=" + email + "&password=" + password;
+		final String memberType = btnMemberType.getText().toString();
+		final String email = LoginActivity.this.email.getText().toString();
+		final String password = LoginActivity.this.password.getText().toString();
+		final String param = "memberType=" + memberType + "&email=" + email + "&password=" + password;
 		
-		// ¼­¹ö ¿¬°á
-		JSONObject json = new HttpTask(url, param).getJSONObject();
-		
-		// check the success of login
-		try {
-			if(json.getInt("success") == 1) {
+		// ì„œë²„ ì—°ê²°
+		new HttpAsyncTask(url, param, this, "ë¡œê·¸ì¸ ì¤‘ ì…ë‹ˆë‹¤...") {
+
+			@Override
+			protected void onPostExecute(String result) {
+				JSONObject json = null;
 				
-				// ·Î±×ÀÎÇÑ °èÁ¤ Á¤º¸¸¦ ÀúÀåÇÑ´Ù.
-				LoginManager lm = new LoginManager(LoginActivity.this);
-				lm.setLoginInfo(memberType, email, password);
-				
-				// ·Î±×ÀÎÇÑ È¸¿øÀÇ ¹øÈ£¸¦ ÀúÀåÇÑ´Ù.
-				lm.setMemberNo(json.getInt("MEMBER_NO"));
-				Log.i("MEMBER_NO", Integer.toString(lm.getMemberNo()));
-				
-				// °¢ È¸¿ø À¯Çü¿¡ ¸Â´Â Á¤º¸¸¦ ÀúÀåÇÑ´Ù.
-				if( memberType.equals("ÆÀÈ¸¿ø"))
-					lm.setTeamInfo(json.getString("TEAM_NAME"), 
-							json.getString("LOCATION"), json.getString("HOME"), 
-							json.getInt("NUM_OF_PLAYERS"), json.getString("AGES"),
-							json.getString("PHONE"));
-				else
-					lm.setPlayerInfo(json.getString("POSITION"), 
-							json.getInt("AGE"), json.getString("NICKNAME"), 
-							json.getString("PHONE"), json.getString("LOCATION"));
-				
-				Toast.makeText(getApplicationContext(), "·Î±×ÀÎ µÇ¾ú½À´Ï´Ù.", 0).show();
-				
-				// memberId¿Í registration ID¸¦ DB¿¡ ÀúÀåÇÑ´Ù.
-				GCMManager gm = new GCMManager(LoginActivity.this);
-				gm.sendRegistrationIdToBackend();
-				
-				finish();
-			} else {
-				Toast.makeText(getApplicationContext(), "ÀÌ¸ŞÀÏ ¶Ç´Â ºñ¹Ğ¹øÈ£°¡ ¿Ã¹Ù¸£Áö ¾Ê½À´Ï´Ù.", 0).show();
+				// check the success of login
+				try {
+					json = new JSONObject(result);
+					if(json.getInt("success") == 1) {
+						
+						// ë¡œê·¸ì¸í•œ ê³„ì • ì •ë³´ë¥¼ ì €ì¥í•œë‹¤.
+						LoginManager lm = new LoginManager(LoginActivity.this);
+						lm.setLoginInfo(memberType, email, password);
+						
+						// ë¡œê·¸ì¸í•œ íšŒì›ì˜ ë²ˆí˜¸ë¥¼ ì €ì¥í•œë‹¤.
+						lm.setMemberNo(json.getInt("MEMBER_NO"));
+						Log.i("MEMBER_NO", Integer.toString(lm.getMemberNo()));
+						
+						// ê° íšŒì› ìœ í˜•ì— ë§ëŠ” ì •ë³´ë¥¼ ì €ì¥í•œë‹¤.
+						if( memberType.equals("íŒ€íšŒì›"))
+							lm.setTeamInfo(json.getString("TEAM_NAME"), 
+									json.getString("LOCATION"), json.getString("HOME"), 
+									json.getInt("NUM_OF_PLAYERS"), json.getString("AGES"),
+									json.getString("PHONE"));
+						else
+							lm.setPlayerInfo(json.getString("POSITION"), 
+									json.getInt("AGE"), json.getString("NICKNAME"), 
+									json.getString("PHONE"), json.getString("LOCATION"));
+						
+						Toast.makeText(LoginActivity.this, "ë¡œê·¸ì¸ ë˜ì—ˆìŠµë‹ˆë‹¤.", 0).show();
+						
+						// memberIdì™€ registration IDë¥¼ DBì— ì €ì¥í•œë‹¤.
+						GCMManager gm = new GCMManager(LoginActivity.this);
+						gm.checkAndRegister();
+						gm.sendRegistrationIdToBackend();
+					
+						finish();
+					} else {
+						Toast.makeText(LoginActivity.this, "ì´ë©”ì¼ ë˜ëŠ” ë¹„ë°€ë²ˆí˜¸ê°€ ì˜¬ë°”ë¥´ì§€ ì•ŠìŠµë‹ˆë‹¤.", 0).show();
+					}
+				} catch (JSONException e) {
+					Log.e("attemptLogin", e.getMessage());
+				}
 			}
-		} catch (JSONException e) {
-			Log.e("attemptLogin", e.getMessage());
-		}	
+			
+		}.execute();
+		
+			
 	}
 }

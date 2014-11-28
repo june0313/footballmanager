@@ -1,4 +1,4 @@
-package june.footballmanager;
+ï»¿package june.footballmanager;
 
 import java.util.ArrayList;
 
@@ -27,11 +27,11 @@ public class ScrappedFindTeamListFragment extends Fragment implements
 	ListView list;
 	TextView count;
 	TextView empty;
-	TextView txtSort; // Á¤·Ä±âÁØ text
+	TextView txtSort; // ì •ë ¬ê¸°ì¤€ text
 	ArrayList<FindTeamItem> findTeamList;
 	FindTeamListAdapter tlAdapter;
 
-	// ½ºÅ©·¦ÇÑ ±Û ¹øÈ£ ½ºÆ®¸µ
+	// ìŠ¤í¬ë©í•œ ê¸€ ë²ˆí˜¸ ìŠ¤íŠ¸ë§
 	String scrappedItems;
 
 	@Override
@@ -51,10 +51,10 @@ public class ScrappedFindTeamListFragment extends Fragment implements
 
 		count = (TextView) getView().findViewById(R.id.count);
 
-		// ¸®½ºÆ® °´Ã¼ »ı¼º
+		// ë¦¬ìŠ¤íŠ¸ ê°ì²´ ìƒì„±
 		findTeamList = new ArrayList<FindTeamItem>();
 
-		// ¾î´ğÅÍ °´Ã¼ »ı¼º
+		// ì–´ëŒ‘í„° ê°ì²´ ìƒì„±
 		tlAdapter = new FindTeamListAdapter(getActivity(), findTeamList);
 
 		list = (ListView) getView().findViewById(R.id.list);
@@ -64,11 +64,11 @@ public class ScrappedFindTeamListFragment extends Fragment implements
 		list.setAdapter(tlAdapter);
 		list.setOnItemClickListener(this);
 
-		// ¿¥Æ¼ºä ÅØ½ºÆ® ¼³Á¤
+		// ì— í‹°ë·° í…ìŠ¤íŠ¸ ì„¤ì •
 		empty = (TextView) getView().findViewById(R.id.empty);
-		empty.setText("½ºÅ©·¦ÇÑ °Ô½Ã¹°ÀÌ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
+		empty.setText("ìŠ¤í¬ë©í•œ ê²Œì‹œë¬¼ì´ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
 		
-		// DB·ÎºÎÅÍ ½ºÅ©·¦ ¸ñ·Ï °¡Á®¿À±â
+		// DBë¡œë¶€í„° ìŠ¤í¬ë© ëª©ë¡ ê°€ì ¸ì˜¤ê¸°
 	    DatabaseHandler db = new DatabaseHandler(getActivity());
 		scrappedItems = db.getAllScrapFindTeam();
 		Log.i("Scrapped Find Team List", scrappedItems);
@@ -78,7 +78,7 @@ public class ScrappedFindTeamListFragment extends Fragment implements
 	public void onResume() {
 		super.onResume();
 		
-		// ¼­¹ö·ÎºÎÅÍ ½ºÅ©·¦ÇÑ ÆÀ±¸ÇÔ ¸®½ºÆ®¸¦ °¡Á®¿Â´Ù.
+		// ì„œë²„ë¡œë¶€í„° ìŠ¤í¬ë©í•œ íŒ€êµ¬í•¨ ë¦¬ìŠ¤íŠ¸ë¥¼ ê°€ì ¸ì˜¨ë‹¤.
 		getFindTeamList();
 	}
 
@@ -88,13 +88,13 @@ public class ScrappedFindTeamListFragment extends Fragment implements
 		
 		Intent intent = new Intent(getActivity(), FindTeamDetailActivity.class);
 
-		// ±Û ¹øÈ£¸¦ ³Ñ°ÜÁÜ
-		// Çì´õºä°¡ Ãß°¡µÇ¾ú±â ¶§¹®¿¡ ÀÎµ¦½º¸¦ 1 °¨¼Ò½ÃÅ²´Ù.
+		// ê¸€ ë²ˆí˜¸ë¥¼ ë„˜ê²¨ì¤Œ
+		// í—¤ë”ë·°ê°€ ì¶”ê°€ë˜ì—ˆê¸° ë•Œë¬¸ì— ì¸ë±ìŠ¤ë¥¼ 1 ê°ì†Œì‹œí‚¨ë‹¤.
 		intent.putExtra("no", findTeamList.get(position - 1).getNo());
 		startActivity(intent);
 	}
 
-	// ¾î´ğÅÍ Á¤ÀÇ
+	// ì–´ëŒ‘í„° ì •ì˜
 	public class FindTeamListAdapter extends BaseAdapter {
 
 		private Context context;
@@ -130,21 +130,21 @@ public class ScrappedFindTeamListFragment extends Fragment implements
 						false);
 			}
 			
-			// ¼±¼ö ´Ğ³×ÀÓ Ãâ·Â
+			// ì„ ìˆ˜ ë‹‰ë„¤ì„ ì¶œë ¥
 			TextView nickname = (TextView)convertView.findViewById(R.id.nickname);
 			nickname.setText(getItem(position).getNickName());
 			
-			// Á¦¸ñ Ãâ·Â
+			// ì œëª© ì¶œë ¥
 			TextView title = (TextView)convertView.findViewById(R.id.title);
 			title.setText(getItem(position).getTitle());
 			
-			// Æ÷Áö¼Ç Ãâ·Â
+			// í¬ì§€ì…˜ ì¶œë ¥
 			TextView tvPosition = (TextView)convertView.findViewById(R.id.position);
 			tvPosition.setText(getItem(position).getPosition());
 			
 			String strPos = getItem(position).getPosition();
 			
-			// Æ÷Áö¼Çº° »ö»ó Ã³¸®
+			// í¬ì§€ì…˜ë³„ ìƒ‰ìƒ ì²˜ë¦¬
 			if(strPos.equals("GK"))
 				tvPosition.setTextColor(getResources().getColor(android.R.color.holo_orange_light));
 			else if(strPos.equals("LB") || strPos.equals("CB") || strPos.equals("RB") 
@@ -156,15 +156,15 @@ public class ScrappedFindTeamListFragment extends Fragment implements
 			else
 				tvPosition.setTextColor(getResources().getColor(android.R.color.holo_red_light));
 			
-			// ³ªÀÌ Ãâ·Â
+			// ë‚˜ì´ ì¶œë ¥
 			TextView age = (TextView)convertView.findViewById(R.id.age);
-			age.setText(getItem(position).getAge() + "¼¼");
+			age.setText(getItem(position).getAge() + "ì„¸");
 			
-			// Áö¿ª Ãâ·Â
+			// ì§€ì—­ ì¶œë ¥
 			TextView location = (TextView) convertView.findViewById(R.id.location);
 			location.setText(getItem(position).getLocation());
 			
-			// Áñ°ÜÃ£±â ¹öÆ°
+			// ì¦ê²¨ì°¾ê¸° ë²„íŠ¼
 			ImageView scrap = (ImageView) convertView
 					.findViewById(R.id.img_scrap);
 			DatabaseHandler db = new DatabaseHandler(
@@ -172,13 +172,13 @@ public class ScrappedFindTeamListFragment extends Fragment implements
 			boolean isScrapped = db.selectScrapFindTeam(getItem(position)
 					.getNo());
 
-			// Áñ°ÜÃ£±â ¿©ºÎ¿¡ µû¶ó ´Ù¸¥ ÀÌ¹ÌÁö¸¦ Ãâ·ÂÇÑ´Ù.
+			// ì¦ê²¨ì°¾ê¸° ì—¬ë¶€ì— ë”°ë¼ ë‹¤ë¥¸ ì´ë¯¸ì§€ë¥¼ ì¶œë ¥í•œë‹¤.
 			if (isScrapped)
 				scrap.setImageResource(R.drawable.scrapped);
 			else
 				scrap.setImageResource(R.drawable.scrap);
 
-			// Å¬¸¯ ÀÌº¥Æ® ¸®½º³Ê µî·Ï
+			// í´ë¦­ ì´ë²¤íŠ¸ ë¦¬ìŠ¤ë„ˆ ë“±ë¡
 			scrap.setOnClickListener(new OnClickListener() {
 
 				@Override
@@ -204,35 +204,44 @@ public class ScrappedFindTeamListFragment extends Fragment implements
 		}
 	}
 	
-	// ¼­¹ö·ÎºÎÅÍ ½ºÅ©·¦ÇÑ ÆÀ±¸ÇÔ ¸®½ºÆ®¸¦ °¡Á®¿À´Â ¸Ş¼­µå
+	// ì„œë²„ë¡œë¶€í„° ìŠ¤í¬ë©í•œ íŒ€êµ¬í•¨ ë¦¬ìŠ¤íŠ¸ë¥¼ ê°€ì ¸ì˜¤ëŠ” ë©”ì„œë“œ
 	private void getFindTeamList() {
-		// ¿¬°áÇÒ ÆäÀÌÁöÀÇ URL
+		// ì—°ê²°í•  í˜ì´ì§€ì˜ URL
 		String url = getString(R.string.server) + getString(R.string.scrapped_find_team_list);
 		
-		// ÆÄ¶ó¹ÌÅÍ ¼³Á¤
+		// íŒŒë¼ë¯¸í„° ì„¤ì •
 		String param = "nos=" + scrappedItems;
 		
-		// ¼­¹ö ¿¬°á
-		JSONObject json = new HttpTask(url ,param).getJSONObject();
-		JSONArray jsonArr = null;
-		
-		try {
-			jsonArr = json.getJSONArray("list");
+		// ì„œë²„ ì—°ê²°
+		new HttpAsyncTask(url, param) {
 
-			JSONObject item;
+			@Override
+			protected void onPostExecute(String result) {
+				JSONObject json = null;
+				JSONArray jsonArr = null;
+				
+				try {
+					json = new JSONObject(result);
+					jsonArr = json.getJSONArray("list");
 
-			findTeamList.clear();
-			for (int i = 0; i < jsonArr.length(); i++) {
-				item = jsonArr.getJSONObject(i);
-				findTeamList.add(new FindTeamItem(item));
+					JSONObject item;
+
+					findTeamList.clear();
+					for (int i = 0; i < jsonArr.length(); i++) {
+						item = jsonArr.getJSONObject(i);
+						findTeamList.add(new FindTeamItem(item));
+					}
+					
+				} catch (JSONException e) {
+					findTeamList.clear();
+					Log.i("getFindTeamList", e.getMessage());
+				} finally {
+					tlAdapter.notifyDataSetChanged();
+					count.setText("ì´ " + findTeamList.size() + "ê°œ");
+				}	
 			}
 			
-		} catch (JSONException e) {
-			findTeamList.clear();
-			Log.i("getFindTeamList", e.getMessage());
-		} finally {
-			tlAdapter.notifyDataSetChanged();
-			count.setText("ÃÑ " + findTeamList.size() + "°³");
-		}	
+		}.execute();
+		
 	}
 }

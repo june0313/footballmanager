@@ -1,4 +1,4 @@
-package june.footballmanager;
+ï»¿package june.footballmanager;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -7,17 +7,16 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.concurrent.ExecutionException;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.os.AsyncTask;
 import android.util.Log;
 
 public class HttpTask {
-	private String _url;			/* µ¥ÀÌÅÍ¸¦ °¡Á®¿Ã À¥¼­¹öÀÇ ÁÖ¼Ò */
-	private String _parameter;		/* ¼­¹ö¿¡ ³Ñ±æ ÆÄ¶ó¹ÌÅÍ */ 
+	private String _url;			/* ë°ì´í„°ë¥¼ ê°€ì ¸ì˜¬ ì›¹ì„œë²„ì˜ ì£¼ì†Œ */
+	private String _parameter;		/* ì„œë²„ì— ë„˜ê¸¸ íŒŒë¼ë¯¸í„° */ 
+	private String _contents;		/* ì›¹í˜ì´ì§€ì—ì„œ ì½ì–´ì˜¨ ë‚´ìš© */
 	
 	// Constructor
 	HttpTask(String url, String parameter) {
@@ -25,74 +24,66 @@ public class HttpTask {
 		this._parameter = parameter;
 	}
 	
-	// À¥ÆäÀÌÁö¿¡¼­ ÀĞ¾î¿Â ³»¿ë(¹®ÀÚ¿­)À» ¸®ÅÏÇÑ´Ù.
+	// ì›¹í˜ì´ì§€ì—ì„œ ì½ì–´ì˜¨ ë‚´ìš©(ë¬¸ìì—´)ì„ ë¦¬í„´í•˜ëŠ” ë©”ì„œë“œ
 	public String getContents() {
-		String contents = null;
-		
+		Thread t = new Thread(new HttpConnectionThread());
 		try {
-			contents = new HttpAsyncTask().execute().get();
+			t.start();
+			t.join();
 		} catch (InterruptedException e) {
-			Log.e("HttpTask", e.getMessage());
-		} catch (ExecutionException e) {
-			Log.e("HttpTask", e.getMessage());
+			Log.e("getContents", e.getMessage());
 		}
 		
-		return contents;
+		return _contents;
 	}
 	
-	// À¥ÆäÀÌÁö¿¡¼­ ÀĞ¾î¿Â ³»¿ëÀ» ÀĞ¾î JSONObject·Î ¸®ÅÏÇÑ´Ù.
+	// ì›¹í˜ì´ì§€ì—ì„œ ì½ì–´ì˜¨ ë‚´ìš©ì„ ì½ì–´ JSONObjectë¡œ ë¦¬í„´í•˜ëŠ” ë©”ì„œë“œ
 	public JSONObject getJSONObject() {
 		JSONObject json = null;
 		
 		try {
 			json = new JSONObject(getContents());
 		} catch (JSONException e) {
-			Log.e("HttpTask", e.getMessage());
+			Log.e("getJSONObject", e.getMessage());
 		}
 		
 		return json;
 	}
 	
-	// Http ºñµ¿±â Å×½ºÅ©
-	class HttpAsyncTask extends AsyncTask<Void, Void, String> {
-		
+	// Http í†µì‹ í•˜ëŠ” ì“°ë ˆë“œ
+	private class HttpConnectionThread implements Runnable {
+
 		@Override
-		protected String doInBackground(Void... params) {
-			
+		public void run() {
 			try {
 				URL url = new URL(_url);
-				HttpURLConnection conn = (HttpURLConnection) url
-						.openConnection();
+				HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 				conn.setRequestMethod("POST");
 				conn.setDoInput(true);
 				conn.setDoOutput(true);
 
-				// URL¿¡ ÆÄ¸®¹ÌÅÍ ³Ñ±â±â
+				// URLì— íŒŒë¦¬ë¯¸í„° ë„˜ê¸°ê¸°
 				OutputStreamWriter out = new OutputStreamWriter(
-						conn.getOutputStream(), "euc-kr");
+					conn.getOutputStream(), "euc-kr");
 				out.write(_parameter);
 				out.flush();
 				out.close();
 
-				// URL °á°ú °¡Á®¿À±â
+				// URL ê²°ê³¼ ê°€ì ¸ì˜¤ê¸°
 				String buffer = null;
-				String jsonString = "";
+				_contents = "";
 				BufferedReader in = new BufferedReader(new InputStreamReader(
 						conn.getInputStream(), "euc-kr"));
 				while ((buffer = in.readLine()) != null) {
-					jsonString += buffer;
+					_contents += buffer;
 				}
 				in.close();
-				
-				return jsonString;
 
 			} catch (MalformedURLException e) {
-				Log.e("HttpAsyncTask", e.getMessage());
+				Log.e("HttpConnectionThread", e.getMessage());
 			} catch (IOException e) {
-				Log.e("HttpAsyncTask", e.getMessage());
+				Log.e("HttpConnectionThread", e.getMessage());
 			} 
-			
-			return null;
-		}		
+		}
 	}
 }

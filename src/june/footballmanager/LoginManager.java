@@ -1,4 +1,4 @@
-package june.footballmanager;
+ï»¿package june.footballmanager;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -74,7 +74,7 @@ public class LoginManager {
 		return pref.getString("nickname", null);
 	}
 	
-	// ·Î±×ÀÎÇÑ °èÁ¤ÀÇ Á¤º¸¸¦ ÀúÀåÇÑ´Ù.
+	// ë¡œê·¸ì¸í•œ ê³„ì •ì˜ ì •ë³´ë¥¼ ì €ì¥í•œë‹¤.
 	public void setLoginInfo( String memberType, String email, String password ) {
 		editor.putBoolean("isLogin", true);
 		editor.putString("memberType", memberType);
@@ -83,13 +83,19 @@ public class LoginManager {
 		editor.commit();
 	}
 	
-	// ·Î±×ÀÎÇÑ È¸¿øÀÇ ¹øÈ£¸¦ ÀúÀåÇÑ´Ù.
+	// ë¹„ë°€ë²ˆí˜¸ë¥¼ ì €ì¥í•œë‹¤.
+	public void setPassword( String password ) {
+		editor.putString("password", password);
+		editor.commit();
+	}
+	
+	// ë¡œê·¸ì¸í•œ íšŒì›ì˜ ë²ˆí˜¸ë¥¼ ì €ì¥í•œë‹¤.
 	public void setMemberNo( int memberNo ) {
 		editor.putInt( "memberNo",  memberNo );
 		editor.commit();
 	}
 	
-	// ·Î±×ÀÎÇÑ ÆÀ°èÁ¤ÀÇ Á¤º¸¸¦ ÀúÀåÇÑ´Ù.
+	// ë¡œê·¸ì¸í•œ íŒ€ê³„ì •ì˜ ì •ë³´ë¥¼ ì €ì¥í•œë‹¤.
 	public void setTeamInfo( String teamName, String location, String home, int numOfPlayer, String ages, String phone) {
 		editor.putString("teamName", teamName);
 		editor.putString("location", location);
@@ -100,7 +106,7 @@ public class LoginManager {
 		editor.commit();
 	}
 	
-	// ·Î±×ÀÎÇÑ ¼±¼ö°èÁ¤ÀÇ Á¤º¸¸¦ ÀúÀåÇÑ´Ù.
+	// ë¡œê·¸ì¸í•œ ì„ ìˆ˜ê³„ì •ì˜ ì •ë³´ë¥¼ ì €ì¥í•œë‹¤.
 	public void setPlayerInfo( String position, int age, String nickname, String phone, String location) {
 		editor.putString("position", position);
 		editor.putInt("age", age);
@@ -110,7 +116,7 @@ public class LoginManager {
 		editor.commit();
 	}
 	
-	// ·Î±×ÀÎÇÑ °èÁ¤ Á¤º¸¸¦ »èÁ¦ÇÑ´Ù.
+	// ë¡œê·¸ì¸í•œ ê³„ì • ì •ë³´ë¥¼ ì‚­ì œí•œë‹¤.
 	public void removeLoginInfo() {
 		editor.clear();
 		editor.commit();

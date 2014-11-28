@@ -1,9 +1,7 @@
-package june.footballmanager;
+ï»¿package june.footballmanager;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-
-import com.google.android.gms.gcm.GoogleCloudMessaging;
 
 import android.app.IntentService;
 import android.app.NotificationManager;
@@ -12,9 +10,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
+
+import com.google.android.gms.gcm.GoogleCloudMessaging;
 
 public class GcmIntentService extends IntentService {
 	public static final int NOTIFICATION_ID = 1;
@@ -45,19 +44,17 @@ public class GcmIntentService extends IntentService {
              * any message types you're not interested in, or that you don't
              * recognize.
              */
-            if (GoogleCloudMessaging.
-                    MESSAGE_TYPE_SEND_ERROR.equals(messageType)) {
-                sendNotification("Send error: " + extras.toString(), -1);
-            } else if (GoogleCloudMessaging.
-                    MESSAGE_TYPE_DELETED.equals(messageType)) {
+            if (GoogleCloudMessaging.MESSAGE_TYPE_SEND_ERROR.equals(messageType)) {
+                sendNotification("Send error: " + extras.toString(), -1, -1);
+            } else if (GoogleCloudMessaging.MESSAGE_TYPE_DELETED.equals(messageType)) {
                 sendNotification("Deleted messages on server: " +
-                        extras.toString(), -1);
+                        extras.toString(), -1, -1);
             // If it's a regular GCM message, do some work.
             } else if (GoogleCloudMessaging.
                     MESSAGE_TYPE_MESSAGE.equals(messageType)) {
 				try {
-					// ÇÑ±Û ±úÁü ¹æÁö(UTF-8 ÀÎÄÚµù, µğÄÚµù)
-					sendNotification(URLDecoder.decode(extras.getString("message"), "UTF-8"), Integer.parseInt(extras.getString("matchNo")));
+					// í•œê¸€ ê¹¨ì§ ë°©ì§€(UTF-8 ì¸ì½”ë”©, ë””ì½”ë”©)
+					sendNotification(URLDecoder.decode(extras.getString("message"), "UTF-8"), Integer.parseInt(extras.getString("matchNo")), Integer.parseInt(extras.getString("type")));
 				} catch (UnsupportedEncodingException e) {
 					e.printStackTrace();
 				}
@@ -72,20 +69,25 @@ public class GcmIntentService extends IntentService {
 	// Put the message into a notification and post it.
     // This is just one simple example of what you might choose to do with
     // a GCM message.
-    private void sendNotification(String msg, int matchNo) {
+    private void sendNotification(String msg, int matchNo, int type) {
         mNotificationManager = (NotificationManager)
                 this.getSystemService(Context.NOTIFICATION_SERVICE);
         
-        // AppliedTeamActivity¸¦ ½ÇÇàÇÏ±â À§ÇØ ¸ÅÄ¡ ¹øÈ£¸¦ ³Ñ°ÜÁÖ¾î¾ß ÇÑ´Ù.
-        Intent intent = new Intent(this, AppliedTeamActivity.class);
-        intent.putExtra("matchNo", matchNo);
+        // AppliedTeamActivityë¥¼ ì‹¤í–‰í•˜ê¸° ìœ„í•´ ë§¤ì¹˜ ë²ˆí˜¸ë¥¼ ë„˜ê²¨ì£¼ì–´ì•¼ í•œë‹¤.
+        Intent intent = null;
+        if(type == 0)
+        	intent = new Intent(getApplicationContext(), AppliedTeamActivity.class);
+        else if(type == 1)
+        	intent = new Intent(getApplicationContext(), MatchDetailActivity.class);
         
-        // ½ÇÇàÇÏ·Á´Â intentÀÇ extra°ªÀÌ ¹İ¿µµÇµµ·Ï FLAG_UPDATE_CURRENT ÇÃ·¡±×¸¦ ¼³Á¤ÇÑ´Ù.
-        PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
+        intent.putExtra("matchNo", matchNo);
+        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        
+        // ì‹¤í–‰í•˜ë ¤ëŠ” intentì˜ extraê°’ì´ ë°˜ì˜ë˜ë„ë¡ FLAG_UPDATE_CURRENT í”Œë˜ê·¸ë¥¼ ì„¤ì •í•œë‹¤.
+        // ë‘ë²ˆì§¸ ì¸ì(request code)ì— 0ì„ ë„˜ê¸°ë©´ ì•¡í‹°ë¹„í‹°ê°€ ì‹¤í–‰ë˜ì§€ ì•ŠëŠ” ë²„ê·¸(android 4.3)
+        PendingIntent contentIntent = PendingIntent.getActivity(getApplicationContext(), 1,
                 intent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-        NotificationCompat.Builder mBuilder =
-                new NotificationCompat.Builder(this)
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this)
         .setTicker(msg)
         .setSmallIcon(R.drawable.ic_launcher)
         .setContentTitle(getString(R.string.app_name))

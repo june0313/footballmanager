@@ -1,4 +1,4 @@
-package june.footballmanager;
+ï»¿package june.footballmanager;
 
 import java.util.List;
 
@@ -28,34 +28,34 @@ public class SelectLocationActivity extends Activity implements OnItemSelectedLi
 	    super.onCreate(savedInstanceState);
 	    setContentView(R.layout.activity_select_location);
 	    
-	    // ¾×¼Ç¹Ù ¼³Á¤
+	    // ì•¡ì…˜ë°” ì„¤ì •
 	    ActionBar actionBar = getActionBar();
 	    actionBar.setDisplayHomeAsUpEnabled(true);
 	    
-	    // ½Ã, µµ ½ºÇÇ³Ê
+	    // ì‹œ, ë„ ìŠ¤í”¼ë„ˆ
 	    spnrSIDO = (Spinner)findViewById(R.id.sido);
 	    spnrSIDO.setOnItemSelectedListener(this);
 	    
-	    // ±¸, ±º ½ºÇÇ³Ê
+	    // êµ¬, êµ° ìŠ¤í”¼ë„ˆ
 	    spnrGUGUN = (Spinner)findViewById(R.id.gugun);
 	    spnrGUGUN.setOnItemSelectedListener(this);
 	    
-	    // µ¿(¸é¸®) ½ºÇÇ³Ê
+	    // ë™(ë©´ë¦¬) ìŠ¤í”¼ë„ˆ
 	    spnrDONG = (Spinner)findViewById(R.id.dong);
 	    spnrDONG.setOnItemSelectedListener(this);
 	    
-	    // ¼³Á¤ ¿Ï·á ¹öÆ°
+	    // ì„¤ì • ì™„ë£Œ ë²„íŠ¼
 	    complete = (Button)findViewById(R.id.complete);
 	    complete.setOnClickListener(this);
 	    
-	    // ½ºÇÇ³Ê ÃÊ±â µ¥ÀÌÅÍ ·Îµå
+	    // ìŠ¤í”¼ë„ˆ ì´ˆê¸° ë°ì´í„° ë¡œë“œ
 	    loadSIDOData();
 	    loadGUGUNData(spnrSIDO.getSelectedItem().toString());
 	    loadDONGData(spnrSIDO.getSelectedItem().toString(), spnrGUGUN.getSelectedItem().toString());
 
 	}
 
-	// ½ºÇÇ³Ê ¾ÆÀÌÅÛ ¼±ÅÃ
+	// ìŠ¤í”¼ë„ˆ ì•„ì´í…œ ì„ íƒ
 	@Override
 	public void onItemSelected(AdapterView<?> parent, View view, int position,
 			long arg3) {
@@ -73,16 +73,16 @@ public class SelectLocationActivity extends Activity implements OnItemSelectedLi
 	public void onNothingSelected(AdapterView<?> arg0) {
 	}
 	
-	// ¹öÆ° Å¬¸¯
+	// ë²„íŠ¼ í´ë¦­
 	@Override
 	public void onClick(View v) {
 		int id = v.getId();
 		if (id == R.id.complete) {
-			// ÁÖ¼Ò °áÇÕ
+			// ì£¼ì†Œ ê²°í•©
 			String location = spnrSIDO.getSelectedItem().toString() + " "
 				+ spnrGUGUN.getSelectedItem().toString() + " "
 				+ spnrDONG.getSelectedItem().toString();
-			// ÁÖ¼Ò Àü´Ş : ÀÚ½ÅÀ» È£ÃâÇÑ Activity·Î °á°ú°ªÀ» ³Ñ±ä´Ù.
+			// ì£¼ì†Œ ì „ë‹¬ : ìì‹ ì„ í˜¸ì¶œí•œ Activityë¡œ ê²°ê³¼ê°’ì„ ë„˜ê¸´ë‹¤.
 			Intent intent = new Intent();
 			intent.putExtra("location", location);
 			setResult(RESULT_OK, intent);

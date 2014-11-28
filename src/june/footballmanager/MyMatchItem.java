@@ -1,4 +1,4 @@
-package june.footballmanager;
+ï»¿package june.footballmanager;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -10,17 +10,17 @@ import java.util.Locale;
 import android.util.Log;
 
 public class MyMatchItem {
-	// ¸â¹ö
+	// ë©¤ë²„
 	int _matchNo;
 	String _location;
 	String _ground;
 	String _date;
 	String _startTime;
 	String _endTime;
-	String _teamName; // »ó´ëÆÀ ÀÌ¸§
+	String _teamName; // ìƒëŒ€íŒ€ ì´ë¦„
 	int _applyCnt;
 	
-	// »ı¼ºÀÚ(´ë±âÁß ¸ÅÄ¡)
+	// ìƒì„±ì(ëŒ€ê¸°ì¤‘ ë§¤ì¹˜)
 	public MyMatchItem( int matchNo, String location, String ground, String date, String startTime, String endTime, int applyCnt ) {
 		this._matchNo = matchNo;
 		this._location = location;
@@ -31,7 +31,7 @@ public class MyMatchItem {
 		this._applyCnt = applyCnt;
 	}
 	
-	// »ı¼ºÀÚ(¼º»çµÈ ¸ÅÄ¡)
+	// ìƒì„±ì(ì„±ì‚¬ëœ ë§¤ì¹˜)
 	public MyMatchItem(int matchNo, String location, String ground, String date, String startTime, String endTime, String teamName) {
 		this._matchNo = matchNo;
 		this._location = location;
