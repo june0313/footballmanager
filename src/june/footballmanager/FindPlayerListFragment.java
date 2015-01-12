@@ -134,7 +134,7 @@ public class FindPlayerListFragment extends Fragment implements OnItemClickListe
 		return super.onOptionsItemSelected(item);
 	}
 
-	// 어댑터 정의
+	// 선수모집 리스트 어댑터
 	public class FindPlayerListAdapter extends BaseAdapter {
 
 		private Context context;
@@ -178,12 +178,15 @@ public class FindPlayerListFragment extends Fragment implements OnItemClickListe
 			} else
 				dateHeader.setVisibility(View.GONE);
 			
+			// 팀이름 출력
 			TextView teamName = (TextView)convertView.findViewById(R.id.team_name);
 			teamName.setText(getItem(position).getTeamName());
 			
+			// 제목 출력
 			TextView title = (TextView)convertView.findViewById(R.id.title);
 			title.setText(getItem(position).getTitle());
 			
+			// 포지션 출력
 			TextView tvPosition = (TextView)convertView.findViewById(R.id.position);
 			tvPosition.setText(getItem(position).getPosition());
 			
@@ -201,11 +204,21 @@ public class FindPlayerListFragment extends Fragment implements OnItemClickListe
 			else
 				tvPosition.setTextColor(getResources().getColor(android.R.color.holo_red_light));
 			
+			// 연령대 출력
 			TextView ages = (TextView)convertView.findViewById(R.id.ages);
 			ages.setText(getItem(position).getAges());
 
+			// 지역 출력
 			TextView location = (TextView) convertView.findViewById(R.id.location);
 			location.setText(getItem(position).getLocation());
+			
+			// 활동요일 출력
+			TextView tvActDay = (TextView)convertView.findViewById(R.id.act_day);
+			tvActDay.setText(getItem(position).getActDay());
+			
+			// 활동시간(세션) 출력
+			TextView tvActSession = (TextView)convertView.findViewById(R.id.act_session);
+			tvActSession.setText(getItem(position).getActSession());
 			
 			// 스크랩 버튼
 			ImageView scrap = (ImageView) convertView.findViewById(R.id.img_scrap);
@@ -255,9 +268,18 @@ public class FindPlayerListFragment extends Fragment implements OnItemClickListe
 		// 검색 조건 파리미터 구성
 		String param = "location=" + prefCondition.getString("location", "전국");
 		for( int i = 0; i < 15; i++ )
-		param += "&pos" + i + "=" + prefCondition.getBoolean("pos" + i, true);
+			param += "&pos" + i + "=" + prefCondition.getBoolean("pos" + i, true);
 		for( int i = 0; i < 6; i++ )
-		param += "&age" + i + "=" + prefCondition.getBoolean("age" + i, true);
+			param += "&age" + i + "=" + prefCondition.getBoolean("age" + i, true);
+		param += "&actDay=" + prefCondition.getString("actDay", "무관");
+		for( int i = 0; i < 7; i++ )
+			param += "&day" + i + "=" + prefCondition.getBoolean("day" + i, true);
+		
+		String[] startTimes = getResources().getStringArray(R.array.start_time);
+		String[] endTimes = getResources().getStringArray(R.array.end_time);
+		
+		param += "&startTime=" + startTimes[prefCondition.getInt("time", 0)];
+		param += "&endTime=" + endTimes[prefCondition.getInt("time", 0)];
 		
 		// 서버 연결
 		new HttpAsyncTask(url, param) {

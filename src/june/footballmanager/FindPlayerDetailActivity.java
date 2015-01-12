@@ -32,6 +32,8 @@ public class FindPlayerDetailActivity extends Activity {
 	ImageButton info;
 	
 	TextView location;
+	TextView actDay;
+	TextView actTime;
 	TextView position;
 	TextView ages;
 	TextView content;
@@ -42,6 +44,7 @@ public class FindPlayerDetailActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		// 레이아웃 설정 
 		setContentView(R.layout.activity_find_player_detail);
 
 		// 액션바 설정
@@ -100,6 +103,8 @@ public class FindPlayerDetailActivity extends Activity {
 	    });
 		
 		location = (TextView)findViewById(R.id.location);
+		actDay = (TextView)findViewById(R.id.act_day);
+		actTime = (TextView)findViewById(R.id.act_time);
 		position = (TextView)findViewById(R.id.position);
 		ages = (TextView)findViewById(R.id.ages);
 		content = (TextView)findViewById(R.id.content);
@@ -187,6 +192,9 @@ public class FindPlayerDetailActivity extends Activity {
 							
 						// 선수 구함 정보를 뷰에 출력
 						location.setText(json.getString("P_LOCATION"));
+						actDay.setText(json.getString("ACT_DAY"));
+						actTime.setText(json.getString("ACT_TIME_START").substring(0, 5) 
+								+ " ~ " + json.getString("ACT_TIME_END").substring(0, 5));
 						position.setText(json.getString("POSITION"));
 						ages.setText(json.getString("P_AGES"));
 						content.setText(json.getString("CONTENT").replace("__", "\n"));

@@ -47,7 +47,7 @@
                 android:layout_height="30dp"
                 android:layout_marginRight="5dp"
                 android:layout_weight="1"
-                android:background="@drawable/gray_flat_button"
+                android:background="@drawable/green_flat_button"
                 android:scaleType="center"
                 android:src="@drawable/call" />
 
@@ -58,7 +58,7 @@
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
                 android:layout_weight="1"
-                android:background="@drawable/gray_flat_button"
+                android:background="@drawable/green_flat_button"
                 android:src="@drawable/mailto" />
 
             <ImageButton
@@ -67,7 +67,7 @@
                 android:layout_height="30dp"
                 android:layout_marginLeft="5dp"
                 android:layout_weight="1"
-                android:background="@drawable/gray_flat_button"
+                android:background="@drawable/green_flat_button"
                 android:src="@drawable/info" />
 
         </LinearLayout>

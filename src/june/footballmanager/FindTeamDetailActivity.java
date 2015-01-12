@@ -32,6 +32,11 @@ public class FindTeamDetailActivity extends Activity {
 	ImageButton info;
 	
 	TextView content;
+	TextView location;
+	TextView actDay;
+	TextView actTime;
+	TextView position;
+	TextView age;
 	
 	// 스크랩 여부를 저장하는 변수
 	boolean isScrapped = false;
@@ -95,6 +100,11 @@ public class FindTeamDetailActivity extends Activity {
 			}
 	    });
 		
+		location = (TextView)findViewById(R.id.location);
+		actDay = (TextView)findViewById(R.id.act_day);
+		actTime = (TextView)findViewById(R.id.act_time);
+		position = (TextView)findViewById(R.id.position);
+		age = (TextView)findViewById(R.id.age);
 		content = (TextView)findViewById(R.id.content);
 	}
 	
@@ -174,15 +184,31 @@ public class FindTeamDetailActivity extends Activity {
 
 						// 선수 정보를 뷰에 출력
 						nickname.setText(json.getString("NICKNAME"));
-						playerInfo.setText(json.getString("LOCATION") 
-								+ " / " + json.getString("POSITION") 
-								+ " / " + json.getString("AGE") );
-							
+						playerInfo.setText(json.getString("A_LOC") 
+								+ " / " + json.getString("A_POS") 
+								+ " / " + json.getString("A_AGE") + "세" );
+						
+						// 활동 지역 출력
+						location.setText(json.getString("F_LOC"));
+						
+						// 활동 요일 출력
+						actDay.setText(json.getString("ACT_DAY"));
+						
+						// 활동 시간 출력
+						actTime.setText(json.getString("ACT_TIME_START").substring(0, 5) 
+								+ " ~ " + json.getString("ACT_TIME_END").substring(0, 5) );
+						
+						// 포지션 출력
+						position.setText(json.getString("F_POS"));
+						
+						// 나이 출력
+						age.setText(json.getString("F_AGE"));
+						
 						// 내용 출력
 						content.setText(json.getString("CONTENT").replace("__", "\n"));
 					}
 				} catch (JSONException e) {
-					Log.e("getFindTeamDetail", e.getMessage());
+					Log.e("getFindTeamDetail", e.getMessage() + "result : " + result);
 				}
 			}
 			

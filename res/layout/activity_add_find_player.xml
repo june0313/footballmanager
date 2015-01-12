@@ -14,28 +14,23 @@
             android:padding="@dimen/padding"
             android:orientation="vertical" >
 
-            <EditText
-                android:id="@+id/title"
+            <TextView
+                android:id="@+id/position"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
+                android:layout_weight="1"
                 android:background="@drawable/round_edittext"
-                android:hint="글 제목"
+                android:hint="포지션"
                 android:textSize="17sp" />
 
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:text="모집하는 선수 정보" />
-
-            <TextView
-                android:id="@+id/location"
+                android:id="@+id/act_day"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
                 android:background="@drawable/round_edittext"
-                android:hint="활동 지역"
+                android:hint="활동 요일"
                 android:textSize="17sp" />
 
             <LinearLayout
@@ -44,25 +39,47 @@
                 android:layout_marginBottom="10dp" >
 
                 <TextView
-                    android:id="@+id/position"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/act_time1"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="10dp"
-                    android:layout_marginRight="10dp"
                     android:layout_weight="1"
                     android:background="@drawable/round_edittext"
-                    android:hint="포지션"
+                    android:hint="활동 시간(시작)"
+                    android:singleLine="true"
                     android:textSize="17sp" />
 
                 <TextView
-                    android:id="@+id/ages"
+                    android:id="@+id/textView1"
                     android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="3dp"
+                    android:layout_marginRight="3dp"
+                    android:text="~" />
+
+                <TextView
+                    android:id="@+id/act_time2"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:background="@drawable/round_edittext"
-                    android:hint="연령대"
+                    android:hint="활동 시간(종료)"
+                    android:singleLine="true"
                     android:textSize="17sp" />
+
             </LinearLayout>
+
+            <EditText
+                android:id="@+id/title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/round_edittext"
+                android:ems="10"
+                android:hint="글 제목"
+                android:textSize="17sp" >
+
+                <requestFocus />
+            </EditText>
 
             <EditText
                 android:id="@+id/content"

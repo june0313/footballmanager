@@ -129,6 +129,9 @@ public class ScrappedFindTeamListFragment extends Fragment implements
 				convertView = inflater.inflate(R.layout.find_team_item, parent,
 						false);
 			}
+			// 날짜 뷰
+			TextView dateHeader = (TextView) convertView.findViewById(R.id.date_header);
+			dateHeader.setVisibility(View.GONE);
 			
 			// 선수 닉네임 출력
 			TextView nickname = (TextView)convertView.findViewById(R.id.nickname);
@@ -163,6 +166,14 @@ public class ScrappedFindTeamListFragment extends Fragment implements
 			// 지역 출력
 			TextView location = (TextView) convertView.findViewById(R.id.location);
 			location.setText(getItem(position).getLocation());
+			
+			// 활동 요일 출력
+			TextView actDay = (TextView)convertView.findViewById(R.id.act_day);
+			actDay.setText(getItem(position).getActDay());
+						
+			// 활동 시간 출력
+			TextView actSession = (TextView)convertView.findViewById(R.id.act_session);
+			actSession.setText(getItem(position).getActSession());
 			
 			// 즐겨찾기 버튼
 			ImageView scrap = (ImageView) convertView
@@ -234,7 +245,7 @@ public class ScrappedFindTeamListFragment extends Fragment implements
 					
 				} catch (JSONException e) {
 					findTeamList.clear();
-					Log.i("getFindTeamList", e.getMessage());
+					Log.i("getScrappedFindTeamList", e.getMessage());
 				} finally {
 					tlAdapter.notifyDataSetChanged();
 					count.setText("총 " + findTeamList.size() + "개");

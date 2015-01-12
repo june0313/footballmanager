@@ -29,7 +29,7 @@
     </LinearLayout>
     
     <RelativeLayout
-        android:id="@+id/LinearLayout2"
+        android:id="@+id/RelativeLayout2"
         android:layout_below="@id/LinearLayout1" 
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" >
@@ -53,8 +53,8 @@
     </RelativeLayout>
     
     <RelativeLayout
-        android:id="@+id/LinearLayout3"
-        android:layout_below="@id/LinearLayout2" 
+        android:id="@+id/RelativeLayout3"
+        android:layout_below="@id/RelativeLayout2" 
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal">

@@ -123,6 +123,9 @@ public class ScrappedMatchListFragment extends Fragment implements OnItemClickLi
 				convertView = inflater.inflate(R.layout.match_item, parent,
 						false);
 			}
+			// 날짜 뷰
+			TextView dateHeader = (TextView) convertView.findViewById(R.id.date_header);
+			dateHeader.setVisibility(View.GONE);
 
 			TextView teamName = (TextView) convertView
 					.findViewById(R.id.mi_team_name);

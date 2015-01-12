@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,11 +23,15 @@ public class SetFindPlayerConditionActivity extends Activity implements OnClickL
 	RelativeLayout condLocation;
 	RelativeLayout condPosition;
 	RelativeLayout condAges;
+	RelativeLayout condActDay;
+	RelativeLayout condActTime;
 	
 	// 설정된 조건을 출력할 텍스트뷰
 	TextView txtLocation;
 	TextView txtPosition;
 	TextView txtAges;
+	TextView txtActDay;
+	TextView txtActTime;
 	
 	// 설정 완료 버튼
 	Button btnComplete;
@@ -40,6 +45,12 @@ public class SetFindPlayerConditionActivity extends Activity implements OnClickL
 	
 	// 포지션 설정 여부를 저장할 배열
 	boolean[] bPosition;
+
+	// 다이얼로그에서 선택한 활동 요일을 저장할 배열	
+	public boolean selectedDays[];
+	
+	// 다이얼로그에서 선택한 활동 시간을 저장할 변수
+	public int selectedTime;
 	
 	static final int LOCATION = 1;
 
@@ -64,6 +75,12 @@ public class SetFindPlayerConditionActivity extends Activity implements OnClickL
 	    condAges = (RelativeLayout) findViewById(R.id.cond_ages);
 	    condAges.setOnClickListener(this);
 	    
+	    condActDay = (RelativeLayout)findViewById(R.id.cond_act_day);
+	    condActDay.setOnClickListener(this);
+	    
+	    condActTime = (RelativeLayout)findViewById(R.id.cond_act_time);
+	    condActTime.setOnClickListener(this);
+	    
 	    // 설정 완료 버튼 객체 생성
 	    btnComplete = (Button) findViewById(R.id.complete);
 	    btnComplete.setOnClickListener(this);
@@ -79,6 +96,8 @@ public class SetFindPlayerConditionActivity extends Activity implements OnClickL
 		Resources res = getResources();
 		
 		// 각 조건들을 출력할 텍스트뷰 생성 및 텍스트 출력
+		
+		// 프리퍼런스에 저장된 지역 정보 출력
 	    txtLocation = (TextView) findViewById(R.id.txt_location);
 	    txtLocation.setText(prefCondition.getString("location", "전국"));
 	    
@@ -113,6 +132,18 @@ public class SetFindPlayerConditionActivity extends Activity implements OnClickL
 	    }
 	    txtAges = (TextView) findViewById(R.id.txt_ages);
 	    txtAges.setText(agesForDisplay);
+	    
+	    // 프리퍼런스에 저장된 활동 요일 정보 가져오기
+	    selectedDays = new boolean[7];
+	    for(int i = 0; i < 7; i++)
+	    	selectedDays[i] = prefCondition.getBoolean("day" + i, false);
+	    txtActDay = (TextView)findViewById(R.id.txt_act_day);
+	    txtActDay.setText(prefCondition.getString("actDay", "무관"));
+	    
+	    // 프리퍼런스에 저장된 활동 시간 정보 가져오기
+	    selectedTime = prefCondition.getInt("time", 0);
+	    txtActTime = (TextView)findViewById(R.id.txt_act_time);
+	    txtActTime.setText(getResources().getStringArray(R.array.time)[selectedTime]);
 	}
 	
 	// 각 조건뷰 클릭에 대한 콜백 메서드
@@ -157,6 +188,97 @@ public class SetFindPlayerConditionActivity extends Activity implements OnClickL
 						}
 					});
 			builder.setPositiveButton("확인", ageSetListener);
+			builder.create().show();
+			break;
+			
+		case R.id.cond_act_day:
+			// 선수 활동 요일 설정
+			builder = new AlertDialog.Builder(this);
+			builder.setTitle("활동 요일을 선택하세요");	
+			builder.setItems(R.array.days_big, new DialogInterface.OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					String selectedDay;
+					
+					if(which < 3) {
+						selectedDay = SetFindPlayerConditionActivity.this.getResources().getStringArray(R.array.days_big)[which];
+						txtActDay.setText(selectedDay);
+						
+						// 설정된 요일 조건을 프리퍼런스에 저장한다.
+						prefConditionEditor.putString("actDay", selectedDay);
+						prefConditionEditor.commit();
+					}
+					else {
+						// 직접 요일을 고를수 있도록 다이얼로그를 띄운다.
+						AlertDialog.Builder innerBuilder = new AlertDialog.Builder(SetFindPlayerConditionActivity.this);
+						innerBuilder.setMultiChoiceItems(R.array.days, selectedDays, new DialogInterface.OnMultiChoiceClickListener() {
+							
+							@Override
+							public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+								selectedDays[which] = isChecked;
+								
+								for(int i = 0; i < 7; i++){
+									Log.d("선택된 요일 확인", selectedDays[i] + "");
+								}
+								
+							}
+						});
+						
+						innerBuilder.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+							
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
+								// 선택된 요일로 문자열을 구성하여 출력한다.
+								String tmpStr = "";
+								for(int i = 0; i < 7; i++) {
+									if(selectedDays[i] == true) {
+										tmpStr += SetFindPlayerConditionActivity.this.getResources().getStringArray(R.array.days_short)[i] + " ";
+										// selectedDays[i] = false;
+									}
+								}
+								
+								// 아무 요일을 선택하지 않으면 '무관'으로 설정한다.
+								if(tmpStr.length() == 0)
+									tmpStr = "무관";
+								txtActDay.setText(tmpStr);
+								
+								// 설정된 요일 조건을 프리퍼런스에 저장한다.
+								prefConditionEditor.putString("actDay", tmpStr);
+								prefConditionEditor.commit();
+								
+								// 요일을 직접 선택한 경우 각 요일별 선택 정보도 함께 저장한다.
+								for(int i = 0; i < 7; i++)
+									prefConditionEditor.putBoolean("day"+i, selectedDays[i]);
+								prefConditionEditor.commit();
+							}
+						});
+						innerBuilder.create().show();
+					}
+				}
+			});	// 리스트 생성
+			builder.create().show();
+			break;
+			
+		case R.id.cond_act_time:
+			// 선수 활동 시간 설정
+			builder = new AlertDialog.Builder(this);
+			builder.setTitle("활동 시간을 설정하세요.");
+			builder.setItems(R.array.time, new DialogInterface.OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					selectedTime = which;
+					
+					// 설정된 시간 정보를 출력한다.
+					txtActTime.setText(SetFindPlayerConditionActivity.this.getResources().getStringArray(R.array.time)[which]);
+					
+					// 설정된 시간 정보를 프리퍼런스에 저장한다.
+					prefConditionEditor.putInt("time", which);
+					prefConditionEditor.commit();
+				}
+			});
+			
 			builder.create().show();
 			break;
 			
@@ -243,7 +365,7 @@ public class SetFindPlayerConditionActivity extends Activity implements OnClickL
 			String[] ages = res.getStringArray(R.array.ages);
 			String agesForDisplay = "";
 			for (int i = 0; i < 6; i++) {
-				if (bAges[i])
+							if (bAges[i])
 					agesForDisplay += " " + ages[i];
 			}
 

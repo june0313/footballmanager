@@ -42,6 +42,13 @@
         <item>일</item>
     </string-array>
     
+    <string-array name="days_big">
+        <item>무관</item>
+        <item>주중</item>
+        <item>주말</item>
+        <item>직접 선택</item>
+    </string-array>
+    
     <string-array name="time">
         <item>하루 종일</item>
         <item>새벽( 00:00 ~ 06:00 )</item>

@@ -136,6 +136,10 @@ public class ScrappedFindPlayerListFragment extends Fragment implements OnItemCl
 						false);
 			}
 			
+			// 날짜 뷰
+			TextView dateHeader = (TextView)convertView.findViewById(R.id.date_header);
+			dateHeader.setVisibility(View.GONE);
+			
 			TextView teamName = (TextView)convertView.findViewById(R.id.team_name);
 			teamName.setText(getItem(position).getTeamName());
 			

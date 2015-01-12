@@ -2,18 +2,21 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginBottom="10dp"
     android:background="@color/lightgray"
     android:orientation="vertical" >
     
     <TextView
-        android:visibility="gone"
         android:id="@+id/date_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
-        android:gravity="right"
-        android:textColor="@color/gray"
-        android:hint="날짜" />
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/darkgray_flat_round_textview"
+        android:gravity="center_horizontal"
+        android:hint="날짜"
+        android:padding="5dp"
+        android:textColor="#FFFFFF"
+        android:visibility="visible" />
 
     <RelativeLayout
         android:layout_width="match_parent"

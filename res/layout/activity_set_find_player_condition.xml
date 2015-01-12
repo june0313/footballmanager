@@ -2,6 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/lightgray"
     android:orientation="vertical"
     android:padding="15dp" >
     
@@ -96,6 +97,68 @@
             android:textColor="@color/main"
             android:textSize="17sp" />
 
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/cond_act_day"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:background="@drawable/selector_button"
+        android:clickable="true"
+        android:padding="13dp" >
+
+        <TextView
+            android:id="@+id/TextView02"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:text="활동 요일"
+            android:textSize="17sp" />
+
+        <TextView
+            android:id="@+id/txt_act_day"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:gravity="right"
+            android:maxWidth="200dp"
+            android:text="TextView"
+            android:textColor="@color/main"
+            android:textSize="17sp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/cond_act_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:background="@drawable/selector_button"
+        android:clickable="true"
+        android:padding="13dp" >
+
+        <TextView
+            android:id="@+id/TextView03"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:text="활동 시간"
+            android:textSize="17sp" />
+
+        <TextView
+            android:id="@+id/txt_act_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:gravity="right"
+            android:maxWidth="200dp"
+            android:text="TextView"
+            android:textColor="@color/main"
+            android:textSize="17sp" />
     </RelativeLayout>
     
     <Button

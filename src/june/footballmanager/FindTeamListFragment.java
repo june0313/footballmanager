@@ -209,6 +209,14 @@ public class FindTeamListFragment extends Fragment implements
 			TextView location = (TextView) convertView.findViewById(R.id.location);
 			location.setText(getItem(position).getLocation());
 			
+			// 활동 요일 출력
+			TextView actDay = (TextView)convertView.findViewById(R.id.act_day);
+			actDay.setText(getItem(position).getActDay());
+			
+			// 활동 시간 출력
+			TextView actSession = (TextView)convertView.findViewById(R.id.act_session);
+			actSession.setText(getItem(position).getActSession());
+			
 			// 즐겨찾기 버튼
 			ImageView scrap = (ImageView) convertView.findViewById(R.id.img_scrap);
 			Integer no = new Integer(getItem(position).getNo());
@@ -262,6 +270,15 @@ public class FindTeamListFragment extends Fragment implements
 					+ prefCondition.getBoolean("pos" + i, true);
 		param += "&startAge=" + prefCondition.getInt("startAge", 0);
 		param += "&endAge=" + prefCondition.getInt("endAge", 99);
+		param += "&actDay=" + prefCondition.getString("actDay", "무관");
+		for( int i = 0; i < 7; i++ )
+			param += "&day" + i + "=" + prefCondition.getBoolean("day" + i, true);
+		
+		String[] startTimes = getResources().getStringArray(R.array.start_time);
+		String[] endTimes = getResources().getStringArray(R.array.end_time);
+		
+		param += "&startTime=" + startTimes[prefCondition.getInt("time", 0)];
+		param += "&endTime=" + endTimes[prefCondition.getInt("time", 0)];
 		
 		// 서버 연결
 		new HttpAsyncTask(url, param) {

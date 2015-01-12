@@ -9,11 +9,14 @@
         android:id="@+id/date_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
-        android:gravity="right"
-        android:textColor="@color/gray"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/darkgray_flat_round_textview"
+        android:gravity="center_horizontal"
         android:hint="날짜"
-        android:visibility="gone" />
+        android:paddingBottom="5dp"
+        android:paddingTop="5dp"
+        android:textColor="#FFFFFF"
+        android:visibility="visible" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -33,91 +36,169 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
+            android:layout_alignParentLeft="true"
             android:layout_toLeftOf="@id/img_scrap"
-            android:layout_alignParentLeft="true">
+            android:orientation="vertical" >
 
-            <TextView
-                android:id="@+id/nickname"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="선수이름(닉네임)"
-                android:textColor="@color/gray" />
+                android:orientation="vertical" >
 
-            <TextView
-                android:id="@+id/title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:singleLine="true"
-                android:text="게시물 제목"
-                android:textColor="@color/darkgray"
-                android:textSize="17sp" />
+                <TextView
+                    android:id="@+id/nickname"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="선수이름(닉네임)"
+                    android:textColor="@color/gray" />
 
-            <RelativeLayout
-                android:id="@+id/LinearLayout2"
-                android:layout_width="wrap_content"
+                <TextView
+                    android:id="@+id/title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:text="게시물 제목"
+                    android:textColor="@color/darkgray"
+                    android:textSize="17sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content" >
 
-                <ImageView
-                    android:id="@+id/img_player"
-                    android:layout_width="20dp"
+                <LinearLayout
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_alignBottom="@id/position"
-                    android:layout_alignTop="@id/position"
-                    android:src="@drawable/player" />
+                    android:layout_weight="1"
+                    android:orientation="vertical" >
 
-                <TextView
-                    android:id="@+id/position"
-                    android:layout_width="wrap_content"
+                    <RelativeLayout
+                        android:id="@+id/RelativeLayout2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" >
+
+                        <ImageView
+                            android:id="@+id/img_player"
+                            android:layout_width="20dp"
+                            android:layout_height="wrap_content"
+                            android:layout_alignBottom="@id/position"
+                            android:layout_alignTop="@id/position"
+                            android:src="@drawable/player" />
+
+                        <TextView
+                            android:id="@+id/position"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_toEndOf="@id/img_player"
+                            android:layout_toRightOf="@id/img_player"
+                            android:text="SS"
+                            android:textColor="@color/gray" />
+
+                        <TextView
+                            android:id="@+id/slash"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_toEndOf="@id/position"
+                            android:layout_toRightOf="@id/position"
+                            android:text=" / "
+                            android:textColor="@color/gray" />
+
+                        <TextView
+                            android:id="@+id/age"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_toEndOf="@id/slash"
+                            android:layout_toRightOf="@id/slash"
+                            android:text="20세"
+                            android:textColor="@color/gray" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/RelativeLayout3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal" >
+
+                        <ImageView
+                            android:id="@+id/img_location"
+                            android:layout_width="20dp"
+                            android:layout_height="wrap_content"
+                            android:layout_alignBottom="@id/location"
+                            android:layout_alignTop="@id/location"
+                            android:src="@drawable/ic_location" />
+
+                        <TextView
+                            android:id="@+id/location"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_toEndOf="@id/img_location"
+                            android:layout_toRightOf="@id/img_location"
+                            android:maxLines="1"
+                            android:text="경기 김포시 대곶면"
+                            android:textColor="@color/gray" />
+                    </RelativeLayout>
+                </LinearLayout>
+
+                <View
+                    android:layout_width="2dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="5dp"
+                    android:background="@color/lightgray" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_toEndOf="@id/img_player"
-                    android:layout_toRightOf="@id/img_player"
-                    android:text="SS"
-                    android:textColor="@color/gray" />
+                    android:layout_weight="1"
+                    android:orientation="vertical" >
 
-                <TextView
-                    android:id="@+id/slash"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_toEndOf="@id/position"
-                    android:layout_toRightOf="@id/position"
-                    android:text=" / "
-                    android:textColor="@color/gray" />
+                    <RelativeLayout
+                        android:id="@+id/RelativeLayout02"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" >
 
-                <TextView
-                    android:id="@+id/age"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_toEndOf="@id/slash"
-                    android:layout_toRightOf="@id/slash"
-                    android:text="20세"
-                    android:textColor="@color/gray" />
-            </RelativeLayout>
+                        <ImageView
+                            android:id="@+id/ImageView02"
+                            android:layout_width="20dp"
+                            android:layout_height="wrap_content"
+                            android:layout_alignBottom="@+id/act_day"
+                            android:layout_alignTop="@+id/act_day"
+                            android:src="@drawable/ic_calendar" />
 
-            <RelativeLayout
-                android:id="@+id/LinearLayout3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/LinearLayout2"
-                android:orientation="horizontal" >
+                        <TextView
+                            android:id="@+id/act_day"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_toEndOf="@+id/ImageView02"
+                            android:layout_toRightOf="@+id/ImageView02"
+                            android:text="주말"
+                            android:textColor="@color/gray" />
+                    </RelativeLayout>
 
-                <ImageView
-                    android:id="@+id/img_location"
-                    android:layout_width="20dp"
-                    android:layout_height="wrap_content"
-                    android:layout_alignBottom="@id/location"
-                    android:layout_alignTop="@id/location"
-                    android:src="@drawable/ic_location" />
+                    <RelativeLayout
+                        android:id="@+id/RelativeLayout01"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal" >
 
-                <TextView
-                    android:id="@+id/location"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_toEndOf="@id/img_location"
-                    android:layout_toRightOf="@id/img_location"
-                    android:text="경기 김포시 대곶면"
-                    android:textColor="@color/gray" />
-            </RelativeLayout>
+                        <ImageView
+                            android:id="@+id/ImageView01"
+                            android:layout_width="20dp"
+                            android:layout_height="wrap_content"
+                            android:layout_alignBottom="@+id/act_session"
+                            android:layout_alignTop="@+id/act_session"
+                            android:src="@drawable/ic_clock" />
+
+                        <TextView
+                            android:id="@+id/act_session"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_toEndOf="@+id/ImageView01"
+                            android:layout_toRightOf="@+id/ImageView01"
+                            android:text="10:00 ~ 13:00"
+                            android:textColor="@color/gray" />
+                    </RelativeLayout>
+                </LinearLayout>
+            </LinearLayout>
         </LinearLayout>
 
     </RelativeLayout>

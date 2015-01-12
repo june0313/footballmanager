@@ -1,5 +1,9 @@
 ﻿package june.footballmanager;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -12,6 +16,9 @@ public class FindTeamItem {
 	private String _location;
 	private String _position;
 	private int _age;
+	private String _actDay;
+	private String _actTimeStart;
+	private String _actTimeEnd;
 	private String _postedDate;
 	
 	FindTeamItem(JSONObject item) {
@@ -22,6 +29,9 @@ public class FindTeamItem {
 			this._location = item.getString("LOCATION");
 			this._position = item.getString("POSITION");
 			this._age = item.getInt("AGE");
+			this._actDay = item.getString("ACT_DAY");
+			this._actTimeStart = item.getString("ACT_TIME_START");
+			this._actTimeEnd = item.getString("ACT_TIME_END");
 			this._postedDate = item.getString("POSTED_DATE");
 		} catch (JSONException e) {
 			Log.i("FindTeamItem", e.getMessage());
@@ -50,6 +60,26 @@ public class FindTeamItem {
 	
 	public int getAge() {
 		return this._age;
+	}
+	
+	public String getActDay() {
+		return this._actDay;
+	}
+	
+	public String getActTimeStart() {
+		return this._actTimeStart;
+	}
+	
+	public String getActTimeEnd() {
+		return this._actTimeEnd;
+	}
+	
+	// 시작시간 ~ 종료시간 형태의 문자열을 만들어 리턴한다.
+	public String getActSession() {
+		String session = getActTimeStart().substring(0, 5) 
+				+ " ~ " + getActTimeEnd().substring(0, 5);
+		
+		return session;
 	}
 	
 	public String getPostedDate() {
