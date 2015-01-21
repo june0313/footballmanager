@@ -78,5 +78,6 @@
     <string name="title_activity_find_team_detail">팀 구함</string>
     <string name="title_activity_scrap">스크랩</string>
     <string name="title_activity_update_password">비밀번호 변경</string>
+    <string name="title_activity_agreement">계정 등록</string>
 
 </resources>

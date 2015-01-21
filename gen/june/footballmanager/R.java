@@ -9,20 +9,23 @@ package june.footballmanager;
 
 public final class R {
     public static final class array {
-        public static final int ages=0x7f090002;
-        public static final int ampm=0x7f090001;
-        public static final int days=0x7f090003;
-        public static final int days_big=0x7f090005;
-        public static final int days_short=0x7f090004;
-        public static final int end_time=0x7f090008;
-        public static final int extra_items=0x7f09000b;
-        public static final int extra_items_on_player=0x7f09000d;
-        public static final int extra_items_on_team=0x7f09000c;
-        public static final int positions_long=0x7f090009;
-        public static final int positions_short=0x7f09000a;
-        public static final int search_conditions=0x7f090000;
-        public static final int start_time=0x7f090007;
-        public static final int time=0x7f090006;
+        public static final int ages=0x7f080002;
+        public static final int ampm=0x7f080001;
+        public static final int days=0x7f080003;
+        public static final int days_big=0x7f080005;
+        public static final int days_short=0x7f080004;
+        public static final int end_time=0x7f080008;
+        public static final int extra_items=0x7f08000b;
+        public static final int extra_items_on_player=0x7f08000d;
+        public static final int extra_items_on_team=0x7f08000c;
+        public static final int find_player_sort=0x7f08000f;
+        public static final int find_team_sort=0x7f080010;
+        public static final int match_sort=0x7f08000e;
+        public static final int positions_long=0x7f080009;
+        public static final int positions_short=0x7f08000a;
+        public static final int search_conditions=0x7f080000;
+        public static final int start_time=0x7f080007;
+        public static final int time=0x7f080006;
     }
     public static final class attr {
         /** 
@@ -294,451 +297,460 @@ containing a value of this type.
         public static final int round_button2=0x7f020036;
         public static final int round_edittext=0x7f020037;
         public static final int round_flat_button=0x7f020038;
-        public static final int round_table=0x7f020039;
-        public static final int scrap=0x7f02003a;
-        public static final int scrapped=0x7f02003b;
-        public static final int search=0x7f02003c;
-        public static final int selector_button=0x7f02003d;
-        public static final int shadow_rectangle=0x7f02003e;
-        public static final int shadow_selector_box=0x7f02003f;
-        public static final int shadow_table=0x7f020040;
-        public static final int shadow_textview=0x7f020041;
-        public static final int sms_dark=0x7f020042;
-        public static final int talk=0x7f020043;
-        public static final int team=0x7f020044;
-        public static final int test=0x7f020045;
-        public static final int white_rectangle=0x7f020046;
+        public static final int round_flat_white_button=0x7f020039;
+        public static final int round_table=0x7f02003a;
+        public static final int scrap=0x7f02003b;
+        public static final int scrapped=0x7f02003c;
+        public static final int search=0x7f02003d;
+        public static final int selector_button=0x7f02003e;
+        public static final int shadow_rectangle=0x7f02003f;
+        public static final int shadow_selector_box=0x7f020040;
+        public static final int shadow_table=0x7f020041;
+        public static final int shadow_textview=0x7f020042;
+        public static final int sms_dark=0x7f020043;
+        public static final int talk=0x7f020044;
+        public static final int team=0x7f020045;
+        public static final int test=0x7f020046;
+        public static final int white_rectangle=0x7f020047;
     }
     public static final class id {
-        public static final int ImageView01=0x7f0600a2;
-        public static final int ImageView02=0x7f0600a0;
-        public static final int LinearLayout1=0x7f0600ab;
-        public static final int RelativeLayout01=0x7f0600a1;
-        public static final int RelativeLayout02=0x7f06009f;
-        public static final int RelativeLayout2=0x7f06009b;
-        public static final int RelativeLayout3=0x7f06009e;
-        public static final int TextView02=0x7f060030;
-        public static final int TextView03=0x7f06005d;
-        public static final int a_team_name=0x7f060065;
-        public static final int a_team_phone=0x7f060066;
-        public static final int accept=0x7f060090;
-        public static final int act_day=0x7f060007;
-        public static final int act_session=0x7f0600a3;
-        public static final int act_time=0x7f060025;
-        public static final int act_time1=0x7f060008;
-        public static final int act_time2=0x7f06000a;
-        public static final int action_settings=0x7f0600ae;
-        public static final int add=0x7f0600b1;
-        public static final int age=0x7f06002d;
-        public static final int ages=0x7f06002a;
-        public static final int ambilwarna_alphaCheckered=0x7f060083;
-        public static final int ambilwarna_alphaCursor=0x7f060086;
-        public static final int ambilwarna_cursor=0x7f060085;
-        public static final int ambilwarna_dialogView=0x7f06007f;
-        public static final int ambilwarna_newColor=0x7f06008a;
-        public static final int ambilwarna_oldColor=0x7f060089;
-        public static final int ambilwarna_overlay=0x7f060084;
-        public static final int ambilwarna_pref_widget_box=0x7f06008b;
-        public static final int ambilwarna_state=0x7f060088;
-        public static final int ambilwarna_target=0x7f060087;
-        public static final int ambilwarna_viewContainer=0x7f060080;
-        public static final int ambilwarna_viewHue=0x7f060082;
-        public static final int ambilwarna_viewSatBri=0x7f060081;
-        public static final int ampm=0x7f060095;
-        public static final int apply=0x7f0600b2;
-        public static final int apply_msg=0x7f060091;
-        public static final int btnOK=0x7f06000d;
-        public static final int btn_add_match=0x7f060014;
-        public static final int btn_change_pw=0x7f060045;
-        public static final int btn_edit_complete=0x7f060078;
-        public static final int btn_editinfo=0x7f060048;
-        public static final int btn_login=0x7f060038;
-        public static final int btn_logout=0x7f060046;
-        public static final int btn_player_register=0x7f06003b;
-        public static final int btn_register=0x7f06004f;
-        public static final int btn_search=0x7f060052;
-        public static final int btn_send=0x7f06001a;
-        public static final int btn_team_register=0x7f06003a;
-        public static final int btn_update_password=0x7f060076;
-        public static final int call=0x7f06001d;
-        public static final int checkBox1=0x7f06002f;
-        public static final int checkBox2=0x7f060032;
-        public static final int checkBox3=0x7f060034;
-        public static final int complete=0x7f060035;
-        public static final int cond_act_day=0x7f06005a;
-        public static final int cond_act_time=0x7f06005c;
-        public static final int cond_age=0x7f06005f;
-        public static final int cond_ages=0x7f060058;
-        public static final int cond_days=0x7f060063;
-        public static final int cond_location=0x7f060053;
-        public static final int cond_position=0x7f060055;
-        public static final int cond_time=0x7f060061;
-        public static final int content=0x7f06000c;
-        public static final int count=0x7f060041;
-        public static final int cur_password=0x7f060073;
-        public static final int current_email=0x7f060044;
-        public static final int date=0x7f06000e;
-        public static final int date_header=0x7f060098;
-        public static final int detail=0x7f060013;
-        public static final int dong=0x7f060033;
-        public static final int empty=0x7f060043;
-        public static final int end_age=0x7f060093;
-        public static final int et_ages=0x7f06007e;
-        public static final int et_home_ground=0x7f06007c;
-        public static final int et_info=0x7f060077;
-        public static final int et_location=0x7f06007b;
-        public static final int et_num_of_player=0x7f06007d;
-        public static final int et_team_name=0x7f060079;
-        public static final int et_team_phone=0x7f06007a;
-        public static final int extra_list=0x7f0600a4;
-        public static final int ground=0x7f060012;
-        public static final int gugun=0x7f060031;
-        public static final int home=0x7f0600a6;
-        public static final int home_ground=0x7f060067;
-        public static final int hour=0x7f060096;
-        public static final int hybrid=0x7f060004;
-        public static final int img_calendar=0x7f0600aa;
-        public static final int img_clock=0x7f0600a9;
-        public static final int img_location=0x7f06008f;
-        public static final int img_player=0x7f06009c;
-        public static final int img_scrap=0x7f060099;
-        public static final int img_team=0x7f06008c;
-        public static final int info=0x7f06001f;
-        public static final int introduce=0x7f0600a7;
-        public static final int linearLayout1=0x7f060050;
-        public static final int list=0x7f060015;
-        public static final int listView1=0x7f060094;
-        public static final int location=0x7f060011;
-        public static final int logout=0x7f0600ad;
-        public static final int map=0x7f060040;
-        public static final int md_team_name=0x7f06003d;
-        public static final int mi_team_name=0x7f0600a8;
-        public static final int minute=0x7f060097;
-        public static final int new_password=0x7f060074;
-        public static final int new_password_confirm=0x7f060075;
-        public static final int nickname=0x7f06002b;
-        public static final int none=0x7f060000;
-        public static final int normal=0x7f060001;
-        public static final int num_of_player=0x7f060068;
-        public static final int num_of_players=0x7f06008e;
-        public static final int p_age=0x7f06004c;
-        public static final int p_email=0x7f060036;
-        public static final int p_location=0x7f06004d;
-        public static final int p_nickname=0x7f06004a;
-        public static final int p_password=0x7f060037;
-        public static final int p_password_chk=0x7f060049;
-        public static final int p_phone=0x7f06004e;
-        public static final int p_position=0x7f06004b;
-        public static final int pager=0x7f06003c;
-        public static final int phone=0x7f060047;
-        public static final int player_info=0x7f06002c;
-        public static final int player_loc_layout=0x7f06009a;
-        public static final int position=0x7f060006;
-        public static final int rb_player=0x7f060018;
-        public static final int rb_team=0x7f060017;
-        public static final int recruting=0x7f0600ac;
-        public static final int refresh=0x7f0600b3;
-        public static final int rg_member_type=0x7f060016;
-        public static final int satellite=0x7f060002;
-        public static final int scrap=0x7f0600af;
-        public static final int scrollView1=0x7f060005;
-        public static final int search=0x7f0600b0;
-        public static final int searchBox=0x7f060051;
-        public static final int section_label=0x7f0600a5;
-        public static final int sido=0x7f06002e;
-        public static final int slash=0x7f06009d;
-        public static final int sms=0x7f06001e;
-        public static final int start_age=0x7f060092;
-        public static final int state=0x7f06003e;
-        public static final int t_ages=0x7f060070;
-        public static final int t_email=0x7f060069;
-        public static final int t_homeground=0x7f06006e;
-        public static final int t_introduce=0x7f060072;
-        public static final int t_location=0x7f06006d;
-        public static final int t_num_of_player=0x7f06006f;
-        public static final int t_password=0x7f06006a;
-        public static final int t_password_chk=0x7f06006b;
-        public static final int t_phone=0x7f060071;
-        public static final int t_team_name=0x7f06006c;
-        public static final int tableRow1=0x7f060020;
-        public static final int tableRow2=0x7f060021;
-        public static final int tableRow3=0x7f060023;
-        public static final int tableRow4=0x7f060026;
-        public static final int tableRow5=0x7f060028;
-        public static final int team_info=0x7f06001c;
-        public static final int team_name=0x7f06001b;
-        public static final int terrain=0x7f060003;
-        public static final int text1=0x7f060056;
-        public static final int textView1=0x7f060009;
-        public static final int textView2=0x7f06008d;
-        public static final int textView3=0x7f060022;
-        public static final int textView5=0x7f060024;
-        public static final int textView7=0x7f060027;
-        public static final int textView9=0x7f060029;
-        public static final int time=0x7f06003f;
-        public static final int time1=0x7f06000f;
-        public static final int time2=0x7f060010;
-        public static final int title=0x7f06000b;
-        public static final int tv_email=0x7f060019;
-        public static final int txt_act_day=0x7f06005b;
-        public static final int txt_act_time=0x7f06005e;
-        public static final int txt_age=0x7f060060;
-        public static final int txt_ages=0x7f060059;
-        public static final int txt_days=0x7f060064;
-        public static final int txt_find_pw=0x7f060039;
-        public static final int txt_location=0x7f060054;
-        public static final int txt_position=0x7f060057;
-        public static final int txt_sort=0x7f060042;
-        public static final int txt_start_time=0x7f060062;
+        public static final int ImageView01=0x7f0b00a8;
+        public static final int ImageView02=0x7f0b00a6;
+        public static final int LinearLayout1=0x7f0b00b1;
+        public static final int RelativeLayout01=0x7f0b00a7;
+        public static final int RelativeLayout02=0x7f0b00a5;
+        public static final int RelativeLayout2=0x7f0b00a1;
+        public static final int RelativeLayout3=0x7f0b00a4;
+        public static final int TextView02=0x7f0b0037;
+        public static final int TextView03=0x7f0b0064;
+        public static final int a_team_name=0x7f0b006c;
+        public static final int a_team_phone=0x7f0b006d;
+        public static final int accept=0x7f0b0096;
+        public static final int act_day=0x7f0b0007;
+        public static final int act_session=0x7f0b00a9;
+        public static final int act_time=0x7f0b002c;
+        public static final int act_time1=0x7f0b0008;
+        public static final int act_time2=0x7f0b000a;
+        public static final int action_settings=0x7f0b00b4;
+        public static final int add=0x7f0b00b7;
+        public static final int age=0x7f0b0034;
+        public static final int ages=0x7f0b0031;
+        public static final int ambilwarna_alphaCheckered=0x7f0b008a;
+        public static final int ambilwarna_alphaCursor=0x7f0b008d;
+        public static final int ambilwarna_cursor=0x7f0b008c;
+        public static final int ambilwarna_dialogView=0x7f0b0086;
+        public static final int ambilwarna_newColor=0x7f0b0091;
+        public static final int ambilwarna_oldColor=0x7f0b0090;
+        public static final int ambilwarna_overlay=0x7f0b008b;
+        public static final int ambilwarna_pref_widget_box=0x7f0b0092;
+        public static final int ambilwarna_state=0x7f0b008f;
+        public static final int ambilwarna_target=0x7f0b008e;
+        public static final int ambilwarna_viewContainer=0x7f0b0087;
+        public static final int ambilwarna_viewHue=0x7f0b0089;
+        public static final int ambilwarna_viewSatBri=0x7f0b0088;
+        public static final int ampm=0x7f0b009b;
+        public static final int apply=0x7f0b00b9;
+        public static final int apply_msg=0x7f0b0097;
+        public static final int btnNext=0x7f0b001c;
+        public static final int btnOK=0x7f0b000d;
+        public static final int btn_add_match=0x7f0b0014;
+        public static final int btn_change_pw=0x7f0b004c;
+        public static final int btn_edit_complete=0x7f0b007f;
+        public static final int btn_editinfo=0x7f0b004f;
+        public static final int btn_login=0x7f0b003f;
+        public static final int btn_logout=0x7f0b004d;
+        public static final int btn_player_register=0x7f0b0042;
+        public static final int btn_register=0x7f0b0056;
+        public static final int btn_search=0x7f0b0059;
+        public static final int btn_send=0x7f0b0022;
+        public static final int btn_team_register=0x7f0b0041;
+        public static final int btn_update_password=0x7f0b007d;
+        public static final int button1=0x7f0b0016;
+        public static final int button2=0x7f0b001b;
+        public static final int call=0x7f0b0025;
+        public static final int cbPrivacyAgree=0x7f0b001a;
+        public static final int cbServiceAgree=0x7f0b0017;
+        public static final int checkBox1=0x7f0b0036;
+        public static final int checkBox2=0x7f0b0039;
+        public static final int checkBox3=0x7f0b003b;
+        public static final int complete=0x7f0b003c;
+        public static final int cond_act_day=0x7f0b0061;
+        public static final int cond_act_time=0x7f0b0063;
+        public static final int cond_age=0x7f0b0066;
+        public static final int cond_ages=0x7f0b005f;
+        public static final int cond_days=0x7f0b006a;
+        public static final int cond_location=0x7f0b005a;
+        public static final int cond_position=0x7f0b005c;
+        public static final int cond_time=0x7f0b0068;
+        public static final int content=0x7f0b000c;
+        public static final int count=0x7f0b0048;
+        public static final int cur_password=0x7f0b007a;
+        public static final int current_email=0x7f0b004b;
+        public static final int date=0x7f0b000e;
+        public static final int date_header=0x7f0b009e;
+        public static final int detail=0x7f0b0013;
+        public static final int dong=0x7f0b003a;
+        public static final int empty=0x7f0b004a;
+        public static final int end_age=0x7f0b0099;
+        public static final int et_ages=0x7f0b0085;
+        public static final int et_home_ground=0x7f0b0083;
+        public static final int et_info=0x7f0b007e;
+        public static final int et_location=0x7f0b0082;
+        public static final int et_num_of_player=0x7f0b0084;
+        public static final int et_team_name=0x7f0b0080;
+        public static final int et_team_phone=0x7f0b0081;
+        public static final int extra_list=0x7f0b00aa;
+        public static final int ground=0x7f0b0012;
+        public static final int gugun=0x7f0b0038;
+        public static final int home=0x7f0b00ac;
+        public static final int home_ground=0x7f0b006e;
+        public static final int hour=0x7f0b009c;
+        public static final int hybrid=0x7f0b0000;
+        public static final int img_calendar=0x7f0b00b0;
+        public static final int img_clock=0x7f0b00af;
+        public static final int img_location=0x7f0b0095;
+        public static final int img_player=0x7f0b00a2;
+        public static final int img_scrap=0x7f0b009f;
+        public static final int img_team=0x7f0b0093;
+        public static final int info=0x7f0b0027;
+        public static final int introduce=0x7f0b00ad;
+        public static final int linearLayout1=0x7f0b0057;
+        public static final int list=0x7f0b001d;
+        public static final int listView1=0x7f0b009a;
+        public static final int location=0x7f0b0011;
+        public static final int logout=0x7f0b00b3;
+        public static final int map=0x7f0b0047;
+        public static final int md_team_name=0x7f0b0044;
+        public static final int mi_team_name=0x7f0b00ae;
+        public static final int minute=0x7f0b009d;
+        public static final int new_password=0x7f0b007b;
+        public static final int new_password_confirm=0x7f0b007c;
+        public static final int nickname=0x7f0b0032;
+        public static final int none=0x7f0b0001;
+        public static final int normal=0x7f0b0002;
+        public static final int num_of_player=0x7f0b006f;
+        public static final int num_of_players=0x7f0b0094;
+        public static final int p_age=0x7f0b0053;
+        public static final int p_email=0x7f0b003d;
+        public static final int p_location=0x7f0b0054;
+        public static final int p_nickname=0x7f0b0051;
+        public static final int p_password=0x7f0b003e;
+        public static final int p_password_chk=0x7f0b0050;
+        public static final int p_phone=0x7f0b0055;
+        public static final int p_position=0x7f0b0052;
+        public static final int pager=0x7f0b0043;
+        public static final int phone=0x7f0b004e;
+        public static final int player_info=0x7f0b0033;
+        public static final int player_loc_layout=0x7f0b00a0;
+        public static final int position=0x7f0b0006;
+        public static final int rb_player=0x7f0b0020;
+        public static final int rb_team=0x7f0b001f;
+        public static final int recruting=0x7f0b00b2;
+        public static final int refresh=0x7f0b00b8;
+        public static final int rg_member_type=0x7f0b001e;
+        public static final int satellite=0x7f0b0003;
+        public static final int scrap=0x7f0b00b5;
+        public static final int scrollView1=0x7f0b0005;
+        public static final int search=0x7f0b00b6;
+        public static final int searchBox=0x7f0b0058;
+        public static final int section_label=0x7f0b00ab;
+        public static final int sido=0x7f0b0035;
+        public static final int slash=0x7f0b00a3;
+        public static final int sms=0x7f0b0026;
+        public static final int start_age=0x7f0b0098;
+        public static final int state=0x7f0b0045;
+        public static final int t_ages=0x7f0b0077;
+        public static final int t_email=0x7f0b0070;
+        public static final int t_homeground=0x7f0b0075;
+        public static final int t_introduce=0x7f0b0079;
+        public static final int t_location=0x7f0b0074;
+        public static final int t_num_of_player=0x7f0b0076;
+        public static final int t_password=0x7f0b0071;
+        public static final int t_password_chk=0x7f0b0072;
+        public static final int t_phone=0x7f0b0078;
+        public static final int t_team_name=0x7f0b0073;
+        public static final int tableRow1=0x7f0b0028;
+        public static final int tableRow2=0x7f0b0029;
+        public static final int tableRow3=0x7f0b002a;
+        public static final int tableRow4=0x7f0b002d;
+        public static final int tableRow5=0x7f0b002f;
+        public static final int team_info=0x7f0b0024;
+        public static final int team_name=0x7f0b0023;
+        public static final int terrain=0x7f0b0004;
+        public static final int text1=0x7f0b005d;
+        public static final int textView1=0x7f0b0009;
+        public static final int textView2=0x7f0b0015;
+        public static final int textView3=0x7f0b0018;
+        public static final int textView4=0x7f0b0019;
+        public static final int textView5=0x7f0b002b;
+        public static final int textView7=0x7f0b002e;
+        public static final int textView9=0x7f0b0030;
+        public static final int time=0x7f0b0046;
+        public static final int time1=0x7f0b000f;
+        public static final int time2=0x7f0b0010;
+        public static final int title=0x7f0b000b;
+        public static final int tv_email=0x7f0b0021;
+        public static final int txt_act_day=0x7f0b0062;
+        public static final int txt_act_time=0x7f0b0065;
+        public static final int txt_age=0x7f0b0067;
+        public static final int txt_ages=0x7f0b0060;
+        public static final int txt_days=0x7f0b006b;
+        public static final int txt_find_pw=0x7f0b0040;
+        public static final int txt_location=0x7f0b005b;
+        public static final int txt_position=0x7f0b005e;
+        public static final int txt_sort=0x7f0b0049;
+        public static final int txt_start_time=0x7f0b0069;
     }
     public static final class integer {
-        public static final int google_play_services_version=0x7f080000;
+        public static final int google_play_services_version=0x7f070000;
     }
     public static final class layout {
         public static final int activity_add_find_player=0x7f030000;
         public static final int activity_add_find_team=0x7f030001;
         public static final int activity_add_match=0x7f030002;
-        public static final int activity_applied_team=0x7f030003;
-        public static final int activity_find_password=0x7f030004;
-        public static final int activity_find_player_detail=0x7f030005;
-        public static final int activity_find_team_detail=0x7f030006;
-        public static final int activity_location_condition=0x7f030007;
-        public static final int activity_login=0x7f030008;
-        public static final int activity_main=0x7f030009;
-        public static final int activity_match_detail=0x7f03000a;
-        public static final int activity_my_application=0x7f03000b;
-        public static final int activity_my_match=0x7f03000c;
-        public static final int activity_my_match_activity2=0x7f03000d;
-        public static final int activity_player_account=0x7f03000e;
-        public static final int activity_player_register=0x7f03000f;
-        public static final int activity_select_ground=0x7f030010;
-        public static final int activity_select_location=0x7f030011;
-        public static final int activity_select_time=0x7f030012;
-        public static final int activity_set_find_player_condition=0x7f030013;
-        public static final int activity_set_find_team_condition=0x7f030014;
-        public static final int activity_set_search_condition=0x7f030015;
-        public static final int activity_team_account=0x7f030016;
-        public static final int activity_team_info=0x7f030017;
-        public static final int activity_team_register=0x7f030018;
-        public static final int activity_update_password=0x7f030019;
-        public static final int activity_update_player_info=0x7f03001a;
-        public static final int activity_update_team_info=0x7f03001b;
-        public static final int ambilwarna_dialog=0x7f03001c;
-        public static final int ambilwarna_pref_widget=0x7f03001d;
-        public static final int applied_team_item=0x7f03001e;
-        public static final int dialog_match_apply=0x7f03001f;
-        public static final int dialog_set_age=0x7f030020;
-        public static final int dialog_set_day=0x7f030021;
-        public static final int dialog_set_time=0x7f030022;
-        public static final int find_player_item=0x7f030023;
-        public static final int find_team_item=0x7f030024;
-        public static final int fragment_extra=0x7f030025;
-        public static final int fragment_list=0x7f030026;
-        public static final int fragment_main_dummy=0x7f030027;
-        public static final int fragment_my_application_waiting=0x7f030028;
-        public static final int fragment_team_activity_info=0x7f030029;
-        public static final int fragment_team_info=0x7f03002a;
-        public static final int map_test=0x7f03002b;
-        public static final int match_item=0x7f03002c;
-        public static final int match_item_backup=0x7f03002d;
-        public static final int my_match_item=0x7f03002e;
-        public static final int player_item=0x7f03002f;
-        public static final int spinner_item=0x7f030030;
-        public static final int team_item=0x7f030031;
+        public static final int activity_agreement=0x7f030003;
+        public static final int activity_applied_team=0x7f030004;
+        public static final int activity_find_password=0x7f030005;
+        public static final int activity_find_player_detail=0x7f030006;
+        public static final int activity_find_team_detail=0x7f030007;
+        public static final int activity_location_condition=0x7f030008;
+        public static final int activity_login=0x7f030009;
+        public static final int activity_main=0x7f03000a;
+        public static final int activity_match_detail=0x7f03000b;
+        public static final int activity_my_application=0x7f03000c;
+        public static final int activity_my_match=0x7f03000d;
+        public static final int activity_my_match_activity2=0x7f03000e;
+        public static final int activity_player_account=0x7f03000f;
+        public static final int activity_player_register=0x7f030010;
+        public static final int activity_select_ground=0x7f030011;
+        public static final int activity_select_location=0x7f030012;
+        public static final int activity_select_time=0x7f030013;
+        public static final int activity_set_find_player_condition=0x7f030014;
+        public static final int activity_set_find_team_condition=0x7f030015;
+        public static final int activity_set_search_condition=0x7f030016;
+        public static final int activity_team_account=0x7f030017;
+        public static final int activity_team_info=0x7f030018;
+        public static final int activity_team_register=0x7f030019;
+        public static final int activity_update_password=0x7f03001a;
+        public static final int activity_update_player_info=0x7f03001b;
+        public static final int activity_update_team_info=0x7f03001c;
+        public static final int ambilwarna_dialog=0x7f03001d;
+        public static final int ambilwarna_pref_widget=0x7f03001e;
+        public static final int applied_team_item=0x7f03001f;
+        public static final int dialog_match_apply=0x7f030020;
+        public static final int dialog_set_age=0x7f030021;
+        public static final int dialog_set_day=0x7f030022;
+        public static final int dialog_set_time=0x7f030023;
+        public static final int find_player_item=0x7f030024;
+        public static final int find_team_item=0x7f030025;
+        public static final int fragment_extra=0x7f030026;
+        public static final int fragment_list=0x7f030027;
+        public static final int fragment_main_dummy=0x7f030028;
+        public static final int fragment_my_application_waiting=0x7f030029;
+        public static final int fragment_team_activity_info=0x7f03002a;
+        public static final int fragment_team_info=0x7f03002b;
+        public static final int map_test=0x7f03002c;
+        public static final int match_item=0x7f03002d;
+        public static final int match_item_backup=0x7f03002e;
+        public static final int my_match_item=0x7f03002f;
+        public static final int player_item=0x7f030030;
+        public static final int spinner_item=0x7f030031;
+        public static final int team_item=0x7f030032;
     }
     public static final class menu {
-        public static final int account_menu=0x7f0b0000;
-        public static final int add_find_player=0x7f0b0001;
-        public static final int applied_team=0x7f0b0002;
-        public static final int edit_team_info=0x7f0b0003;
-        public static final int find_password=0x7f0b0004;
-        public static final int find_player_detail=0x7f0b0005;
-        public static final int find_player_list=0x7f0b0006;
-        public static final int find_team_detail=0x7f0b0007;
-        public static final int find_team_list=0x7f0b0008;
-        public static final int location_condition=0x7f0b0009;
-        public static final int match_detail=0x7f0b000a;
-        public static final int match_list=0x7f0b000b;
-        public static final int my_application=0x7f0b000c;
-        public static final int my_match=0x7f0b000d;
-        public static final int my_match_activity2=0x7f0b000e;
-        public static final int select_ground=0x7f0b000f;
-        public static final int select_time=0x7f0b0010;
-        public static final int set_search_condition=0x7f0b0011;
-        public static final int team_info=0x7f0b0012;
+        public static final int account_menu=0x7f0a0000;
+        public static final int add_find_player=0x7f0a0001;
+        public static final int applied_team=0x7f0a0002;
+        public static final int edit_team_info=0x7f0a0003;
+        public static final int find_password=0x7f0a0004;
+        public static final int find_player_detail=0x7f0a0005;
+        public static final int find_player_list=0x7f0a0006;
+        public static final int find_team_detail=0x7f0a0007;
+        public static final int find_team_list=0x7f0a0008;
+        public static final int location_condition=0x7f0a0009;
+        public static final int match_detail=0x7f0a000a;
+        public static final int match_list=0x7f0a000b;
+        public static final int my_application=0x7f0a000c;
+        public static final int my_match=0x7f0a000d;
+        public static final int my_match_activity2=0x7f0a000e;
+        public static final int select_ground=0x7f0a000f;
+        public static final int select_time=0x7f0a0010;
+        public static final int set_search_condition=0x7f0a0011;
+        public static final int team_info=0x7f0a0012;
     }
     public static final class string {
-        public static final int accept_opposing_team=0x7f070038;
-        public static final int action_settings=0x7f07001b;
-        public static final int add_find_player=0x7f07003e;
-        public static final int add_find_team=0x7f07003f;
-        public static final int add_match=0x7f07002e;
-        public static final int app_name=0x7f07001a;
-        public static final int applied_team=0x7f070032;
-        public static final int apply_match=0x7f07002f;
+        public static final int accept_opposing_team=0x7f060038;
+        public static final int action_settings=0x7f06001b;
+        public static final int add_find_player=0x7f06003e;
+        public static final int add_find_team=0x7f06003f;
+        public static final int add_match=0x7f06002e;
+        public static final int app_name=0x7f06001a;
+        public static final int applied_team=0x7f060032;
+        public static final int apply_match=0x7f06002f;
         /**   Title for notification shown when GooglePlayServices needs to be
         enabled for a application to work. [CHAR LIMIT=70] 
          */
-        public static final int auth_client_needs_enabling_title=0x7f070015;
+        public static final int auth_client_needs_enabling_title=0x7f060015;
         /**   Title for notification shown when GooglePlayServices needs to be
         installed for a application to work. [CHAR LIMIT=70] 
          */
-        public static final int auth_client_needs_installation_title=0x7f070016;
+        public static final int auth_client_needs_installation_title=0x7f060016;
         /**   Title for notification shown when GooglePlayServices needs to be
         udpated for a application to work. [CHAR LIMIT=70] 
          */
-        public static final int auth_client_needs_update_title=0x7f070017;
+        public static final int auth_client_needs_update_title=0x7f060017;
         /**   Title for notification shown when GooglePlayServices is unavailable [CHAR LIMIT=42] 
          */
-        public static final int auth_client_play_services_err_notification_msg=0x7f070018;
+        public static final int auth_client_play_services_err_notification_msg=0x7f060018;
         /**   Requested by string saying which app requested the notification. [CHAR LIMIT=42] 
          */
-        public static final int auth_client_requested_by_msg=0x7f070019;
+        public static final int auth_client_requested_by_msg=0x7f060019;
         /**   Title for notification shown when a bad version of GooglePlayServices
         has been installed and needs correction for an application to work.
         [CHAR LIMIT=70] 
          */
-        public static final int auth_client_using_bad_version_title=0x7f070014;
+        public static final int auth_client_using_bad_version_title=0x7f060014;
         /**  Button in confirmation dialog to enable Google Play services.  Clicking it
         will direct user to application settings of Google Play services where they
         can enable it [CHAR LIMIT=40] 
          */
-        public static final int common_google_play_services_enable_button=0x7f070006;
+        public static final int common_google_play_services_enable_button=0x7f060006;
         /**  Message in confirmation dialog informing user they need to enable
         Google Play services in application settings [CHAR LIMIT=NONE] 
          */
-        public static final int common_google_play_services_enable_text=0x7f070005;
+        public static final int common_google_play_services_enable_text=0x7f060005;
         /**  Title of confirmation dialog informing user they need to enable
         Google Play services in application settings [CHAR LIMIT=40] 
          */
-        public static final int common_google_play_services_enable_title=0x7f070004;
+        public static final int common_google_play_services_enable_title=0x7f060004;
         /**  Button in confirmation dialog for installing Google Play services [CHAR LIMIT=40] 
          */
-        public static final int common_google_play_services_install_button=0x7f070003;
+        public static final int common_google_play_services_install_button=0x7f060003;
         /**  (For phones) Message in confirmation dialog informing user that
         they need to install Google Play services (from Play Store) [CHAR LIMIT=NONE] 
          */
-        public static final int common_google_play_services_install_text_phone=0x7f070001;
+        public static final int common_google_play_services_install_text_phone=0x7f060001;
         /**  (For tablets) Message in confirmation dialog informing user that
         they need to install Google Play services (from Play Store) [CHAR LIMIT=NONE] 
          */
-        public static final int common_google_play_services_install_text_tablet=0x7f070002;
+        public static final int common_google_play_services_install_text_tablet=0x7f060002;
         /**  Title of confirmation dialog informing user that they need to install
         Google Play services (from Play Store) [CHAR LIMIT=40] 
          */
-        public static final int common_google_play_services_install_title=0x7f070000;
+        public static final int common_google_play_services_install_title=0x7f060000;
         /**  Message in confirmation dialog informing the user that they provided an invalid account. [CHAR LIMIT=NONE] 
          */
-        public static final int common_google_play_services_invalid_account_text=0x7f07000c;
+        public static final int common_google_play_services_invalid_account_text=0x7f06000c;
         /**  Title of confirmation dialog informing the user that they provided an invalid account. [CHAR LIMIT=40] 
          */
-        public static final int common_google_play_services_invalid_account_title=0x7f07000b;
+        public static final int common_google_play_services_invalid_account_title=0x7f06000b;
         /**  Message in confirmation dialog informing the user that a network error occurred. [CHAR LIMIT=NONE] 
          */
-        public static final int common_google_play_services_network_error_text=0x7f07000a;
+        public static final int common_google_play_services_network_error_text=0x7f06000a;
         /**  Title of confirmation dialog informing the user that a network error occurred. [CHAR LIMIT=40] 
          */
-        public static final int common_google_play_services_network_error_title=0x7f070009;
+        public static final int common_google_play_services_network_error_title=0x7f060009;
         /**  Message in confirmation dialog informing user there is an unknown issue in Google Play
         services [CHAR LIMIT=NONE] 
          */
-        public static final int common_google_play_services_unknown_issue=0x7f07000d;
+        public static final int common_google_play_services_unknown_issue=0x7f06000d;
         /**  Message in confirmation dialog informing user that date on the device is not correct,
     causing certificate checks to fail. [CHAR LIMIT=NONE] 
          */
-        public static final int common_google_play_services_unsupported_date_text=0x7f070010;
+        public static final int common_google_play_services_unsupported_date_text=0x7f060010;
         /**  Message in confirmation dialog informing user that Google Play services is not supported on their device [CHAR LIMIT=NONE] 
          */
-        public static final int common_google_play_services_unsupported_text=0x7f07000f;
+        public static final int common_google_play_services_unsupported_text=0x7f06000f;
         /**  Title of confirmation dialog informing user that Google Play services is not supported on their device [CHAR LIMIT=40] 
          */
-        public static final int common_google_play_services_unsupported_title=0x7f07000e;
+        public static final int common_google_play_services_unsupported_title=0x7f06000e;
         /**  Button in confirmation dialog for updating Google Play services [CHAR LIMIT=40] 
          */
-        public static final int common_google_play_services_update_button=0x7f070011;
+        public static final int common_google_play_services_update_button=0x7f060011;
         /**  Message in confirmation dialog informing user that they need to update
         Google Play services (from Play Store) [CHAR LIMIT=NONE] 
          */
-        public static final int common_google_play_services_update_text=0x7f070008;
+        public static final int common_google_play_services_update_text=0x7f060008;
         /**  Title of confirmation dialog informing user that they need to update
         Google Play services (from Play Store) [CHAR LIMIT=40] 
          */
-        public static final int common_google_play_services_update_title=0x7f070007;
+        public static final int common_google_play_services_update_title=0x7f060007;
         /**  Sign-in button text [CHAR LIMIT=15] 
          */
-        public static final int common_signin_button_text=0x7f070012;
+        public static final int common_signin_button_text=0x7f060012;
         /**  Long form sign-in button text [CHAR LIMIT=30] 
          */
-        public static final int common_signin_button_text_long=0x7f070013;
-        public static final int find_player_detail=0x7f070041;
-        public static final int find_player_list=0x7f070040;
-        public static final int find_team_detail=0x7f070043;
-        public static final int find_team_list=0x7f070042;
-        public static final int hello_blank_fragment=0x7f070059;
-        public static final int hello_world=0x7f070028;
-        public static final int info_player=0x7f070035;
-        public static final int login=0x7f07002a;
-        public static final int match_detail=0x7f070033;
-        public static final int match_list=0x7f070030;
-        public static final int my_application_list=0x7f07003a;
-        public static final int my_match_list=0x7f070031;
-        public static final int my_match_list_confirmed=0x7f070039;
-        public static final int opposing_teamname=0x7f070047;
-        public static final int player_list=0x7f07003c;
-        public static final int regi_player=0x7f07002d;
-        public static final int regi_team=0x7f07002c;
-        public static final int register_gcm_id=0x7f07003d;
-        public static final int scrapped_find_player_list=0x7f070045;
-        public static final int scrapped_find_team_list=0x7f070046;
-        public static final int scrapped_match_list=0x7f070044;
+        public static final int common_signin_button_text_long=0x7f060013;
+        public static final int find_player_detail=0x7f060041;
+        public static final int find_player_list=0x7f060040;
+        public static final int find_team_detail=0x7f060043;
+        public static final int find_team_list=0x7f060042;
+        public static final int hello_blank_fragment=0x7f060059;
+        public static final int hello_world=0x7f060028;
+        public static final int info_player=0x7f060035;
+        public static final int login=0x7f06002a;
+        public static final int match_detail=0x7f060033;
+        public static final int match_list=0x7f060030;
+        public static final int my_application_list=0x7f06003a;
+        public static final int my_match_list=0x7f060031;
+        public static final int my_match_list_confirmed=0x7f060039;
+        public static final int opposing_teamname=0x7f060047;
+        public static final int player_list=0x7f06003c;
+        public static final int regi_player=0x7f06002d;
+        public static final int regi_team=0x7f06002c;
+        public static final int register_gcm_id=0x7f06003d;
+        public static final int scrapped_find_player_list=0x7f060045;
+        public static final int scrapped_find_team_list=0x7f060046;
+        public static final int scrapped_match_list=0x7f060044;
         /**  서버 주소 관련 
          */
-        public static final int server=0x7f070029;
-        public static final int team_info=0x7f070034;
-        public static final int team_list=0x7f07003b;
-        public static final int title_activity_account=0x7f07004b;
-        public static final int title_activity_add_find_player=0x7f07005b;
-        public static final int title_activity_add_find_team=0x7f07005e;
-        public static final int title_activity_add_match=0x7f07004c;
-        public static final int title_activity_applied_team=0x7f070056;
-        public static final int title_activity_edit_team_info=0x7f07004f;
-        public static final int title_activity_find_password=0x7f070051;
-        public static final int title_activity_find_player_detail=0x7f07005c;
-        public static final int title_activity_find_team_detail=0x7f070060;
-        public static final int title_activity_location_condition=0x7f070054;
+        public static final int server=0x7f060029;
+        public static final int team_info=0x7f060034;
+        public static final int team_list=0x7f06003b;
+        public static final int title_activity_account=0x7f06004b;
+        public static final int title_activity_add_find_player=0x7f06005b;
+        public static final int title_activity_add_find_team=0x7f06005e;
+        public static final int title_activity_add_match=0x7f06004c;
+        public static final int title_activity_agreement=0x7f060063;
+        public static final int title_activity_applied_team=0x7f060056;
+        public static final int title_activity_edit_team_info=0x7f06004f;
+        public static final int title_activity_find_password=0x7f060051;
+        public static final int title_activity_find_player_detail=0x7f06005c;
+        public static final int title_activity_find_team_detail=0x7f060060;
+        public static final int title_activity_location_condition=0x7f060054;
         /**  액티비티 타이틀 
          */
-        public static final int title_activity_login=0x7f070048;
-        public static final int title_activity_match_detail=0x7f07004d;
-        public static final int title_activity_my_application=0x7f070058;
-        public static final int title_activity_my_match=0x7f070055;
-        public static final int title_activity_my_match_activity2=0x7f070057;
-        public static final int title_activity_player_register=0x7f070049;
-        public static final int title_activity_scrap=0x7f070061;
-        public static final int title_activity_select_ground=0x7f070050;
-        public static final int title_activity_select_location=0x7f07004e;
-        public static final int title_activity_select_time=0x7f070053;
-        public static final int title_activity_set_find_player_condition=0x7f07005d;
-        public static final int title_activity_set_find_team_condition=0x7f07005f;
-        public static final int title_activity_set_search_condition=0x7f070052;
-        public static final int title_activity_team_info=0x7f07005a;
-        public static final int title_activity_team_register=0x7f07004a;
-        public static final int title_activity_update_password=0x7f070062;
-        public static final int title_my_application_accepted=0x7f070023;
-        public static final int title_my_application_not_accepted=0x7f070024;
-        public static final int title_my_application_waiting=0x7f070022;
-        public static final int title_my_match_confirmed=0x7f070021;
-        public static final int title_my_match_waiting=0x7f070020;
-        public static final int title_recruiting_info=0x7f070026;
-        public static final int title_section1=0x7f07001c;
-        public static final int title_section2=0x7f07001d;
-        public static final int title_section3=0x7f07001e;
-        public static final int title_section4=0x7f07001f;
-        public static final int title_team_activity=0x7f070027;
-        public static final int title_team_info=0x7f070025;
-        public static final int update_password=0x7f07002b;
-        public static final int update_player_info=0x7f070037;
-        public static final int update_team_info=0x7f070036;
+        public static final int title_activity_login=0x7f060048;
+        public static final int title_activity_match_detail=0x7f06004d;
+        public static final int title_activity_my_application=0x7f060058;
+        public static final int title_activity_my_match=0x7f060055;
+        public static final int title_activity_my_match_activity2=0x7f060057;
+        public static final int title_activity_player_register=0x7f060049;
+        public static final int title_activity_scrap=0x7f060061;
+        public static final int title_activity_select_ground=0x7f060050;
+        public static final int title_activity_select_location=0x7f06004e;
+        public static final int title_activity_select_time=0x7f060053;
+        public static final int title_activity_set_find_player_condition=0x7f06005d;
+        public static final int title_activity_set_find_team_condition=0x7f06005f;
+        public static final int title_activity_set_search_condition=0x7f060052;
+        public static final int title_activity_team_info=0x7f06005a;
+        public static final int title_activity_team_register=0x7f06004a;
+        public static final int title_activity_update_password=0x7f060062;
+        public static final int title_my_application_accepted=0x7f060023;
+        public static final int title_my_application_not_accepted=0x7f060024;
+        public static final int title_my_application_waiting=0x7f060022;
+        public static final int title_my_match_confirmed=0x7f060021;
+        public static final int title_my_match_waiting=0x7f060020;
+        public static final int title_recruiting_info=0x7f060026;
+        public static final int title_section1=0x7f06001c;
+        public static final int title_section2=0x7f06001d;
+        public static final int title_section3=0x7f06001e;
+        public static final int title_section4=0x7f06001f;
+        public static final int title_team_activity=0x7f060027;
+        public static final int title_team_info=0x7f060025;
+        public static final int update_password=0x7f06002b;
+        public static final int update_player_info=0x7f060037;
+        public static final int update_team_info=0x7f060036;
     }
     public static final class style {
         /** 
@@ -764,19 +776,19 @@ containing a value of this type.
     
  API 14 theme customizations can go here. 
          */
-        public static final int AppBaseTheme=0x7f0a0000;
+        public static final int AppBaseTheme=0x7f090000;
         /**  Application theme. 
  All customizations that are NOT specific to a particular API-level can go here. 
  <item name="android:actionBarStyle">@style/MyActionBar</item>  
          */
-        public static final int AppTheme=0x7f0a0001;
-        public static final int LoginFormContainer=0x7f0a0004;
+        public static final int AppTheme=0x7f090001;
+        public static final int LoginFormContainer=0x7f090004;
         /**  <item name="android:background">#696969</item>  
          */
-        public static final int MyActionBar=0x7f0a0002;
+        public static final int MyActionBar=0x7f090002;
         /**  <item name="android:textColor">#FFFFFF</item>  
          */
-        public static final int TitleTextStyle=0x7f0a0003;
+        public static final int TitleTextStyle=0x7f090003;
     }
     public static final class styleable {
         /** Attributes that can be used with a AdsAttrs.
@@ -815,7 +827,7 @@ theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
           <p>This is a private symbol.
-          @attr name android:adSize
+          @attr name june.footballmanager:adSize
         */
         public static final int AdsAttrs_adSize = 0;
         /**
@@ -835,7 +847,7 @@ theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
           <p>This is a private symbol.
-          @attr name android:adSizes
+          @attr name june.footballmanager:adSizes
         */
         public static final int AdsAttrs_adSizes = 1;
         /**
@@ -851,7 +863,7 @@ theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
           <p>This is a private symbol.
-          @attr name android:adUnitId
+          @attr name june.footballmanager:adUnitId
         */
         public static final int AdsAttrs_adUnitId = 2;
         /** Attributes that can be used with a AmbilWarnaPreference.
@@ -878,7 +890,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name android:supportsAlpha
+          @attr name june.footballmanager:supportsAlpha
         */
         public static final int AmbilWarnaPreference_supportsAlpha = 0;
         /** Attributes that can be used with a MapAttrs.
@@ -934,7 +946,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name android:cameraBearing
+          @attr name june.footballmanager:cameraBearing
         */
         public static final int MapAttrs_cameraBearing = 1;
         /**
@@ -948,7 +960,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name android:cameraTargetLat
+          @attr name june.footballmanager:cameraTargetLat
         */
         public static final int MapAttrs_cameraTargetLat = 2;
         /**
@@ -962,7 +974,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name android:cameraTargetLng
+          @attr name june.footballmanager:cameraTargetLng
         */
         public static final int MapAttrs_cameraTargetLng = 3;
         /**
@@ -976,7 +988,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name android:cameraTilt
+          @attr name june.footballmanager:cameraTilt
         */
         public static final int MapAttrs_cameraTilt = 4;
         /**
@@ -990,7 +1002,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name android:cameraZoom
+          @attr name june.footballmanager:cameraZoom
         */
         public static final int MapAttrs_cameraZoom = 5;
         /**
@@ -1010,7 +1022,7 @@ containing a value of this type.
 <tr><td><code>terrain</code></td><td>3</td><td></td></tr>
 <tr><td><code>hybrid</code></td><td>4</td><td></td></tr>
 </table>
-          @attr name android:mapType
+          @attr name june.footballmanager:mapType
         */
         public static final int MapAttrs_mapType = 0;
         /**
@@ -1024,7 +1036,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name android:uiCompass
+          @attr name june.footballmanager:uiCompass
         */
         public static final int MapAttrs_uiCompass = 6;
         /**
@@ -1038,7 +1050,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name android:uiRotateGestures
+          @attr name june.footballmanager:uiRotateGestures
         */
         public static final int MapAttrs_uiRotateGestures = 7;
         /**
@@ -1052,7 +1064,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name android:uiScrollGestures
+          @attr name june.footballmanager:uiScrollGestures
         */
         public static final int MapAttrs_uiScrollGestures = 8;
         /**
@@ -1066,7 +1078,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name android:uiTiltGestures
+          @attr name june.footballmanager:uiTiltGestures
         */
         public static final int MapAttrs_uiTiltGestures = 9;
         /**
@@ -1080,7 +1092,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name android:uiZoomControls
+          @attr name june.footballmanager:uiZoomControls
         */
         public static final int MapAttrs_uiZoomControls = 10;
         /**
@@ -1094,7 +1106,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name android:uiZoomGestures
+          @attr name june.footballmanager:uiZoomGestures
         */
         public static final int MapAttrs_uiZoomGestures = 11;
         /**
@@ -1108,7 +1120,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name android:useViewLifecycle
+          @attr name june.footballmanager:useViewLifecycle
         */
         public static final int MapAttrs_useViewLifecycle = 12;
         /**
@@ -1122,7 +1134,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name android:zOrderOnTop
+          @attr name june.footballmanager:zOrderOnTop
         */
         public static final int MapAttrs_zOrderOnTop = 13;
     };

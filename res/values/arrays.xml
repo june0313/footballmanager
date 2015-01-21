@@ -146,6 +146,29 @@
         <item >스크랩</item>
         <item >어플리케이션 설정</item>
         <item >어플리케이션 정보</item>
-    </string-array>    
+    </string-array>   
+    
+    <string-array name="match_sort">
+        <item>등록날짜순▼</item>
+        <item>등록날짜순▲</item>
+        <item>매치날짜순▼</item>
+        <item>매치날짜순▲</item>
+        <item>연령대순▼</item>
+        <item>연령대순▲</item>
+    </string-array>
+    
+    <string-array name="find_player_sort">
+        <item>등록날짜순▼</item>
+        <item>등록날짜순▲</item>
+        <item>연령대순▼</item>
+        <item>연령대순▲</item>
+    </string-array>
+    
+    <string-array name="find_team_sort">
+        <item>등록날짜순▼</item>
+        <item>등록날짜순▲</item>
+        <item>연령대순▼</item>
+        <item>연령대순▲</item>
+    </string-array>
     
 </resources>

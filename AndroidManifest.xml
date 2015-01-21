@@ -192,6 +192,10 @@
             android:name=".UpdatePasswordActivity"
             android:label="@string/title_activity_update_password" >
         </activity>
+        <activity
+            android:name=".AgreementActivity"
+            android:label="@string/title_activity_agreement" >
+        </activity>
     </application>
 
 </manifest>

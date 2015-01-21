@@ -1,0 +1,107 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/lightgray"
+    android:orientation="vertical"
+    android:padding="@dimen/padding" >
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:text="서비스 이용 약관"
+        android:textSize="@dimen/major_font" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginBottom="5dp"
+        android:layout_weight="1"
+        android:background="@drawable/shadow_textview"
+        android:text="TextView" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp" >
+
+        <Button
+            android:id="@+id/button1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/cbServiceAgree"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="false"
+            android:background="@drawable/gray_flat_button"
+            android:text="자세히"
+            android:textColor="#FFFFFF"
+            android:textSize="15sp" />
+
+        <CheckBox
+            android:id="@+id/cbServiceAgree"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="false"
+            android:layout_centerVertical="true"
+            android:text="동의합니다"
+            android:textSize="15sp" />
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:text="개인정보 취급 방침"
+        android:textSize="@dimen/major_font" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginBottom="5dp"
+        android:layout_weight="1"
+        android:background="@drawable/shadow_textview"
+        android:text="TextView" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="40dp" >
+
+        <CheckBox
+            android:id="@+id/cbPrivacyAgree"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:text="동의합니다"
+            android:textSize="15sp" />
+
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/cbPrivacyAgree"
+            android:layout_alignParentLeft="true"
+            android:background="@drawable/gray_flat_button"
+            android:text="자세히"
+            android:textColor="#FFFFFF"
+            android:textSize="15sp" />
+
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/btnNext"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/green_flat_button"
+        android:text="동의 및 계속"
+        android:textColor="#FFFFFF"
+        android:textSize="@dimen/major_font" />
+
+</LinearLayout>

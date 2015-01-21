@@ -203,6 +203,7 @@ public class TeamRegisterActivity extends Activity implements OnClickListener {
 					json = new JSONObject(result);
 					if(json.getInt("success") == 1) {
 						Toast.makeText(TeamRegisterActivity.this, "팀 계정 등록이 완료되었습니다!", 0).show();
+						setResult(RESULT_OK);
 						finish();
 					} else {
 						int errno = json.getInt("errorcode");

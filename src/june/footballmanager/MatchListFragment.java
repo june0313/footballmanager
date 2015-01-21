@@ -39,6 +39,7 @@ import android.widget.Toast;
 
 public class MatchListFragment extends Fragment implements OnItemClickListener, OnScrollListener, DialogInterface.OnClickListener {
 	private static final int MATCH_CONDITION = 0;
+	private static final int ADD_MATCH = 1;
 	
 	ListView list;
 	TextView count;
@@ -51,6 +52,10 @@ public class MatchListFragment extends Fragment implements OnItemClickListener, 
 	
 	// 스크랩 리스트
 	ArrayList<Integer> scrappedList;
+	
+	// 검색조건 프리퍼런스
+	SharedPreferences prefCondition;
+	SharedPreferences.Editor prefConditionEditor;
 
 	// 프레그먼트가 생성될 때 최초 한번만 실행
 	// 프레그먼트의 onCreate에서는 UI 작업을 할 수 없다.
@@ -62,6 +67,11 @@ public class MatchListFragment extends Fragment implements OnItemClickListener, 
 		// 로그인정보 가져오기
 		lm = new LoginManager(getActivity());
 		
+		// 검색조건 가져오기
+		prefCondition = getActivity().getSharedPreferences("matchConditions", Context.MODE_PRIVATE);
+		prefConditionEditor = prefCondition.edit();
+		
+		// 리스트는 최초 한번만 생성한다.
 		matchList = new ArrayList<MatchItem>();
 		
 		// 어댑터 생성
@@ -74,39 +84,58 @@ public class MatchListFragment extends Fragment implements OnItemClickListener, 
 			Bundle savedInstanceState) {
 		// Inflate the layout for this fragment
 		View view = inflater.inflate(R.layout.fragment_list, container, false);
-		return view;
-	}
-	
-	// Activity의 setContentView()다음으로 실행
-	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
 		
 		// count(매치 개수) TextView 참초
-		count = (TextView)getView().findViewById(R.id.count);
-		
+		count = (TextView) view.findViewById(R.id.count);
+
 		// 검색조건 TextView 참조
-		txtSort = (TextView)getView().findViewById(R.id.txt_sort);
+		txtSort = (TextView) view.findViewById(R.id.txt_sort);
+		int which = prefCondition.getInt("orderCondition", 0);
+		txtSort.setText(getResources().getStringArray(R.array.match_sort)[which]);
 		txtSort.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				
+
+				AlertDialog.Builder b = new AlertDialog.Builder(getActivity());
+				b.setTitle("정렬기준 선택");
+				b.setItems(R.array.match_sort,
+						new DialogInterface.OnClickListener() {
+
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
+
+								// 정렬기준 저장
+								prefConditionEditor.putInt("orderCondition",
+										which);
+								prefConditionEditor.commit();
+
+								txtSort.setText(getResources().getStringArray(
+										R.array.match_sort)[which]);
+
+								// 설정된 정렬 기준으로 리스트를 다시 불러온다.
+								getMatchList(0);
+							}
+						});
+				b.create().show();
 			}
 		});
-		
+
 		// 리스트 생성 및 설정
-	    list = (ListView)getView().findViewById(R.id.list);
-	    list.setEmptyView(getView().findViewById(R.id.empty));
-	    list.addHeaderView(new View(getActivity()), null, true);
-	    list.addFooterView(new View(getActivity()), null, true);
-	    list.setAdapter(mlAdapter);
-	    list.setOnItemClickListener(this);
-	    list.setOnScrollListener(this);
+		list = (ListView) view.findViewById(R.id.list);
+		list.setEmptyView(view.findViewById(R.id.empty));
+		list.addHeaderView(new View(getActivity()), null, true);
+		list.addFooterView(new View(getActivity()), null, true);
+		list.setAdapter(mlAdapter);
+		list.setOnItemClickListener(this);
+		list.setOnScrollListener(this);
+		
+		return view;
 	}
 	
 	public void listCountUpdate() {
-		count.setText("총 " + matchList.size() + "개의 매치");
+		count.setText("총 " + matchList.size() + "개");
 	}
 
 	@Override
@@ -129,7 +158,8 @@ public class MatchListFragment extends Fragment implements OnItemClickListener, 
 	public void onActivityResult(int requestCode, int resultCode, Intent intent) {
 		switch (requestCode) {
 		case MATCH_CONDITION:
-			// 검색 조건 설정 후에는 조건에 맞게 다시 가져온다.
+		case ADD_MATCH:
+			// 검색 조건 설정 및 매치 등록 후에는 리스트를 갱신한다.
 			if (resultCode == Activity.RESULT_OK) {
 				getMatchList(0);
 			}
@@ -161,18 +191,23 @@ public class MatchListFragment extends Fragment implements OnItemClickListener, 
 		if (itemId == R.id.add) {
 			// 팀계정 로그인 여부를 확인한다.
 			if(lm.isLogin() && lm.getMemberType().equals("팀회원")) {
-	    		startActivity(new Intent(getActivity(), AddMatchActivity.class));
-	    	} else if(lm.isLogin() && lm.getMemberType().equals("선수회원")) {
+				Intent intent = new Intent(getActivity(), AddMatchActivity.class);
+				startActivityForResult(intent, ADD_MATCH);
+	    	} 
+			else if(lm.isLogin() && lm.getMemberType().equals("선수회원")) {
 	    		Toast.makeText(getActivity(), "매치 등록은 팀 계정만 가능합니다", 0).show();
-	    	} else{
+	    	} 
+			else {
 	    		// 로그인 할것인지 묻는 다이얼로그를 띄운다.
 	    		showLoginAlert();
 	    	}
-		} else if (itemId == R.id.search) {
+		} 
+		else if (itemId == R.id.search) {
 			// 검색조건 Activity 호출
 			Intent intent = new Intent(getActivity(), SetMatchConditionActivity.class);
 			startActivityForResult(intent, MATCH_CONDITION);
-		} else if (itemId == R.id.refresh) {
+		} 
+		else if (itemId == R.id.refresh) {
 			// load match list
 		 	getMatchList(0);
 		}	    
@@ -212,14 +247,26 @@ public class MatchListFragment extends Fragment implements OnItemClickListener, 
 			if( convertView == null ) {
 				convertView = inflater.inflate(R.layout.match_item, parent, false);
 			}
-			TextView dateHeader = (TextView)convertView.findViewById(R.id.date_header);
 			
-			// 첫번째 아이템이거나, 이전 아이템과 등록 날짜가 다른경우 등록 날짜를 출력한다.
-			if(position == 0 || !getItem(position-1).getPostedDate().equals(getItem(position).getPostedDate())) {
-				dateHeader.setText(getItem(position).getPostedDate());
-				dateHeader.setVisibility(View.VISIBLE);
-			} else
+			TextView dateHeader = (TextView) convertView.findViewById(R.id.date_header);
+			
+			// 정렬 기준이 "등록날짜순" 일 때 만 날짜구분선을 출력한다.
+			if (prefCondition.getInt("orderCondition", 0) < 2) {
+				
+
+				// 첫번째 아이템이거나, 이전 아이템과 등록 날짜가 다른경우 등록 날짜를 출력한다.
+				if (position == 0
+						|| !getItem(position - 1).getPostedDate().equals(
+								getItem(position).getPostedDate())) {
+					dateHeader.setText(getItem(position).getPostedDate());
+					dateHeader.setVisibility(View.VISIBLE);
+				} else
+					dateHeader.setVisibility(View.GONE);
+			}
+			else
+				// 이전 정렬 기록이 남아있을 수 있으므로 다른 경우에는 보이지 않게 해준다.
 				dateHeader.setVisibility(View.GONE);
+				
 
 			TextView teamName = (TextView) convertView.findViewById(R.id.mi_team_name);
 			teamName.setText(getItem(position).getTeamName() );
@@ -296,10 +343,7 @@ public class MatchListFragment extends Fragment implements OnItemClickListener, 
 	private void getMatchList(final int startIdx) {
 		
 		String url = getString(R.string.server) + getString(R.string.match_list);
-		
-		// 저장된 검색 조건 가져오기
-		SharedPreferences prefCondition = getActivity().getSharedPreferences("matchConditions", Context.MODE_PRIVATE);
-		
+			
 		// 시간대 배열
 		String[] startTimes = getResources().getStringArray(R.array.start_time);
 		String[] endTimes = getResources().getStringArray(R.array.end_time);
@@ -313,10 +357,11 @@ public class MatchListFragment extends Fragment implements OnItemClickListener, 
 		for( int i = 0; i < 6; i++ )
 			param += "&age" + i + "=" + prefCondition.getBoolean("age" + i, true);
 		param += "&startIdx=" + startIdx;
+		param += "&orderCondition=" + prefCondition.getInt("orderCondition", 0);
 		
 		
 		// 서버 연결
-		new HttpAsyncTask(url, param) {
+		new HttpAsyncTask(url, param, getActivity(), "잠시만 기다려 주세요...") {
 
 			@Override
 			protected void onPostExecute(String result) {

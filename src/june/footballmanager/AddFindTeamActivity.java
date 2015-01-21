@@ -252,6 +252,9 @@ public class AddFindTeamActivity extends Activity implements OnClickListener {
 					json = new JSONObject(result);
 					if(json.getInt("success") == 1) {
 						Toast.makeText(AddFindTeamActivity.this, "게시물이 등록되었습니다.", 0).show();
+						
+						// 액티비티를 종료하기 전에 호출한 액티비티에게 정상적으로 작업이 처리되었음을 알린다.
+						setResult(RESULT_OK);
 						finish();
 					}
 				} catch (JSONException e) {

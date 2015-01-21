@@ -6,6 +6,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -31,6 +32,9 @@ import android.widget.Toast;
 
 public class FindTeamListFragment extends Fragment implements
 		OnItemClickListener, DialogInterface.OnClickListener {
+	
+	private static final int ADD_FIND_TEAM = 1;
+	
 	ListView list;
 	TextView count;
 	TextView empty;
@@ -39,42 +43,86 @@ public class FindTeamListFragment extends Fragment implements
 	FindTeamListAdapter tlAdapter;
 	
 	ArrayList<Integer> scrappedList;	// 스크랩 리스트
+	
+	// 검색조건 프리퍼런스
+	SharedPreferences prefCondition;
+	SharedPreferences.Editor prefConditionEditor;
+	
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setHasOptionsMenu(true);
+		
+		// 리스트 객체 생성
+		findTeamList = new ArrayList<FindTeamItem>();
+
+		// 어댑터 객체 생성
+		tlAdapter = new FindTeamListAdapter(getActivity(), findTeamList);
+		
+		// 검색조건 가져오기
+		prefCondition = getActivity().getSharedPreferences("findTeam",
+				Context.MODE_PRIVATE);
+		prefConditionEditor = prefCondition.edit();
+	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		// Inflate the layout for this fragment
 		View view = inflater.inflate(R.layout.fragment_list, container, false);
+		
+		// 리스트 크기를 나타내는 뷰
+		count = (TextView) view.findViewById(R.id.count);
+		
+		// 정렬기준을 나타내는 뷰
+		txtSort = (TextView) view.findViewById(R.id.txt_sort);
+		int which = prefCondition.getInt("orderCondition", 0);
+		txtSort.setText(getResources().getStringArray(R.array.find_team_sort)[which]);
+		txtSort.setOnClickListener(new OnClickListener() {
 
-		return view;
-	}
+			@Override
+			public void onClick(View v) {
 
-	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
+				AlertDialog.Builder b = new AlertDialog.Builder(getActivity());
+				b.setTitle("정렬기준 선택");
+				b.setItems(R.array.find_team_sort,
+						new DialogInterface.OnClickListener() {
 
-		setHasOptionsMenu(true);
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
 
-		count = (TextView) getView().findViewById(R.id.count);
+								// 정렬기준 저장
+								prefConditionEditor.putInt("orderCondition",
+										which);
+								prefConditionEditor.commit();
 
-		// 리스트 객체 생성
-		findTeamList = new ArrayList<FindTeamItem>();
+								txtSort.setText(getResources().getStringArray(
+										R.array.find_team_sort)[which]);
 
-		// 어댑터 객체 생성
-		tlAdapter = new FindTeamListAdapter(getActivity(), findTeamList);
+								// 설정된 정렬 기준으로 리스트를 다시 불러온다.
+								getFindTeamList();
+							}
+						});
+				b.create().show();
+			}
+		});
 
-		list = (ListView) getView().findViewById(R.id.list);
-		list.setEmptyView(getView().findViewById(R.id.empty));
+		// 리스트뷰 초기화
+		list = (ListView) view.findViewById(R.id.list);
+		list.setEmptyView(view.findViewById(R.id.empty));
 		list.addHeaderView(new View(getActivity()), null, true);
 		list.addFooterView(new View(getActivity()), null, true);
 		list.setAdapter(tlAdapter);
 		list.setOnItemClickListener(this);
 
 		// 엠티뷰 텍스트 설정
-		empty = (TextView) getView().findViewById(R.id.empty);
+		empty = (TextView) view.findViewById(R.id.empty);
 		empty.setText("게시물이 존재하지 않습니다.");
-	}
 
+		return view;
+	}
+	
 	@Override
 	public void onResume() {
 		super.onResume();
@@ -84,7 +132,22 @@ public class FindTeamListFragment extends Fragment implements
 		scrappedList = db.getScrappedFindTeam();
 		
 		// 서버로부터 팀구함 게시물의 리스트를 가져온다.
-		getFindTeamList();
+		if(findTeamList.size() == 0)
+			getFindTeamList();
+		else
+			listCountUpdate();
+	}
+
+	// 팀구함 등록 액티비티로부터 데이터를 받아와 실행하는 메서드
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+		switch (requestCode) {
+		case ADD_FIND_TEAM:
+			// 팀구함 글 등록 후에는 리스트를 갱신한다.
+			if (resultCode == Activity.RESULT_OK) {
+				getFindTeamList();
+			}
+		}
 	}
 
 	@Override
@@ -114,8 +177,8 @@ public class FindTeamListFragment extends Fragment implements
 			LoginManager lm = new LoginManager(getActivity());
 
 			if (lm.isLogin() && lm.getMemberType().equals("선수회원")) {
-				startActivity(new Intent(getActivity(),
-						AddFindTeamActivity.class));
+				startActivityForResult(new Intent(getActivity(),
+						AddFindTeamActivity.class), ADD_FIND_TEAM);
 			} else if(lm.isLogin() && lm.getMemberType().equals("팀회원")) {
 				Toast.makeText(getActivity(),"팀 구함 글 작성은 선수회원만 가능합니다", 0).show();
 			} else {
@@ -126,7 +189,12 @@ public class FindTeamListFragment extends Fragment implements
 
 		case R.id.search:
 			startActivity(new Intent(getActivity(),SetFindTeamConditionActivity.class));
+			
+		case R.id.refresh:
+			getFindTeamList();
 		}
+		
+			
 
 		return super.onOptionsItemSelected(item);
 	}
@@ -168,11 +236,19 @@ public class FindTeamListFragment extends Fragment implements
 			}
 			TextView dateHeader = (TextView)convertView.findViewById(R.id.date_header);
 			
-			// 첫번째 아이템이거나, 이전 아이템과 등록 날짜가 다른경우 등록 날짜를 출력한다.
-			if(position == 0 || !getItem(position-1).getPostedDate().equals(getItem(position).getPostedDate())) {
-				dateHeader.setText(getItem(position).getPostedDate());
-				dateHeader.setVisibility(View.VISIBLE);
+			// 정렬 기준이 "등록날짜순" 일 때 만 날짜구분선을 출력한다.
+			if (prefCondition.getInt("orderCondition", 0) < 2) {
+
+				// 첫번째 아이템이거나, 이전 아이템과 등록 날짜가 다른경우 등록 날짜를 출력한다.
+				if (position == 0
+						|| !getItem(position - 1).getPostedDate().equals(
+								getItem(position).getPostedDate())) {
+					dateHeader.setText(getItem(position).getPostedDate());
+					dateHeader.setVisibility(View.VISIBLE);
+				} else
+					dateHeader.setVisibility(View.GONE);
 			} else
+				// 이전 정렬 기록이 남아있을 수 있으므로 다른 경우에는 보이지 않게 해준다.
 				dateHeader.setVisibility(View.GONE);
 			
 			// 선수 닉네임 출력
@@ -253,15 +329,15 @@ public class FindTeamListFragment extends Fragment implements
 			return convertView;
 		}
 	}
+	
+	public void listCountUpdate() {
+		count.setText("총 " + findTeamList.size() + "개");
+	}
 
 	// 서버로부터 팀구함 리스트를 가져오는 메서드
 	private void getFindTeamList() {
 		// 연결할 페이지의 URL
 		String url = getString(R.string.server) + getString(R.string.find_team_list);
-
-		// 검색 조건 프리퍼런스 열기
-		SharedPreferences prefCondition = getActivity().getSharedPreferences(
-				"findTeam", Context.MODE_PRIVATE);
 
 		// 검색 조건 파리미터 구성
 		String param = "location=" + prefCondition.getString("location", "전국");
@@ -280,8 +356,11 @@ public class FindTeamListFragment extends Fragment implements
 		param += "&startTime=" + startTimes[prefCondition.getInt("time", 0)];
 		param += "&endTime=" + endTimes[prefCondition.getInt("time", 0)];
 		
+		// 정렬 조건 파라미터
+		param += "&orderCondition=" + prefCondition.getInt("orderCondition", 0);
+		
 		// 서버 연결
-		new HttpAsyncTask(url, param) {
+		new HttpAsyncTask(url, param, getActivity(), "잠시만 기다려 주세요...") {
 
 			@Override
 			protected void onPostExecute(String result) {
@@ -302,7 +381,7 @@ public class FindTeamListFragment extends Fragment implements
 					Log.e("getFindTeamList", e.getMessage());
 				} finally {
 					tlAdapter.notifyDataSetChanged();
-					count.setText("총 " + findTeamList.size() + "개");
+					listCountUpdate();
 				}
 			}
 		}.execute();

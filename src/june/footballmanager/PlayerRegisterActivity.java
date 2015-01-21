@@ -159,6 +159,7 @@ public class PlayerRegisterActivity extends Activity implements OnClickListener{
 					json = new JSONObject(result);
 					if (json.getInt("success") == 1) {
 						Toast.makeText(PlayerRegisterActivity.this, "선수 계정 등록이 완료되었습니다!", 0).show();
+						setResult(RESULT_OK);
 						finish();
 					} else {
 						int errorcode = json.getInt("errorcode");

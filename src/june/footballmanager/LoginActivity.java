@@ -78,9 +78,13 @@ public class LoginActivity extends Activity implements OnClickListener {
 				pd.dismiss();
 			}
 		} else if (id == R.id.btn_player_register) {
-			startActivity( new Intent(LoginActivity.this, PlayerRegisterActivity.class));
+			// 약관 동의 화면을 보여준다
+			startActivity(new Intent(LoginActivity.this, AgreementActivity.class).putExtra("registerType", "player"));
+			// startActivity( new Intent(LoginActivity.this, PlayerRegisterActivity.class));
 		} else if (id == R.id.btn_team_register) {
-			startActivity( new Intent(LoginActivity.this, TeamRegisterActivity.class));
+			// 약관 동의 화면을 보여준다
+			startActivity(new Intent(LoginActivity.this, AgreementActivity.class).putExtra("registerType", "team"));
+			// startActivity( new Intent(LoginActivity.this, TeamRegisterActivity.class));
 		} else if (id == R.id.txt_find_pw) {
 			startActivity( new Intent(LoginActivity.this, FindPasswordActivity.class));
 		}

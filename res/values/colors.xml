@@ -5,7 +5,7 @@
     <color name="title">#404040</color>
     <color name="titletext">#FFFFFF</color>
     <color name="information_bar">@color/main</color>
-    <color name="darkgray">#6F6F6F</color>
+    <color name="darkgray">#636363</color>
     <color name="gray">#b2b2b2</color>
     <color name="lightgray">#e7e7e7</color>
     <color name="team_name">@android:color/holo_green_light</color>

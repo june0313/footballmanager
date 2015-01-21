@@ -15,4 +15,10 @@
        	android:icon="@drawable/add"
         android:title="등록"/>
     
+    <item 
+        android:id="@+id/refresh"
+        android:orderInCategory="102" 
+        android:icon="@drawable/refresh"
+        android:title="새로고침"/>
+    
 </menu>

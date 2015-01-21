@@ -342,6 +342,7 @@ public class AddMatchActivity extends Activity implements OnClickListener {
 					
 					if (json.getInt("success") == 1) {
 						Toast.makeText(AddMatchActivity.this, "매치가 등록되었습니다.", 0).show();
+						setResult(RESULT_OK);
 						finish();
 					}
 				} catch (JSONException e) {
