@@ -53,9 +53,10 @@
         <service android:name=".GcmIntentService" />
 
         <!-- meta data -->
+        <!-- Android application key for google maps api -->
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyDMXnN21FqymrWiKS-MavA_fh9LfUgv-Qo" />
+            android:value="AIzaSyDldQG3tHGtQwzyZImidZITqoVdQuZSy38" />
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />

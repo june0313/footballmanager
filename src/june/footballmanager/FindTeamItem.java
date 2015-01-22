@@ -1,9 +1,5 @@
 ﻿package june.footballmanager;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 

@@ -8,7 +8,6 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.json.JSONException;
@@ -32,9 +31,10 @@ public class GCMManager {
     private static final String PROPERTY_APP_VERSION = "appVersion";
     private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
     public static final String GCM_SERVER = "https://android.googleapis.com/gcm/send";
-    public static final String API_KEY = "AIzaSyDvNq6z6XIC91bpl1WXtDSIfWkV_eRDaOU";
+   
+    public static final String API_KEY = "AIzaSyAVsb6fHCeVBC-aL5XePU7YxUrmEyJz2P8";
     // 프로젝트 넘버 = SENDER ID
-    public static final String SENDER_ID = "408295761323";
+    public static final String SENDER_ID = "113823460954";
     
     // 로그 메시지에 사용될 태그
     static final String TAG = "FM_GCM";
