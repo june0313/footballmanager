@@ -49,6 +49,7 @@
     <string name="scrapped_find_player_list">get_scrapped_find_player_list.php</string>
     <string name="scrapped_find_team_list">get_scrapped_find_team_list.php</string>
     <string name="opposing_teamname">get_opposing_teamname.php</string>
+  	<string name="init_password">init_password.php</string>
 
     <!-- 액티비티 타이틀 -->
     <string name="title_activity_login">로그인</string>
