@@ -101,7 +101,7 @@ public class SetMatchConditionActivity extends Activity implements OnClickListen
 	
 	private void printStoredCondition() {
 		
-		// 각 조건들을 출력할 텍스트뷰 생성 및 텍스트 출력
+		// 위치 검색 조건 출력
 	    txtLocation = (TextView) findViewById(R.id.txt_location);
 	    txtLocation.setText(prefCondition.getString("location", "전국"));
 	    
@@ -227,29 +227,27 @@ public class SetMatchConditionActivity extends Activity implements OnClickListen
 		} else if ( id == R.id.complete ) {	// "설정 완료" 버튼 클릭
 			// 임시로 설정된 지역정보를 프리퍼런스에 저장한다.
 			prefConditionEditor.putString("location", txtLocation.getText().toString());
-			prefConditionEditor.commit();
 			
 			// 임시로 설정된 시간 정보를 프리퍼런스에 저장한다.
 			prefConditionEditor.putInt("time", selectedTime);
-			prefConditionEditor.commit();
 
 			// 임시로 설정된 요일 정보를 프리퍼런스에 저장한다.
 			for (int i = 0; i < 7; i++) {
 				prefConditionEditor.putBoolean("day" + i, bDays[i]);
-				prefConditionEditor.commit();
 			}
 
 			// 임시로 설정된 연령대 정보를 프리퍼런스에 저장한다.
 			for (int i = 0; i < 6; i++) {
 				prefConditionEditor.putBoolean("age" + i, bAges[i]);
-				prefConditionEditor.commit();
 			}
+			
+			// 변경 내용을 커밋한다.
+			prefConditionEditor.commit();
 			
 			Toast.makeText(SetMatchConditionActivity.this, "검색 조건이 설정되었습니다", 0).show();
 			
 			// 호출한 액티비티에 조건이 설정되었음을 알린다.
-			Intent intent = new Intent();
-			setResult(RESULT_OK, intent);
+			setResult(RESULT_OK);
 			finish();
 		}
 	}

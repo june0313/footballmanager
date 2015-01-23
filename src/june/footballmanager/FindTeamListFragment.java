@@ -34,6 +34,7 @@ public class FindTeamListFragment extends Fragment implements
 		OnItemClickListener, DialogInterface.OnClickListener {
 	
 	private static final int ADD_FIND_TEAM = 1;
+	private static final int SET_TEAM_CONDITION = 2;
 	
 	ListView list;
 	TextView count;
@@ -143,7 +144,8 @@ public class FindTeamListFragment extends Fragment implements
 	public void onActivityResult(int requestCode, int resultCode, Intent intent) {
 		switch (requestCode) {
 		case ADD_FIND_TEAM:
-			// 팀구함 글 등록 후에는 리스트를 갱신한다.
+		case SET_TEAM_CONDITION:
+			// 팀구함 글 등록 및 검색 조건 설정 후에는 리스트를 갱신한다.
 			if (resultCode == Activity.RESULT_OK) {
 				getFindTeamList();
 			}
@@ -188,14 +190,14 @@ public class FindTeamListFragment extends Fragment implements
 			break;
 
 		case R.id.search:
-			startActivity(new Intent(getActivity(),SetFindTeamConditionActivity.class));
+			startActivityForResult(new Intent(getActivity(),SetFindTeamConditionActivity.class), SET_TEAM_CONDITION);
+			break;
 			
 		case R.id.refresh:
 			getFindTeamList();
+			break;
 		}
 		
-			
-
 		return super.onOptionsItemSelected(item);
 	}
 

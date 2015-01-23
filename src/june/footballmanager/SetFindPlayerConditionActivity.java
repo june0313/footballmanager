@@ -44,8 +44,11 @@ public class SetFindPlayerConditionActivity extends Activity implements OnClickL
 	
 	// 포지션 설정 여부를 저장할 배열
 	boolean[] bPosition;
+	
+	// 설정된 활동 요일을 임시로 저장할 변수
+	String selectedDay;
 
-	// 다이얼로그에서 선택한 활동 요일을 저장할 배열	
+	// 직접 선택한 활동 요일을 저장할 배열	
 	public boolean selectedDays[];
 	
 	// 다이얼로그에서 선택한 활동 시간을 저장할 변수
@@ -63,6 +66,10 @@ public class SetFindPlayerConditionActivity extends Activity implements OnClickL
 		actionBar.setDisplayHomeAsUpEnabled(true);
 		actionBar.setIcon(R.drawable.search);
 		actionBar.setSubtitle("검색 조건 설정");
+		
+		// 프리퍼런스 열기
+	    prefCondition = getSharedPreferences("findPlayer", MODE_PRIVATE);
+	    prefConditionEditor = prefCondition.edit();
 		
 		// 각 조건별 레이아웃 객체 생성
 	    condLocation = (RelativeLayout) findViewById(R.id.cond_location);
@@ -84,18 +91,11 @@ public class SetFindPlayerConditionActivity extends Activity implements OnClickL
 	    btnComplete = (Button) findViewById(R.id.complete);
 	    btnComplete.setOnClickListener(this);
 		
-		// 프리퍼런스 열기
-	    prefCondition = getSharedPreferences("findPlayer", MODE_PRIVATE);
-	    prefConditionEditor = prefCondition.edit();
+	    // 저장되어있는 검색 조건을 각 뷰에 출력한다.
+	    printStoredCondition();
 	}
 	
-	@Override
-	protected void onResume() {
-		super.onResume();
-		Resources res = getResources();
-		
-		// 각 조건들을 출력할 텍스트뷰 생성 및 텍스트 출력
-		
+	private void printStoredCondition() {
 		// 프리퍼런스에 저장된 지역 정보 출력
 	    txtLocation = (TextView) findViewById(R.id.txt_location);
 	    txtLocation.setText(prefCondition.getString("location", "전국"));
@@ -105,6 +105,8 @@ public class SetFindPlayerConditionActivity extends Activity implements OnClickL
 	    for( int i = 0; i < 15; i++ ) {
 	    	bPosition[i] = prefCondition.getBoolean("pos" + i, true);
 	    }
+	    
+	    Resources res = getResources();
 	    
 	    // 가져온 포지션 출력
 	    String[] positions = res.getStringArray(R.array.positions_short);
@@ -133,11 +135,12 @@ public class SetFindPlayerConditionActivity extends Activity implements OnClickL
 	    txtAges.setText(agesForDisplay);
 	    
 	    // 프리퍼런스에 저장된 활동 요일 정보 가져오기
+	    selectedDay = prefCondition.getString("actDay", "무관");
 	    selectedDays = new boolean[7];
 	    for(int i = 0; i < 7; i++)
 	    	selectedDays[i] = prefCondition.getBoolean("day" + i, false);
 	    txtActDay = (TextView)findViewById(R.id.txt_act_day);
-	    txtActDay.setText(prefCondition.getString("actDay", "무관"));
+	    txtActDay.setText(selectedDay);
 	    
 	    // 프리퍼런스에 저장된 활동 시간 정보 가져오기
 	    selectedTime = prefCondition.getInt("time", 0);
@@ -198,17 +201,14 @@ public class SetFindPlayerConditionActivity extends Activity implements OnClickL
 				
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
-					String selectedDay;
 					
 					if(which < 3) {
+						// 선택한 요일(무관, 주중, 주말)을 출력한다.
 						selectedDay = SetFindPlayerConditionActivity.this.getResources().getStringArray(R.array.days_big)[which];
 						txtActDay.setText(selectedDay);
-						
-						// 설정된 요일 조건을 프리퍼런스에 저장한다.
-						prefConditionEditor.putString("actDay", selectedDay);
-						prefConditionEditor.commit();
 					}
 					else {
+						// 직접 선택을 클릭한 경우
 						// 직접 요일을 고를수 있도록 다이얼로그를 띄운다.
 						AlertDialog.Builder innerBuilder = new AlertDialog.Builder(SetFindPlayerConditionActivity.this);
 						innerBuilder.setMultiChoiceItems(R.array.days, selectedDays, new DialogInterface.OnMultiChoiceClickListener() {
@@ -220,7 +220,6 @@ public class SetFindPlayerConditionActivity extends Activity implements OnClickL
 								for(int i = 0; i < 7; i++){
 									Log.d("선택된 요일 확인", selectedDays[i] + "");
 								}
-								
 							}
 						});
 						
@@ -229,27 +228,18 @@ public class SetFindPlayerConditionActivity extends Activity implements OnClickL
 							@Override
 							public void onClick(DialogInterface dialog, int which) {
 								// 선택된 요일로 문자열을 구성하여 출력한다.
-								String tmpStr = "";
+								selectedDay = "";
 								for(int i = 0; i < 7; i++) {
 									if(selectedDays[i] == true) {
-										tmpStr += SetFindPlayerConditionActivity.this.getResources().getStringArray(R.array.days_short)[i] + " ";
+										selectedDay += SetFindPlayerConditionActivity.this.getResources().getStringArray(R.array.days_short)[i] + " ";
 										// selectedDays[i] = false;
 									}
 								}
 								
 								// 아무 요일을 선택하지 않으면 '무관'으로 설정한다.
-								if(tmpStr.length() == 0)
-									tmpStr = "무관";
-								txtActDay.setText(tmpStr);
-								
-								// 설정된 요일 조건을 프리퍼런스에 저장한다.
-								prefConditionEditor.putString("actDay", tmpStr);
-								prefConditionEditor.commit();
-								
-								// 요일을 직접 선택한 경우 각 요일별 선택 정보도 함께 저장한다.
-								for(int i = 0; i < 7; i++)
-									prefConditionEditor.putBoolean("day"+i, selectedDays[i]);
-								prefConditionEditor.commit();
+								if(selectedDay.length() == 0)
+									selectedDay = "무관";
+								txtActDay.setText(selectedDay);
 							}
 						});
 						innerBuilder.create().show();
@@ -271,10 +261,6 @@ public class SetFindPlayerConditionActivity extends Activity implements OnClickL
 					
 					// 설정된 시간 정보를 출력한다.
 					txtActTime.setText(SetFindPlayerConditionActivity.this.getResources().getStringArray(R.array.time)[which]);
-					
-					// 설정된 시간 정보를 프리퍼런스에 저장한다.
-					prefConditionEditor.putInt("time", which);
-					prefConditionEditor.commit();
 				}
 			});
 			
@@ -282,7 +268,37 @@ public class SetFindPlayerConditionActivity extends Activity implements OnClickL
 			break;
 			
 		case R.id.complete:
+			// 임시로 설정된 지역정보를 프리퍼런스에 저장한다.
+			prefConditionEditor.putString("location", txtLocation.getText()
+					.toString());
+			
+			// 설정된 포지션 정보를 프리퍼런스에 저장한다.
+			for(int i = 0; i < 15; i++) {
+				prefConditionEditor.putBoolean("pos" + i, bPosition[i]);
+			}
+			
+			// 설정된 연령대 정보를 프리퍼런스에 저장한다.
+			for (int i = 0; i < 6; i++) {
+				prefConditionEditor.putBoolean("age" + i, bAges[i]);
+			}
+			
+			// 설정된 요일 조건을 프리퍼런스에 저장한다.
+			prefConditionEditor.putString("actDay", selectedDay);
+			
+			// 요일을 직접 선택한 경우 각 요일별 선택 정보도 함께 저장한다.
+			for(int i = 0; i < 7; i++)
+				prefConditionEditor.putBoolean("day"+i, selectedDays[i]);
+			
+
+			// 설정된 시간 정보를 프리퍼런스에 저장한다.
+			prefConditionEditor.putInt("time", selectedTime);
+			
+			// 변경 내용을 커밋한다.
+			prefConditionEditor.commit();
+			
+			// 호출한 액티비티에 조건이 설정되었음을 알린다.
 			Toast.makeText(SetFindPlayerConditionActivity.this, "검색 조건이 설정되었습니다", 0).show();
+			setResult(Activity.RESULT_OK);
 			finish();
 			break;
 		}
@@ -294,10 +310,8 @@ public class SetFindPlayerConditionActivity extends Activity implements OnClickL
 		switch (requestCode) {
 		case LOCATION:
 			if (resultCode == RESULT_OK) {
-				// 받아온 지역정보를 프리퍼런스에 저장한다.
-				prefConditionEditor.putString("location",
-						intent.getStringExtra("location"));
-				prefConditionEditor.commit();
+				// 받아온 지역정보를 출력한다.
+				txtLocation.setText(intent.getStringExtra("location"));
 			}
 		}
 	}
@@ -319,18 +333,7 @@ public class SetFindPlayerConditionActivity extends Activity implements OnClickL
 		
 		@Override
 		public void onClick(DialogInterface dialog, int which) {
-			// 설정된 포지션 정보를 프리퍼런스에 저장한다.
-			for(int i = 0; i < 15; i++) {
-				prefConditionEditor.putBoolean("pos" + i, bPosition[i]);
-				prefConditionEditor.commit();
-			}
-			
-			// 프리퍼런스에 저장된 포지션 정보 가져오기
-			for (int i = 0; i < 15; i++) {
-				bPosition[i] = prefCondition.getBoolean("pos" + i, true);
-			}
-			
-			// 가져온 포지션 출력
+			// 설정된 포지션 출력
 			Resources res = getResources();
 			String[] positinos = res.getStringArray(R.array.positions_short);
 			String posForDisplay = "";
@@ -348,23 +351,12 @@ public class SetFindPlayerConditionActivity extends Activity implements OnClickL
 
 		@Override
 		public void onClick(DialogInterface dialog, int which) {
-			// 설정된 연령대 정보를 프리퍼런스에 저장한다.
-			for (int i = 0; i < 6; i++) {
-				prefConditionEditor.putBoolean("age" + i, bAges[i]);
-				prefConditionEditor.commit();
-			}
-
-			// 프리퍼런스에 저장된 연령대 정보 가져오기
-			for (int i = 0; i < 6; i++) {
-				bAges[i] = prefCondition.getBoolean("age" + i, true);
-			}
-
-			// 가져온 연령대 출력
+			// 설정된 연령대 출력
 			Resources res = getResources();
 			String[] ages = res.getStringArray(R.array.ages);
 			String agesForDisplay = "";
 			for (int i = 0; i < 6; i++) {
-							if (bAges[i])
+				if (bAges[i])
 					agesForDisplay += " " + ages[i];
 			}
 

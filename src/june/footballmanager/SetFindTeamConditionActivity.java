@@ -47,6 +47,13 @@ public class SetFindTeamConditionActivity extends Activity implements OnClickLis
 		// 포지션 설정 여부를 저장할 배열
 		boolean[] bPosition;
 		
+		// 설정된 나이를 임시로 저장할 변수
+		int tmpStartAge;
+		int tmpEndAge;
+		
+		// 설정된 활동 요일을 임시로 저장할 변수
+		String selectedDay;
+		
 		// 다이얼로그에서 선택한 활동 요일을 저장할 배열	
 		public boolean selectedDays[];
 		
@@ -65,6 +72,11 @@ public class SetFindTeamConditionActivity extends Activity implements OnClickLis
 		actionBar.setDisplayHomeAsUpEnabled(true);
 		actionBar.setIcon(R.drawable.search);
 		actionBar.setSubtitle("검색 조건 설정");
+		
+		
+		// 프리퍼런스 열기
+	    prefCondition = getSharedPreferences("findTeam", MODE_PRIVATE);
+	    prefConditionEditor = prefCondition.edit();
 		
 		// 각 조건별 레이아웃 객체 생성
 	    condLocation = (RelativeLayout) findViewById(R.id.cond_location);
@@ -85,23 +97,21 @@ public class SetFindTeamConditionActivity extends Activity implements OnClickLis
 	    // 설정 완료 버튼 객체 생성
 	    btnComplete = (Button) findViewById(R.id.complete);
 	    btnComplete.setOnClickListener(this);
-		
-		// 프리퍼런스 열기
-	    prefCondition = getSharedPreferences("findTeam", MODE_PRIVATE);
-	    prefConditionEditor = prefCondition.edit();
+	    
+	    // 저장되어있는 검색 조건을 각 뷰에 출력한다.
+	    printStoredCondition();
+
 	}
 	
-	@Override
-	protected void onResume() {
-		super.onResume();
-		Resources res = getResources();
+	private void printStoredCondition() {
 		
-		// 각 조건들을 출력할 텍스트뷰 생성 및 텍스트 출력
+		Resources res = getResources();
+
 		// 위치 검색 조건 출력
-	    txtLocation = (TextView) findViewById(R.id.txt_location);
-	    txtLocation.setText(prefCondition.getString("location", "전국"));
-	    
-	    // 프리퍼런스에 저장된 포지션 정보 가져오기
+		txtLocation = (TextView) findViewById(R.id.txt_location);
+		txtLocation.setText(prefCondition.getString("location", "전국"));
+		
+		// 프리퍼런스에 저장된 포지션 정보 가져오기
 	    bPosition = new boolean[15];
 	    for( int i = 0; i < 15; i++ ) {
 	    	bPosition[i] = prefCondition.getBoolean("pos" + i, true);
@@ -117,23 +127,27 @@ public class SetFindTeamConditionActivity extends Activity implements OnClickLis
 	    txtPosition = (TextView)findViewById(R.id.txt_position);
 	    txtPosition.setText(positionsForDisplay);
 	    
-		// 나이 검색 조건 출력
+		// 저장된 나이 검색 조건 출력
 		txtAge = (TextView) findViewById(R.id.txt_age);
-		txtAge.setText(prefCondition.getInt("startAge", 0) + "세 ~ "
-				+ prefCondition.getInt("endAge", 99) + "세");
+		tmpStartAge = prefCondition.getInt("startAge", 0);
+		tmpEndAge = prefCondition.getInt("endAge", 99);
+		txtAge.setText(tmpStartAge + "세 ~ "
+				+ tmpEndAge + "세");
 		
 		// 프리퍼런스에 저장된 활동 요일 정보 가져오기
+		selectedDay = prefCondition.getString("actDay", "무관");
 	    selectedDays = new boolean[7];
 	    for(int i = 0; i < 7; i++)
 	    	selectedDays[i] = prefCondition.getBoolean("day" + i, false);
 	    txtActDay = (TextView)findViewById(R.id.txt_act_day);
-	    txtActDay.setText(prefCondition.getString("actDay", "무관"));
+	    txtActDay.setText(selectedDay);
 	    
 	    // 프리퍼런스에 저장된 활동 시간 정보 가져오기
 	    selectedTime = prefCondition.getInt("time", 0);
 	    txtActTime = (TextView)findViewById(R.id.txt_act_time);
 	    txtActTime.setText(getResources().getStringArray(R.array.time)[selectedTime]);
 	}
+
 	
 	// 각 조건뷰 클릭에 대한 콜백 메서드
 	@Override
@@ -187,13 +201,12 @@ public class SetFindTeamConditionActivity extends Activity implements OnClickLis
 
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
-					// 나이 조건 출력
+					// 설정된 나이 조건 출력
 					txtAge.setText(startAge.getValue() + "세 ~ " + endAge.getValue() + "세");
 					
-					// 나이 조건 저장
-					prefConditionEditor.putInt("startAge", startAge.getValue());
-					prefConditionEditor.putInt("endAge", endAge.getValue());
-					prefConditionEditor.commit();
+					// 설정된 나이 조건을 임시로 저장
+					tmpStartAge = startAge.getValue();
+					tmpEndAge = endAge.getValue();
 				}
 				
 			});
@@ -208,15 +221,10 @@ public class SetFindTeamConditionActivity extends Activity implements OnClickLis
 				
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
-					String selectedDay;
 					
 					if(which < 3) {
 						selectedDay = SetFindTeamConditionActivity.this.getResources().getStringArray(R.array.days_big)[which];
 						txtActDay.setText(selectedDay);
-						
-						// 설정된 요일 조건을 프리퍼런스에 저장한다.
-						prefConditionEditor.putString("actDay", selectedDay);
-						prefConditionEditor.commit();
 					}
 					else {
 						// 직접 요일을 고를수 있도록 다이얼로그를 띄운다.
@@ -239,27 +247,18 @@ public class SetFindTeamConditionActivity extends Activity implements OnClickLis
 							@Override
 							public void onClick(DialogInterface dialog, int which) {
 								// 선택된 요일로 문자열을 구성하여 출력한다.
-								String tmpStr = "";
+								selectedDay= "";
 								for(int i = 0; i < 7; i++) {
 									if(selectedDays[i] == true) {
-										tmpStr += SetFindTeamConditionActivity.this.getResources().getStringArray(R.array.days_short)[i] + " ";
+										selectedDay += SetFindTeamConditionActivity.this.getResources().getStringArray(R.array.days_short)[i] + " ";
 										// selectedDays[i] = false;
 									}
 								}
 								
 								// 아무 요일을 선택하지 않으면 '무관'으로 설정한다.
-								if(tmpStr.length() == 0)
-									tmpStr = "무관";
-								txtActDay.setText(tmpStr);
-								
-								// 설정된 요일 조건을 프리퍼런스에 저장한다.
-								prefConditionEditor.putString("actDay", tmpStr);
-								prefConditionEditor.commit();
-								
-								// 요일을 직접 선택한 경우 각 요일별 선택 정보도 함께 저장한다.
-								for(int i = 0; i < 7; i++)
-									prefConditionEditor.putBoolean("day"+i, selectedDays[i]);
-								prefConditionEditor.commit();
+								if(selectedDay.length() == 0)
+									selectedDay = "무관";
+								txtActDay.setText(selectedDay);
 							}
 						});
 						innerBuilder.create().show();
@@ -281,10 +280,6 @@ public class SetFindTeamConditionActivity extends Activity implements OnClickLis
 					
 					// 설정된 시간 정보를 출력한다.
 					txtActTime.setText(SetFindTeamConditionActivity.this.getResources().getStringArray(R.array.time)[which]);
-					
-					// 설정된 시간 정보를 프리퍼런스에 저장한다.
-					prefConditionEditor.putInt("time", which);
-					prefConditionEditor.commit();
 				}
 			});
 			
@@ -292,8 +287,35 @@ public class SetFindTeamConditionActivity extends Activity implements OnClickLis
 			break;
 
 		case R.id.complete:
+			// 받아온 지역정보를 프리퍼런스에 저장한다.
+			prefConditionEditor.putString("location", txtLocation.getText().toString());
+
+			// 설정된 포지션 정보를 프리퍼런스에 저장한다.
+			for (int i = 0; i < 15; i++) {
+				prefConditionEditor.putBoolean("pos" + i, bPosition[i]);
+			}
+			
+			// 설정된 나이 조건 저장
+			prefConditionEditor.putInt("startAge", tmpStartAge);
+			prefConditionEditor.putInt("endAge", tmpEndAge);
+			
+			// 설정된 요일 조건을 프리퍼런스에 저장한다.
+			prefConditionEditor.putString("actDay", selectedDay);			
+			
+			// 요일을 직접 선택한 경우 각 요일별 선택 정보도 함께 저장한다.
+			for(int i = 0; i < 7; i++)
+				prefConditionEditor.putBoolean("day"+i, selectedDays[i]);
+			
+			// 설정된 시간 정보를 프리퍼런스에 저장한다.
+			prefConditionEditor.putInt("time", selectedTime);
+			
+			// 변경된 내용을 커밋한다.
+			prefConditionEditor.commit();
+
+			// 호출한 액티비티에 조건이 설정되었음을 알린다.
 			Toast.makeText(SetFindTeamConditionActivity.this, "검색 조건이 설정되었습니다",
 					0).show();
+			setResult(RESULT_OK);
 			finish();
 			break;
 		}
@@ -305,10 +327,9 @@ public class SetFindTeamConditionActivity extends Activity implements OnClickLis
 		switch (requestCode) {
 		case LOCATION:
 			if (resultCode == RESULT_OK) {
-				// 받아온 지역정보를 프리퍼런스에 저장한다.
-				prefConditionEditor.putString("location",
-						intent.getStringExtra("location"));
-				prefConditionEditor.commit();
+				
+				// 받아온 지역정보를 출력한다.
+				txtLocation.setText(intent.getStringExtra("location"));
 			}
 		}
 	}
@@ -318,18 +339,8 @@ public class SetFindTeamConditionActivity extends Activity implements OnClickLis
 
 		@Override
 		public void onClick(DialogInterface dialog, int which) {
-			// 설정된 포지션 정보를 프리퍼런스에 저장한다.
-			for (int i = 0; i < 15; i++) {
-				prefConditionEditor.putBoolean("pos" + i, bPosition[i]);
-				prefConditionEditor.commit();
-			}
-
-			// 프리퍼런스에 저장된 포지션 정보 가져오기
-			for (int i = 0; i < 15; i++) {
-				bPosition[i] = prefCondition.getBoolean("pos" + i, true);
-			}
-
-			// 가져온 포지션 출력
+			
+			// 설정된 포지션 출력
 			Resources res = getResources();
 			String[] positinos = res.getStringArray(R.array.positions_short);
 			String posForDisplay = "";
@@ -339,35 +350,6 @@ public class SetFindTeamConditionActivity extends Activity implements OnClickLis
 			}
 
 			txtPosition.setText(posForDisplay);
-		}
-	};
-
-	// 나이 설정 다이얼로그 리스너
-	private DialogInterface.OnClickListener ageSetListener = new DialogInterface.OnClickListener() {
-
-		@Override
-		public void onClick(DialogInterface dialog, int which) {
-			// 설정된 연령대 정보를 프리퍼런스에 저장한다.
-			for (int i = 0; i < 6; i++) {
-				prefConditionEditor.putBoolean("age" + i, bAges[i]);
-				prefConditionEditor.commit();
-			}
-
-			// 프리퍼런스에 저장된 연령대 정보 가져오기
-			for (int i = 0; i < 6; i++) {
-				bAges[i] = prefCondition.getBoolean("age" + i, true);
-			}
-
-			// 가져온 연령대 출력
-			Resources res = getResources();
-			String[] ages = res.getStringArray(R.array.ages);
-			String agesForDisplay = "";
-			for (int i = 0; i < 6; i++) {
-				if (bAges[i])
-					agesForDisplay += " " + ages[i];
-			}
-
-			txtAge.setText(agesForDisplay);
 		}
 	};
 
@@ -382,6 +364,4 @@ public class SetFindTeamConditionActivity extends Activity implements OnClickLis
 
 		return false;
 	}
-
-
 }

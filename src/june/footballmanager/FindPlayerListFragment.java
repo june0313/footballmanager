@@ -37,6 +37,7 @@ import android.widget.Toast;
 
 public class FindPlayerListFragment extends Fragment implements OnItemClickListener, DialogInterface.OnClickListener {
 	private static final int ADD_FIND_PLAYER = 1;
+	private static final int SET_PLAYER_CONDITION = 2;
 	
 	ListView list;
 	TextView empty;
@@ -159,7 +160,8 @@ public class FindPlayerListFragment extends Fragment implements OnItemClickListe
 	public void onActivityResult(int requestCode, int resultCode, Intent intent) {
 		switch (requestCode) {
 		case ADD_FIND_PLAYER:
-			// 선수모집 글 등록 후에는 리스트를 갱신한다.
+		case SET_PLAYER_CONDITION:
+			// 선수모집 글 등록 및 검색 조건 설중 후에는 리스트를 갱신한다.
 			if (resultCode == Activity.RESULT_OK) {
 				getFindPlayerList();
 			}
@@ -190,10 +192,12 @@ public class FindPlayerListFragment extends Fragment implements OnItemClickListe
 			break;
 			
 		case R.id.search:
-			startActivity(new Intent(getActivity(), SetFindPlayerConditionActivity.class));
+			startActivityForResult(new Intent(getActivity(), SetFindPlayerConditionActivity.class), SET_PLAYER_CONDITION);
+			break;
 			
 		case R.id.refresh:
 			getFindPlayerList();
+			break;
 		}
 		
 		return super.onOptionsItemSelected(item);
