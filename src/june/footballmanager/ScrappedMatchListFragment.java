@@ -28,6 +28,7 @@ public class ScrappedMatchListFragment extends Fragment implements OnItemClickLi
 	ListView list;
 	TextView count;
 	TextView empty;
+	TextView txtSort;
 	
 	// 스크랩한 매치 번호 스트링
 	String scrappedItems;
@@ -36,8 +37,13 @@ public class ScrappedMatchListFragment extends Fragment implements OnItemClickLi
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		// Inflate the layout for this fragment
-		return inflater.inflate(R.layout.fragment_list,
-				container, false);
+		View view = inflater.inflate(R.layout.fragment_list, container, false);
+
+		// 정렬기준 뷰는 숨긴다.
+		txtSort = (TextView) view.findViewById(R.id.txt_sort);
+		txtSort.setVisibility(View.INVISIBLE);
+
+		return view;
 	}
 
 	// 뷰 참조

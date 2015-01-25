@@ -49,6 +49,10 @@ public class ScrappedFindPlayerListFragment extends Fragment implements OnItemCl
 			Bundle savedInstanceState) {
 		// Inflate the layout for this fragment
 		View view = inflater.inflate(R.layout.fragment_list, container, false);
+		
+		// 정렬기준 뷰는 숨긴다.
+		txtSort = (TextView)view.findViewById(R.id.txt_sort);
+		txtSort.setVisibility(View.INVISIBLE);
 	    	    
 		return view;
 	}
