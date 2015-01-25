@@ -83,7 +83,7 @@ public class MatchListFragment extends Fragment implements OnItemClickListener, 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		// Inflate the layout for this fragment
-		View view = inflater.inflate(R.layout.fragment_list, container, false);
+		View view = inflater.inflate(R.layout.list_layout, container, false);
 		
 		// count(매치 개수) TextView 참초
 		count = (TextView) view.findViewById(R.id.count);

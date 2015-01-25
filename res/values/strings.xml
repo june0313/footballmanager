@@ -49,7 +49,9 @@
     <string name="scrapped_find_player_list">get_scrapped_find_player_list.php</string>
     <string name="scrapped_find_team_list">get_scrapped_find_team_list.php</string>
     <string name="opposing_teamname">get_opposing_teamname.php</string>
-  	<string name="init_password">init_password.php</string>
+    <string name="init_password">init_password.php</string>
+    <string name="my_find_team_list">get_my_find_team_list.php</string>
+    <string name="my_find_player_list">get_my_find_player_list.php</string>
 
     <!-- 액티비티 타이틀 -->
     <string name="title_activity_login">로그인</string>
@@ -80,5 +82,7 @@
     <string name="title_activity_scrap">스크랩</string>
     <string name="title_activity_update_password">비밀번호 변경</string>
     <string name="title_activity_agreement">계정 등록</string>
+    <string name="title_activity_my_find_team_list">내가 작성한 글</string>
+    <string name="title_activity_my_find_player_list">내가 작성한 글</string>
 
 </resources>

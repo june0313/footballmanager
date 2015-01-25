@@ -135,6 +135,7 @@
         <item >계정 관리</item>
         <item >내가 등록한 매치</item>
         <item >내가 신청한 매치</item>
+        <item>내가 작성한 글</item>
         <item >스크랩</item>
         <item >어플리케이션 설정</item>
         <item >어플리케이션 정보</item>
@@ -142,7 +143,7 @@
     
     <string-array name="extra_items_on_player">
         <item >계정 관리</item>
-        <item >내가 쓴 글</item>
+        <item >내가 작성한 글</item>
         <item >스크랩</item>
         <item >어플리케이션 설정</item>
         <item >어플리케이션 정보</item>

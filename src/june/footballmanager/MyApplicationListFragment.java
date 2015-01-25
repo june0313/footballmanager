@@ -67,7 +67,7 @@ public class MyApplicationListFragment extends Fragment implements OnItemClickLi
 	    
 	    if(isAccepted == 0)
 	    	empty.setText("신청한 매치가 없습니다.");
-	    else if(isAccepted == 0)
+	    else if(isAccepted == 1)
 	    	empty.setText("수락된 매치가 없습니다.");
 	    else
 	    	empty.setText("거절된 매치가 없습니다.");

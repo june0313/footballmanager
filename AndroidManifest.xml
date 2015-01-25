@@ -197,6 +197,14 @@
             android:name=".AgreementActivity"
             android:label="@string/title_activity_agreement" >
         </activity>
+        <activity
+            android:name=".MyFindTeamListActivity"
+            android:label="@string/title_activity_my_find_team_list" >
+        </activity>
+        <activity
+            android:name=".MyFindPlayerListActivity"
+            android:label="@string/title_activity_my_find_player_list" >
+        </activity>
     </application>
 
 </manifest>

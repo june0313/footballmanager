@@ -10,7 +10,6 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 /**
  * A simple {@link android.support.v4.app.Fragment} subclass.
@@ -81,8 +80,8 @@ public class ExtraFragment extends Fragment implements OnItemClickListener {
 					intent = new Intent(this.getActivity(), MyMatchActivity.class);
 					getActivity().startActivity(intent);
 				} else {
-					// 선수회원 : 내가 쓴 글
-					Toast.makeText(getActivity(), "내가 쓴 글", 0).show();
+					// 선수회원 : 내가 작성한 글
+					startActivity(new Intent(getActivity(), MyFindTeamListActivity.class));
 				}
 			} else {
 				// 비로그인 : 스크랩
@@ -107,6 +106,12 @@ public class ExtraFragment extends Fragment implements OnItemClickListener {
 			}
 			break;
 		case 3:
+			// 팀회원 : 내가 작성한 글
+			startActivity(new Intent(getActivity(), MyFindPlayerListActivity.class));
+			
+			break;
+		case 4:
+			// 팀회원 : 스크랩
 			if (lm.isLogin() && lm.getMemberType().equals("팀회원")) {
 				// 스크랩
 				intent = new Intent(this.getActivity(), ScrapActivity.class);
@@ -114,5 +119,6 @@ public class ExtraFragment extends Fragment implements OnItemClickListener {
 			}
 			break;
 		}
+		
 	}
 }
