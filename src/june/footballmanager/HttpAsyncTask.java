@@ -8,6 +8,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
@@ -49,6 +50,7 @@ public abstract class HttpAsyncTask extends AsyncTask<Void, Void, String>{
 			URL url = new URL(_url);
 			HttpURLConnection conn = (HttpURLConnection) url
 					.openConnection();
+			conn.setConnectTimeout(5000);
 			conn.setRequestMethod("POST");
 			conn.setDoInput(true);
 			conn.setDoOutput(true);
@@ -69,13 +71,15 @@ public abstract class HttpAsyncTask extends AsyncTask<Void, Void, String>{
 			}
 
 		} catch (MalformedURLException e) {
-			Log.e("HttpAsyncTask", e.getMessage());
+			Log.e("HttpAsyncTask/MalFormURL", e.getMessage());
 		} catch (IOException e) {
-			Log.e("HttpAsyncTask", e.getMessage());
+			Log.e("HttpAsyncTask/IOE", e.getMessage());
 		} finally {
 			try {
-				out.close();
-				in.close();
+				if (out != null && in != null) {
+					out.close();
+					in.close();
+				}
 			} catch (IOException e) {
 				Log.e("HttpAsyncTask", e.getMessage());
 				out = null;

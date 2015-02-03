@@ -205,6 +205,12 @@ public class MyApplicationListFragment extends Fragment implements OnItemClickLi
 				JSONObject json = null;
 				JSONArray jsonArr = null;
 				
+				// 네트워크 접속 실패 다이얼로그 출력
+				if (result == null) {
+					NetworkErrorDialog.create(getActivity()).show();
+					return;
+				}
+				
 				try {
 					json = new JSONObject(result);
 					jsonArr = json.getJSONArray("list");

@@ -368,6 +368,13 @@ public class FindTeamListFragment extends Fragment implements
 			protected void onPostExecute(String result) {
 				JSONObject json = null;
 				JSONArray jsonArr = null;
+				
+				// 네트워크 접속 실패 다이얼로그 출력
+				if (result == null) {
+					NetworkErrorDialog.create(getActivity()).show();
+					return;
+				}
+				
 				try {
 					json = new JSONObject(result);
 					jsonArr = json.getJSONArray("list");
@@ -381,6 +388,8 @@ public class FindTeamListFragment extends Fragment implements
 				} catch (JSONException e) {
 					findTeamList.clear();
 					Log.e("getFindTeamList", e.getMessage());
+				} catch (NullPointerException e) {
+					Log.e("getFindTeamList/NullEx", e.getMessage());
 				} finally {
 					tlAdapter.notifyDataSetChanged();
 					listCountUpdate();

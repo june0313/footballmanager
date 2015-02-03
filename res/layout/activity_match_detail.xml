@@ -21,7 +21,6 @@
                 android:id="@+id/md_team_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:hint="팀 이름"
                 android:textColor="@color/team_name"
                 android:textSize="18sp" />
 
@@ -32,7 +31,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
-            android:hint="팀 지역 / 홈 구장 / 나이대.."
             android:textColor="#888888"
             android:textSize="15sp" />
 

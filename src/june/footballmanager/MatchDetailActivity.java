@@ -286,6 +286,12 @@ public class MatchDetailActivity extends Activity implements GoogleMap.OnMapClic
 			protected void onPostExecute(String result) {
 				JSONObject json = null;
 				
+				// 네트워크 접속 실패 다이얼로그 출력
+				if (result == null) {
+					NetworkErrorDialog.create(getApplicationContext()).show();
+					return;
+				}
+				
 				try {
 					json = new JSONObject(result);
 					if(json.getInt("success") == 1) {
@@ -309,6 +315,12 @@ public class MatchDetailActivity extends Activity implements GoogleMap.OnMapClic
 			@Override
 			protected void onPostExecute(String result) {
 				JSONObject json = null;
+				
+				// 네트워크 접속 실패 다이얼로그 출력
+				if (result == null) {
+					NetworkErrorDialog.create(MatchDetailActivity.this).show();
+					return;
+				}
 				
 				try {
 					json = new JSONObject(result);

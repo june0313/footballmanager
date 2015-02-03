@@ -368,32 +368,42 @@ public class MatchListFragment extends Fragment implements OnItemClickListener, 
 				JSONObject json = null;
 				JSONArray jsonArr = null;
 				
+				// 네트워크 접속 실패 다이얼로그 출력
+				if (result == null) {
+					NetworkErrorDialog.create(getActivity()).show();
+					return;
+				}
+				
+				// 웹페이지에서 읽어온 결과가 존재할 때만 출력 작업 수행
 				try {
 					json = new JSONObject(result);
-					
+
 					// check the success of getting information
 					if (json.getInt("success") == 1) {
-						
+
 						// 리스트가 처음부터 출력되는 경우 기존의 리스트를 clear 한다.
-						if(startIdx == 0) matchList.clear();
+						if (startIdx == 0)
+							matchList.clear();
 
 						jsonArr = json.getJSONArray("list");
 
 						JSONObject jo;
-						
+
 						// 추가로 가져온 레코드를 리스트에 추가한다.
 						for (int i = 0; i < jsonArr.length(); i++) {
 							jo = jsonArr.getJSONObject(i);
 							matchList.add(new MatchItem(jo));
 						}
-					} 
+					}
 				} catch (JSONException e) {
-					//matchList.clear();
+					// matchList.clear();
+					Log.e("getMatchList()/JSONException", e.getMessage());
 				} finally {
 					mlAdapter.notifyDataSetChanged();
 					listCountUpdate();
 				}
 			}
+			
 		}.execute();
 	}
 	

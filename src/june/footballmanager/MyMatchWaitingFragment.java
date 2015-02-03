@@ -165,6 +165,12 @@ public class MyMatchWaitingFragment extends Fragment implements OnItemClickListe
 				JSONObject json = null;
 				JSONArray jsonArr = null;
 				
+				// 네트워크 접속 실패 다이얼로그 출력
+				if (result == null) {
+					NetworkErrorDialog.create(getActivity()).show();
+					return;
+				}
+				
 				try {
 					myMatchList.clear();
 					json = new JSONObject(result);

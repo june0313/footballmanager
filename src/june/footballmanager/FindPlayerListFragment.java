@@ -370,6 +370,12 @@ public class FindPlayerListFragment extends Fragment implements OnItemClickListe
 				JSONObject json = null;
 				JSONArray jsonArr = null;
 				
+				// 네트워크 접속 실패 다이얼로그 출력
+				if (result == null) {
+					NetworkErrorDialog.create(getActivity()).show();
+					return;
+				}
+				
 				// 리스트 업데이트
 				try {
 					json = new JSONObject(result);
@@ -381,7 +387,7 @@ public class FindPlayerListFragment extends Fragment implements OnItemClickListe
 						item = jsonArr.getJSONObject(i);
 						playerList.add(new FindPlayerItem(item));
 					}
-					
+
 				} catch (JSONException e) {
 					playerList.clear();
 					Log.e("getFindPlayerList", e.getMessage());
